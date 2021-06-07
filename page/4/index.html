@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Sanborn</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="个人博客，随缘记录">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sanborn">
+<meta property="og:url" content="https://sanbornzhang.github.io/page/4/index.html">
+<meta property="og:site_name" content="Sanborn">
+<meta property="og:description" content="个人博客，随缘记录">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Sanborn" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sanborn</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Sanborn</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://Sanbornzhang.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-nodejs/Google_IO/flat" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/06/05/nodejs/Google_IO/flat/" class="article-date">
+  <time class="dt-published" datetime="2021-06-05T08:06:11.996Z" itemprop="datePublished">2021-06-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        flat = function(arr){
+    while (arr.some(item => Array.isArray(item))) {
+        arr = [].concat(...arr);
+    }
+    return arr
+}
+const array =  [1, [2, [3, 4]]]
+console.log(flat(array))
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sanbornzhang.github.io/2021/06/05/nodejs/Google_IO/flat/" data-id="ckplx85wr0031uceg59pf93o7" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-nodejs/MQ/consumer-test" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/06/05/nodejs/MQ/consumer-test/" class="article-date">
+  <time class="dt-published" datetime="2021-06-05T08:06:11.996Z" itemprop="datePublished">2021-06-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        const consumer = require('./consumer')
+process.on('message', (channel) => {
+    console.log(`${process.pid} sub ${channel}`)
+    consumer(channel)
+})
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sanbornzhang.github.io/2021/06/05/nodejs/MQ/consumer-test/" data-id="ckplx85ws0035uceghyj49j1p" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-nodejs/MQ/consumer" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/06/05/nodejs/MQ/consumer/" class="article-date">
+  <time class="dt-published" datetime="2021-06-05T08:06:11.996Z" itemprop="datePublished">2021-06-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        const Redis = require('ioredis')
+const localIPs = require('os').networkInterfaces()['vEthernet (Primary Virtual Switch)']
+const localIPv4 = localIPs.find(_ => Object.keys(_) && _.family === 'IPv4')
+const sub = new Redis(6379, localIPv4.address)
+const redis = new Redis(6379, localIPv4.address)
+
+const required = _ => {
+  throw (new Error(`arguments must required`))
+}
+
+function consumer(channel = required()) {
+  return sub.subscribe(channel, (err, count) => {
+    return sub.on('message', (err, data) => {
+      redis.blpop(`${channel}_job`, 5, (err, data)=>{
+        if(data) {
+          console.log(`${process.pid}: get data: ${data[1]}`)
+          // do something
+        }
+      })
+    })
+  })
+}
+
+module.exports = consumer
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sanbornzhang.github.io/2021/06/05/nodejs/MQ/consumer/" data-id="ckplx85wt0038uceg1v0wg9c8" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Algorithm/LRU" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/06/05/Algorithm/LRU/" class="article-date">
+  <time class="dt-published" datetime="2021-06-05T08:06:11.984Z" itemprop="datePublished">2021-06-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        const LinkList = require('./utils/LList')
+const assert = require('assert')
+class LRUCache {
+    constructor(limit) {
+        this.limit = limit || 1000
+        this.linkList = new LinkList()
+        this.map = {}
+    }
+    set(k, v) {
+        const cacheNodeData = this.get(k)
+
+        if (cacheNodeData !== undefined && cacheNodeData !== null) {
+            return cacheNodeData
+        } else {
+            if (this.linkList.length === this.limit) {
+                let latestNode = this.linkList.end()
+                this.linkList.remove(this.linkList.length - 1)
+                const latestKey = latestNode.key
+                this['map'][latestKey]['node'] = null
+                this['map'][latestKey] = null
+            }
+            this['map'][k] = {}
+            const node = this.linkList.insert(v)
+            node.key = k
+            this['map'][k]['node'] = node
+            return node
+        }
+    }
+    get(k) {
+        if (this['map'][k] !== undefined && this['map'][k] !== null &&
+            Object.keys(this['map'][k])) {
+            if (this['map'][k]['node'] === this.linkList.head) {
+                return this.linkList.head.data
+            } else {
+                const node = this['map'][k]['node']
+                const previous = node.previous
+                if (previous) {
+                    const next = node.next
+                    previous.next = next
+                    if (next) {
+                        next.previous = previous
+                    }
+                }
+                this.linkList.head.previous = node
+                node.next = this.linkList.head
+
+                node.previous = null
+                this.linkList.head = node
+                return node.data
+            }
+        } else {
+            return null
+        }
+
+    }
+}
+const test = (count = 10 * 100 * 1000) => {
+    console.time('cache test')
+    const cacheInstance = new LRUCache(200)
+    for (let loop = 0; loop < count; loop++) {
+        for (let i = 1; i < 3000; i++) {
+            cacheInstance.set(i, i)
+            const v = cacheInstance.get(i)
+            assert(v !== undefined && v === i, `k: ${i} v:${v},${JSON.stringify(cacheInstance.data)}`)
+        }
+    }
+    console.timeEnd('cache test')
+    const item = cacheInstance.linkList.iterator()
+    console.log(item.length)
+    console.time('cache get')
+    cacheInstance.get(99)
+    console.timeEnd('cache get')
+
+}
+test(10000)
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sanbornzhang.github.io/2021/06/05/Algorithm/LRU/" data-id="ckplx85v50001uceg94offoye" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Algorithm/XOREncrypt" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/06/05/Algorithm/XOREncrypt/" class="article-date">
+  <time class="dt-published" datetime="2021-06-05T08:06:11.984Z" itemprop="datePublished">2021-06-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        function encryptStringWithXORtoHex(text, secret) {
+  while (secret.length < text.length) {
+    secret += secret
+  }
+  return text
+    .split('')
+    .map((v, i) => (v.charCodeAt(0) ^ secret[i].charCodeAt(0)).toString('16'))
+    .join('|')
+}
+
+function decryptHexStringWithXOR(encryptText, secret) {
+  return encryptText
+    .split('|')
+    .map((v, i) => (String.fromCharCode(
+      (parseInt(v, 16)) ^ secret.charCodeAt(i)))).join('')
+}
+encode = encryptStringWithXORtoHex("aaa", "ssss")
+console.log(encode)
+console.log(decryptHexStringWithXOR(encode, 'ssss'))
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sanbornzhang.github.io/2021/06/05/Algorithm/XOREncrypt/" data-id="ckplx85vd0003ucegdjmz9qj3" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-前端/CSS/index" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/05/11/%E5%89%8D%E7%AB%AF/CSS/index/" class="article-date">
+  <time class="dt-published" datetime="2019-05-10T16:00:00.000Z" itemprop="datePublished">2019-05-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/CSS3/">CSS3</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/CSS3/%E5%B8%83%E5%B1%80/">布局</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/05/11/%E5%89%8D%E7%AB%AF/CSS/index/">CSS 入门的一些知识</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="CSS-入门的一些知识"><a href="#CSS-入门的一些知识" class="headerlink" title="CSS 入门的一些知识"></a>CSS 入门的一些知识</h1><h2 id="em-rem-px-区别"><a href="#em-rem-px-区别" class="headerlink" title="em rem px 区别"></a><code>em</code> <code>rem</code> <code>px</code> 区别</h2><ul>
+<li><code>px</code>: 固定的像素，一旦设置了就无法因为适应页面大小而改变。</li>
+<li><code>em</code>: 只是针对与父级元素的大小</li>
+<li><code>rem</code>: 针对根元素的大小<blockquote>
+<pre><code>em和rem相对于px具有灵活性，他们是相对长度单位，更适用于响应式布局。
+</code></pre>
+</blockquote>
+</li>
+</ul>
+<h2 id="盒子模型"><a href="#盒子模型" class="headerlink" title="盒子模型"></a>盒子模型</h2><p><img src="images/box-model-standard-small.png" alt="box-model"></p>
+<ul>
+<li><code>width</code> <code>和height</code> 设置了内容框的宽/高</li>
+<li><code>padding</code> 家族属性设置内边距的宽度(别忘了普通属性比如 <code>padding-bottom</code> ，一次设置一个边).</li>
+<li><code>border</code> 家族属性设置边界的宽度、样式和颜色(许多可用的普通边界属性还有很多)。</li>
+<li><code>margin</code> 家族属性设置包围CSS盒子外部区域的宽度，这个属性推开布局中其他的CSS盒子（也有许多可用的普通属性比如 <code>margin-bottom </code>）。
+        
+          <p class="article-more-link">
+            <a href="/2019/05/11/%E5%89%8D%E7%AB%AF/CSS/index/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sanbornzhang.github.io/2019/05/11/%E5%89%8D%E7%AB%AF/CSS/index/" data-id="ckplx85xr005tucegfhhf18jt" data-title="CSS 入门的一些知识" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS3/" rel="tag">CSS3</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B8%83%E5%B1%80/" rel="tag">布局</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B/" rel="tag">盒子模型</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-ops/hexo/continuousDeployment" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/05/06/ops/hexo/continuousDeployment/" class="article-date">
+  <time class="dt-published" datetime="2019-05-05T16:00:00.000Z" itemprop="datePublished">2019-05-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/ops/">ops</a>►<a class="article-category-link" href="/categories/ops/linux/">linux</a>►<a class="article-category-link" href="/categories/ops/linux/jenkins/">jenkins</a>►<a class="article-category-link" href="/categories/ops/linux/jenkins/hexo/">hexo</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/05/06/ops/hexo/continuousDeployment/">通过github + jenkins 进行持续部署 hexo</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="通过github-jenkins-进行持续部署-hexo"><a href="#通过github-jenkins-进行持续部署-hexo" class="headerlink" title="通过github + jenkins 进行持续部署 hexo"></a>通过<code>github + jenkins</code> 进行持续部署 <code>hexo</code></h1><h2 id="install-jenkins"><a href="#install-jenkins" class="headerlink" title="install jenkins"></a>install jenkins</h2><ol>
+<li>安装jdk8<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install openjdk-8-jdk</span><br></pre></td></tr></table></figure></li>
+<li>安装<code>jenkins</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add -</span><br><span class="line">echo deb https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install jenkins</span><br></pre></td></tr></table></figure>
+        
+          <p class="article-more-link">
+            <a href="/2019/05/06/ops/hexo/continuousDeployment/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sanbornzhang.github.io/2019/05/06/ops/hexo/continuousDeployment/" data-id="ckplx85xc004ruceg3ipke6xp" data-title="通过github + jenkins 进行持续部署 hexo" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jenkins/" rel="tag">jenkins</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ops/" rel="tag">ops</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-ops/hexo/index" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/05/06/ops/hexo/index/" class="article-date">
+  <time class="dt-published" datetime="2019-05-05T16:00:00.000Z" itemprop="datePublished">2019-05-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/hexo/">hexo</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/05/06/ops/hexo/index/">hexo 安装以及美化</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="hexo-安装以及美化"><a href="#hexo-安装以及美化" class="headerlink" title="hexo 安装以及美化"></a>hexo 安装以及美化</h1><h2 id="hexo-next"><a href="#hexo-next" class="headerlink" title="hexo + next"></a>hexo + next</h2><h3 id="hexo-配置文件"><a href="#hexo-配置文件" class="headerlink" title="hexo 配置文件"></a>hexo 配置文件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">title: Sanborn</span><br><span class="line">subtitle: 爱吃酸菜的鱼</span><br><span class="line">description: &#x27;恍惚而过，不落昏沉&#x27;</span><br><span class="line">#&#x27;个人技术博客: [Node.js Docker K8S Istio Mysql ELK kafka]&#x27;</span><br><span class="line">keywords:</span><br><span class="line">author: Sanborn</span><br><span class="line">language: zh-Hans</span><br><span class="line">timezone:</span><br><span class="line">avatar: https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg</span><br><span class="line"># URL</span><br><span class="line">## If your site is put in a subdirectory, set url as &#x27;http://yoursite.com/child&#x27; and root as &#x27;/child/&#x27;</span><br><span class="line">url: http://www.sanborn.me</span><br><span class="line">root: /</span><br><span class="line">permalink: :year/:month/:day/:title/</span><br><span class="line">permalink_defaults:</span><br></pre></td></tr></table></figure>
+        
+          <p class="article-more-link">
+            <a href="/2019/05/06/ops/hexo/index/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sanbornzhang.github.io/2019/05/06/ops/hexo/index/" data-id="ckplx85xd004tuceg1lyu3hzs" data-title="hexo 安装以及美化" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-nodejs/cluster" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/05/04/nodejs/cluster/" class="article-date">
+  <time class="dt-published" datetime="2019-05-03T16:00:00.000Z" itemprop="datePublished">2019-05-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Node-js/">Node.js</a>►<a class="article-category-link" href="/categories/Node-js/cluster/">cluster</a>►<a class="article-category-link" href="/categories/Node-js/cluster/child-process/">child_process</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/05/04/nodejs/cluster/">Nodejs cluster</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Nodejs-cluster-详解"><a href="#Nodejs-cluster-详解" class="headerlink" title="Nodejs cluster 详解"></a>Nodejs cluster 详解</h1><pre><code>Node.js is designed for building distributed applications with many nodes. This is why it’s named Node
+</code></pre>
+<p>最开始使用<code>Node.js</code>也是抱着这个意味来的，但是并不代表我们不能在<code>Node.js</code>中构建多线程的应用</p>
+<h2 id="fork"><a href="#fork" class="headerlink" title="fork"></a>fork</h2><pre><code>在多任务操作系统中，行程（运行的程序）需要一种方法来创建新进程，例如运行其他程序。Fork及其变种在类Unix系统中通常是这样做的唯一方式。如果进程需要启动另一个程序的可执行文件，它需要先Fork来创建一个自身的副本。然后由该副本即“子进程”调用exec系统调用，用其他程序覆盖自身：停止执行自己之前的程序并执行其他程序。
+
+Fork操作会为子进程创建一个单独的定址空間。子进程拥有父进程所有内存段的精确副本。在现代的UNIX变种中，这遵循出自SunOS-4.0的虚拟内存模型，根据寫入時複製语义，物理内存不需要被实际复制。取而代之的是，两个进程的虚拟内存页面可能指向物理内存中的同一个页，直到它们写入该页时，写入才会发生。在用fork配合exec来执行新程序的情况下，此优化很重要。通常来说，子进程在停止程序运行前会执行一小组有利于其他程序的操作，它可能用到少量的其父进程的数据结构。
+
+当一个进程调用fork时，它被认为是父进程，新创建的进程是它的孩子（子进程）。在fork之后，两个进程还运行着相同的程序，都像是调用了该系统调用一般恢复执行。然后它们可以检查调用的返回值确定其状态：是父进程还是子进程，以及据此行事。
+
+fork系统调用在第一个版本的Unix就已存在，它借用于更早的GENIE 分時系統。Fork是标准化的POSIX的一部分。
+</code></pre>
+        
+          <p class="article-more-link">
+            <a href="/2019/05/04/nodejs/cluster/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sanbornzhang.github.io/2019/05/04/nodejs/cluster/" data-id="ckplx85vs000luceg153f9w1t" data-title="Nodejs cluster" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/child-process/" rel="tag">child_process</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cluster/" rel="tag">cluster</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-研发2.3事/短线验证码" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/04/30/%E7%A0%94%E5%8F%912.3%E4%BA%8B/%E7%9F%AD%E7%BA%BF%E9%AA%8C%E8%AF%81%E7%A0%81/" class="article-date">
+  <time class="dt-published" datetime="2019-04-29T16:00:00.000Z" itemprop="datePublished">2019-04-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1/">短信服务</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/04/30/%E7%A0%94%E5%8F%912.3%E4%BA%8B/%E7%9F%AD%E7%BA%BF%E9%AA%8C%E8%AF%81%E7%A0%81/">短信验证码设计</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="短信验证码登录"><a href="#短信验证码登录" class="headerlink" title="短信验证码登录"></a>短信验证码登录</h1><h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>用户忘记密码，这个是必须存在的一个场景，不管是通过邮件的方式或者是通过短信验证码的方式。一个系统中必须存在用户找回密码的场景。</p>
+        
+          <p class="article-more-link">
+            <a href="/2019/04/30/%E7%A0%94%E5%8F%912.3%E4%BA%8B/%E7%9F%AD%E7%BA%BF%E9%AA%8C%E8%AF%81%E7%A0%81/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sanbornzhang.github.io/2019/04/30/%E7%A0%94%E5%8F%912.3%E4%BA%8B/%E7%9F%AD%E7%BA%BF%E9%AA%8C%E8%AF%81%E7%A0%81/" data-id="ckplx85wj002auceg2c806lme" data-title="短信验证码设计" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1/" rel="tag">短信服务</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/" rel="tag">短信服务设计</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Mysql/">Mysql</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/">Node.js</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/EventEmitter/">EventEmitter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/OpenCV/">OpenCV</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/OpenCV/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/Promise/">Promise</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/child-process/">child_process</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/cluster/">cluster</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/cluster/child-process/">child_process</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/even-loop/">even loop</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/feature/">feature</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/kafka/">kafka</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/kafka/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/performance/">performance</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/stream/">stream</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/">Nodejs</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/koa/">koa</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/koa/%E6%A1%86%E6%9E%B6/">框架</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/redis/">redis</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/redis/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Proxy/">Proxy</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">algorithm</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/dataStructure/">dataStructure</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/dataStructure/Node-js/">Node.js</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/dataStructure/Node-js/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/dataStructure/Node-js/%E4%BD%8D%E8%BF%90%E7%AE%97/crypto/">crypto</a></li></ul></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ELK/">ELK</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ELK/logstash/">logstash</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ELK/logstash/grok/">grok</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/docker/">docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/docker/Kubernetes/">Kubernetes</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/docker/Kubernetes/pod/">pod</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/">ops</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/Nginx/">Nginx</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/Nginx/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/">负载均衡</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/Nginx/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/">反向代理</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/docker/">docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/docker/k8s/">k8s</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/docker/k8s/kubernetes/">kubernetes</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/docker/k8s/kubernetes/istio/">istio</a></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/performance/">performance</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/performance/Node-js/">Node.js</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/redis/">redis</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/ops/">ops</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/">linux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/TCPDump/">TCPDump</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/jenkins/">jenkins</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/jenkins/hexo/">hexo</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/mongoDB/">mongoDB</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/mongoDB/%E9%9B%86%E7%BE%A4/">集群</a></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/redis/algorithm/">algorithm</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/redis/algorithm/Node-js/">Node.js</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/CSS3/">CSS3</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/CSS3/%E5%B8%83%E5%B1%80/">布局</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/Canvas/">Canvas</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/Flexible/">Flexible</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/Flexible/H5/">H5</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9/">杂项</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9/zsh/">zsh</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/">幂等</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/%E7%A7%92%E6%9D%80/">秒杀</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/%E7%A7%92%E6%9D%80/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/">架构整洁之道导读</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BB%84%E4%BB%B6/">组件</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/">编程范式</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/">结构化编程</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/">面向对象编程</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/">函数式编程</a></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/">设计原则</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1/">短信服务</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%87%8D%E6%9E%84/">重构</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%87%8D%E6%9E%84/%E9%87%8D%E6%9E%84-%E6%94%B9%E5%96%84%E6%97%A2%E6%9C%89%E4%BB%A3%E7%A0%81%E7%9A%84%E8%AE%BE%E8%AE%A1/">重构 改善既有代码的设计</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS3/" rel="tag">CSS3</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Canvas/" rel="tag">Canvas</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELK/" rel="tag">ELK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EventEmitter/" rel="tag">EventEmitter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Flexible/" rel="tag">Flexible</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/H5/" rel="tag">H5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kubernetes/" rel="tag">Kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mysql/" rel="tag">Mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/" rel="tag">Nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/" rel="tag">OpenCV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Promise/" rel="tag">Promise</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Proxy/" rel="tag">Proxy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/" rel="tag">Redis数据持久化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCPDump/" rel="tag">TCPDump</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/object-Object/" rel="tag">[object Object]</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/" rel="tag">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/child-process/" rel="tag">child_process</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cluster/" rel="tag">cluster</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crypto/" rel="tag">crypto</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dataStructure/" rel="tag">dataStructure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/even-loop/" rel="tag">even loop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/feature/" rel="tag">feature</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grok/" rel="tag">grok</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/" rel="tag">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jenkins/" rel="tag">jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/" rel="tag">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/koa/" rel="tag">koa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/logstash/" rel="tag">logstash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongoDB/" rel="tag">mongoDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ops/" rel="tag">ops</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/performance/" rel="tag">performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pod/" rel="tag">pod</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/setImmediate-setTimeout-process-nextTick/" rel="tag">setImmediate setTimeout() process.nextTick()</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/stream/" rel="tag">stream</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zsh/" rel="tag">zsh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/" rel="tag">位运算</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" rel="tag">函数式编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" rel="tag">反向代理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" rel="tag">图像处理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B8%83%E5%B1%80/" rel="tag">布局</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%82%E7%AD%89/" rel="tag">幂等</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%89%8B%E5%86%99Promise/" rel="tag">手写Promise</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%94%B6%E8%97%8F%E7%9A%84%E6%96%87%E7%AB%A0/" rel="tag">收藏的文章</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E9%A1%B9/" rel="tag">杂项</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag">架构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/" rel="tag">架构整洁之道导读</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A1%86%E6%9E%B6/" rel="tag">框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B/" rel="tag">盒子模型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1/" rel="tag">短信服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/" rel="tag">短信服务设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%92%E6%9D%80/" rel="tag">秒杀</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B4%A2%E5%BC%95/" rel="tag">索引</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E4%BB%B6/" rel="tag">组件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/" rel="tag">结构化编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF/" rel="tag">缓存击穿</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/" rel="tag">缓存穿透</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9/" rel="tag">缓存雪崩</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/" rel="tag">编程范式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/" rel="tag">设计原则</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/" rel="tag">负载均衡</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%8D%E6%9E%84/" rel="tag">重构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%8D%E6%9E%84-%E6%94%B9%E5%96%84%E6%97%A2%E6%9C%89%E4%BB%A3%E7%A0%81%E7%9A%84%E8%AE%BE%E8%AE%A1/" rel="tag">重构 改善既有代码的设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9B%86%E7%BE%A4/" rel="tag">集群</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/" rel="tag">面向对象编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AD%94%E6%B3%95/" rel="tag">魔法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CSS3/" style="font-size: 10px;">CSS3</a> <a href="/tags/Canvas/" style="font-size: 10px;">Canvas</a> <a href="/tags/ELK/" style="font-size: 11.25px;">ELK</a> <a href="/tags/EventEmitter/" style="font-size: 10px;">EventEmitter</a> <a href="/tags/Flexible/" style="font-size: 10px;">Flexible</a> <a href="/tags/H5/" style="font-size: 10px;">H5</a> <a href="/tags/Kubernetes/" style="font-size: 13.75px;">Kubernetes</a> <a href="/tags/Mysql/" style="font-size: 11.25px;">Mysql</a> <a href="/tags/Nginx/" style="font-size: 11.25px;">Nginx</a> <a href="/tags/Node-js/" style="font-size: 17.5px;">Node.js</a> <a href="/tags/Nodejs/" style="font-size: 11.25px;">Nodejs</a> <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a> <a href="/tags/Promise/" style="font-size: 10px;">Promise</a> <a href="/tags/Proxy/" style="font-size: 10px;">Proxy</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/Redis%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/" style="font-size: 10px;">Redis数据持久化</a> <a href="/tags/TCPDump/" style="font-size: 10px;">TCPDump</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/object-Object/" style="font-size: 11.25px;">[object Object]</a> <a href="/tags/algorithm/" style="font-size: 12.5px;">algorithm</a> <a href="/tags/child-process/" style="font-size: 11.25px;">child_process</a> <a href="/tags/cluster/" style="font-size: 10px;">cluster</a> <a href="/tags/crypto/" style="font-size: 10px;">crypto</a> <a href="/tags/dataStructure/" style="font-size: 11.25px;">dataStructure</a> <a href="/tags/docker/" style="font-size: 16.25px;">docker</a> <a href="/tags/even-loop/" style="font-size: 10px;">even loop</a> <a href="/tags/feature/" style="font-size: 10px;">feature</a> <a href="/tags/grok/" style="font-size: 10px;">grok</a> <a href="/tags/hexo/" style="font-size: 11.25px;">hexo</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/jenkins/" style="font-size: 10px;">jenkins</a> <a href="/tags/k8s/" style="font-size: 10px;">k8s</a> <a href="/tags/kafka/" style="font-size: 10px;">kafka</a> <a href="/tags/koa/" style="font-size: 10px;">koa</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 18.75px;">linux</a> <a href="/tags/logstash/" style="font-size: 10px;">logstash</a> <a href="/tags/mongoDB/" style="font-size: 10px;">mongoDB</a> <a href="/tags/ops/" style="font-size: 20px;">ops</a> <a href="/tags/performance/" style="font-size: 12.5px;">performance</a> <a href="/tags/pod/" style="font-size: 10px;">pod</a> <a href="/tags/redis/" style="font-size: 15px;">redis</a> <a href="/tags/setImmediate-setTimeout-process-nextTick/" style="font-size: 10px;">setImmediate setTimeout() process.nextTick()</a> <a href="/tags/stream/" style="font-size: 10px;">stream</a> <a href="/tags/zsh/" style="font-size: 10px;">zsh</a> <a href="/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/" style="font-size: 10px;">位运算</a> <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">函数式编程</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 10px;">分布式</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 12.5px;">前端</a> <a href="/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" style="font-size: 10px;">反向代理</a> <a href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" style="font-size: 10px;">图像处理</a> <a href="/tags/%E5%B8%83%E5%B1%80/" style="font-size: 10px;">布局</a> <a href="/tags/%E5%B9%82%E7%AD%89/" style="font-size: 10px;">幂等</a> <a href="/tags/%E6%89%8B%E5%86%99Promise/" style="font-size: 10px;">手写Promise</a> <a href="/tags/%E6%94%B6%E8%97%8F%E7%9A%84%E6%96%87%E7%AB%A0/" style="font-size: 10px;">收藏的文章</a> <a href="/tags/%E6%9D%82%E9%A1%B9/" style="font-size: 11.25px;">杂项</a> <a href="/tags/%E6%9E%B6%E6%9E%84/" style="font-size: 13.75px;">架构</a> <a href="/tags/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/" style="font-size: 12.5px;">架构整洁之道导读</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">框架</a> <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" style="font-size: 11.25px;">消息队列</a> <a href="/tags/%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B/" style="font-size: 10px;">盒子模型</a> <a href="/tags/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1/" style="font-size: 10px;">短信服务</a> <a href="/tags/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/" style="font-size: 10px;">短信服务设计</a> <a href="/tags/%E7%A7%92%E6%9D%80/" style="font-size: 10px;">秒杀</a> <a href="/tags/%E7%B4%A2%E5%BC%95/" style="font-size: 10px;">索引</a> <a href="/tags/%E7%BB%84%E4%BB%B6/" style="font-size: 10px;">组件</a> <a href="/tags/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">结构化编程</a> <a href="/tags/%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF/" style="font-size: 10px;">缓存击穿</a> <a href="/tags/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/" style="font-size: 10px;">缓存穿透</a> <a href="/tags/%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9/" style="font-size: 10px;">缓存雪崩</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/" style="font-size: 10px;">编程范式</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/" style="font-size: 10px;">设计原则</a> <a href="/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/" style="font-size: 10px;">负载均衡</a> <a href="/tags/%E9%87%8D%E6%9E%84/" style="font-size: 10px;">重构</a> <a href="/tags/%E9%87%8D%E6%9E%84-%E6%94%B9%E5%96%84%E6%97%A2%E6%9C%89%E4%BB%A3%E7%A0%81%E7%9A%84%E8%AE%BE%E8%AE%A1/" style="font-size: 10px;">重构 改善既有代码的设计</a> <a href="/tags/%E9%9B%86%E7%BE%A4/" style="font-size: 10px;">集群</a> <a href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">面向对象编程</a> <a href="/tags/%E9%AD%94%E6%B3%95/" style="font-size: 10px;">魔法</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/06/05/%E6%9D%82%E9%A1%B9/CORS/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/05/%E5%89%8D%E7%AB%AF/CSS/border/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/05/nodejs/child/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/05/nodejs/cluster/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/05/nodejs/evenloop/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

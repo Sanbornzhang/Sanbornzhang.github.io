@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>mongoDB双副本集安装 | Sanborn</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="mongodb install(ubuntu 14.04)在ubuntu中安装mongodb 1234sudo apt-key adv --keyserver hkp:&#x2F;&#x2F;keyserver.ubuntu.com:80 --recv EA312927echo &quot;deb http:&#x2F;&#x2F;repo.mongodb.com&#x2F;apt&#x2F;ubuntu trusty&#x2F;mongodb-enterprise">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mongoDB双副本集安装">
+<meta property="og:url" content="https://sanbornzhang.github.io/2017/12/19/ops/mongo/index/index.html">
+<meta property="og:site_name" content="Sanborn">
+<meta property="og:description" content="mongodb install(ubuntu 14.04)在ubuntu中安装mongodb 1234sudo apt-key adv --keyserver hkp:&#x2F;&#x2F;keyserver.ubuntu.com:80 --recv EA312927echo &quot;deb http:&#x2F;&#x2F;repo.mongodb.com&#x2F;apt&#x2F;ubuntu trusty&#x2F;mongodb-enterprise">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-12-18T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-05T08:06:12.024Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="ops">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="mongoDB">
+<meta property="article:tag" content="集群">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Sanborn" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sanborn</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Sanborn</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://Sanbornzhang.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-ops/mongo/index" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/12/19/ops/mongo/index/" class="article-date">
+  <time class="dt-published" datetime="2017-12-18T16:00:00.000Z" itemprop="datePublished">2017-12-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/ops/">ops</a>►<a class="article-category-link" href="/categories/ops/linux/">linux</a>►<a class="article-category-link" href="/categories/ops/linux/mongoDB/">mongoDB</a>►<a class="article-category-link" href="/categories/ops/linux/mongoDB/%E9%9B%86%E7%BE%A4/">集群</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      mongoDB双副本集安装
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="mongodb-install-ubuntu-14-04"><a href="#mongodb-install-ubuntu-14-04" class="headerlink" title="mongodb install(ubuntu 14.04)"></a>mongodb install(ubuntu 14.04)</h1><p>在ubuntu中安装mongodb</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927</span><br><span class="line">echo &quot;deb http://repo.mongodb.com/apt/ubuntu trusty/mongodb-enterprise/3.2 multiverse&quot; | sudo tee /etc/apt/sources.list.d/mongodb-enterprise.list</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install -y mongodb-enterprise</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h1 id="mongodb-Auth"><a href="#mongodb-Auth" class="headerlink" title="mongodb Auth"></a>mongodb Auth</h1><h2 id="查看MongoDB配置文件"><a href="#查看MongoDB配置文件" class="headerlink" title="查看MongoDB配置文件"></a>查看MongoDB配置文件</h2><p>  <code>vi /etc/mongod.conf </code></p>
+<h2 id="systemLog"><a href="#systemLog" class="headerlink" title="systemLog"></a>systemLog</h2><h3 id="systemLog-verbosity"><a href="#systemLog-verbosity" class="headerlink" title="systemLog.verbosity"></a>systemLog.verbosity</h3><ul>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages.</li>
+</ul>
+<h3 id="systemLog-component-accessControl-verbosity"><a href="#systemLog-component-accessControl-verbosity" class="headerlink" title="systemLog.component.accessControl.verbosity"></a>systemLog.component.accessControl.verbosity</h3><pre><code>The log message verbosity level for components related to access control.
+</code></pre>
+<ul>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages.</li>
+</ul>
+<h3 id="systemLog-component-command-verbosity"><a href="#systemLog-component-command-verbosity" class="headerlink" title="systemLog.component.command.verbosity"></a>systemLog.component.command.verbosity</h3><pre><code>The log message verbosity level for components related to commands.
+</code></pre>
+<ul>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages.</li>
+</ul>
+<h3 id="systemLog-component-control-verbosity"><a href="#systemLog-component-control-verbosity" class="headerlink" title="systemLog.component.control.verbosity"></a>systemLog.component.control.verbosity</h3><pre><code>The log message verbosity level for components related to control operations.
+</code></pre>
+<ul>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages.</li>
+</ul>
+<h3 id="systemLog-component-ftdc-verbosity"><a href="#systemLog-component-ftdc-verbosity" class="headerlink" title="systemLog.component.ftdc.verbosity"></a>systemLog.component.ftdc.verbosity</h3><pre><code>The log message verbosity level for components related to diagnostic data collection operations.
+</code></pre>
+<ul>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages.</li>
+</ul>
+<h3 id="systemLog-component-geo-verbosity"><a href="#systemLog-component-geo-verbosity" class="headerlink" title="systemLog.component.geo.verbosity"></a>systemLog.component.geo.verbosity</h3><pre><code>The log message verbosity level for components related to geospatial parsing operations.
+</code></pre>
+<ul>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages.</li>
+</ul>
+<h3 id="systemLog-component-index-verbosity"><a href="#systemLog-component-index-verbosity" class="headerlink" title="systemLog.component.index.verbosity"></a>systemLog.component.index.verbosity</h3><pre><code>The log message verbosity level for components related to indexing operations.
+</code></pre>
+<ul>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages.</li>
+</ul>
+<h3 id="systemLog-component-network-verbosity"><a href="#systemLog-component-network-verbosity" class="headerlink" title="systemLog.component.network.verbosity"></a>systemLog.component.network.verbosity</h3><pre><code>The log message verbosity level for components related to networking operations
+</code></pre>
+<ul>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages</li>
+</ul>
+<h3 id="systemLog-component-query-verbosity"><a href="#systemLog-component-query-verbosity" class="headerlink" title="systemLog.component.query.verbosity"></a>systemLog.component.query.verbosity</h3><pre><code>The log message verbosity level for components related to query operations.
+</code></pre>
+<ul>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages<h3 id="systemLog-component-replication-verbosity"><a href="#systemLog-component-replication-verbosity" class="headerlink" title="systemLog.component.replication.verbosity"></a>systemLog.component.replication.verbosity</h3>  The log message verbosity level for components related to replication.</li>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages</li>
+</ul>
+<h3 id="systemLog-component-sharding-verbosity"><a href="#systemLog-component-sharding-verbosity" class="headerlink" title="systemLog.component.sharding.verbosity"></a>systemLog.component.sharding.verbosity</h3><pre><code>The log message verbosity level for components related to sharding.
+</code></pre>
+<ul>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages</li>
+</ul>
+<h3 id="systemLog-component-storage-verbosity"><a href="#systemLog-component-storage-verbosity" class="headerlink" title="systemLog.component.storage.verbosity"></a>systemLog.component.storage.verbosity</h3><pre><code>The log message verbosity level for components related to storage.
+</code></pre>
+<ul>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages</li>
+</ul>
+<h3 id="systemLog-component-storage-journal-verbosity"><a href="#systemLog-component-storage-journal-verbosity" class="headerlink" title="systemLog.component.storage.journal.verbosity"></a>systemLog.component.storage.journal.verbosity</h3><pre><code>The log message verbosity level for components related to journaling.
+</code></pre>
+<ul>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages</li>
+</ul>
+<h3 id="systemLog-component-write-verbosity"><a href="#systemLog-component-write-verbosity" class="headerlink" title="systemLog.component.write.verbosity"></a>systemLog.component.write.verbosity</h3><pre><code>The log message verbosity level for components related to write operations.
+</code></pre>
+<ul>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages</li>
+</ul>
+<h2 id="net-Options"><a href="#net-Options" class="headerlink" title="net Options"></a>net Options</h2><h3 id="net-port"><a href="#net-port" class="headerlink" title="net.port"></a>net.port</h3><p><code>Default: 27017</code></p>
+<h4 id="net-bindIp"><a href="#net-bindIp" class="headerlink" title="net.bindIp"></a>net.bindIp</h4><p><code>bindIp: 127.0.0.1 to bindIp: 127.0.0.1,10.116.79.104</code></p>
+<p>To bind to multiple IP addresses, enter a list of comma separated values.</p>
+<h3 id="net-maxIncomingConnections"><a href="#net-maxIncomingConnections" class="headerlink" title="net.maxIncomingConnections"></a>net.maxIncomingConnections</h3><p><code>Default: 65536</code><br>The maximum number of simultaneous connections that mongos or mongod will accept.</p>
+<h3 id="net-wireObjectCheck"><a href="#net-wireObjectCheck" class="headerlink" title="net.wireObjectCheck"></a>net.wireObjectCheck</h3><p><code>Default: True</code><br>When true, the mongod or mongos instance validates all requests from clients upon receipt to prevent clients from inserting malformed or invalid BSON into a MongoDB database.</p>
+<h3 id="net-ipv6"><a href="#net-ipv6" class="headerlink" title="net.ipv6"></a>net.ipv6</h3><p><code>Default: False</code><br>Removed in version 3.0.</p>
+<h3 id="net-unixDomainSocket"><a href="#net-unixDomainSocket" class="headerlink" title="net.unixDomainSocket"></a>net.unixDomainSocket</h3><p><code>Default: True</code><br>Enable or disable listening on the UNIX domain socket. <code>net.unixDomainSocket.enabled</code> applies only to Unix-based systems.<br>The mongos or mongod process always listens on the UNIX socket unless one of the following is true:</p>
+<ul>
+<li>net.unixDomainSocket.enabled is false</li>
+<li>–nounixsocket is set. The command line option takes precedence over the configuration file setting.</li>
+<li>net.bindIp is not set</li>
+<li>net.bindIp does not specify 127.0.0.1</li>
+</ul>
+<h3 id="net-unixDomainSocket-pathPrefix"><a href="#net-unixDomainSocket-pathPrefix" class="headerlink" title="net.unixDomainSocket.pathPrefix"></a>net.unixDomainSocket.pathPrefix</h3><p><code>Default: /tmp</code><br>The path for the UNIX socket. net.unixDomainSocket.pathPrefix applies only to Unix-based systems.</p>
+<h3 id="net-unixDomainSocket-filePermissions"><a href="#net-unixDomainSocket-filePermissions" class="headerlink" title="net.unixDomainSocket.filePermissions"></a>net.unixDomainSocket.filePermissions</h3><p><code>Default: 0700</code><br>Sets the permission for the UNIX domain socket file.</p>
+<h2 id="net-http"><a href="#net-http" class="headerlink" title="net.http"></a>net.http</h2><pre><code>Deprecated since version 3.2: HTTP interface for MongoDB
+</code></pre>
+<h2 id="net-ssl-Options"><a href="#net-ssl-Options" class="headerlink" title="net.ssl Options"></a>net.ssl Options</h2><pre><code>Changed in version 3.0: Most MongoDB distributions now include support for TLS/SSL. 
+</code></pre>
+<p>See:  </p>
+<ol>
+<li> <a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/tutorial/configure-ssl/">Configure mongod and mongos for TLS/SSL</a></li>
+<li> <a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/tutorial/configure-ssl-clients/">TLS/SSL Configuration for Clients</a>   </li>
+</ol>
+<p>For more information about TLS/SSL and MongoDB.</p>
+<h3 id="net-ssl-mode"><a href="#net-ssl-mode" class="headerlink" title="net.ssl.mode"></a>net.ssl.mode</h3><pre><code>  Enable or disable TLS/SSL or mixed TLS/SSL used for all network connections. The argument to the net.ssl.mode setting can be one of the following:
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th align="center">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>disabled</td>
+<td align="center">The server does not use TLS/SSL.</td>
+</tr>
+<tr>
+<td>allowSSL</td>
+<td align="center">Connections between servers do not use TLS/SSL. For incoming connections, the server accepts both TLS/SSL and non-TLS/non-SSL.</td>
+</tr>
+<tr>
+<td>preferSSL</td>
+<td align="center">Connections between servers use TLS/SSL. For incoming connections, the server accepts both TLS/SSL and non-TLS/non-SSL.</td>
+</tr>
+<tr>
+<td>requireSSL</td>
+<td align="center">The server uses and accepts only TLS/SSL encrypted connections.</td>
+</tr>
+</tbody></table>
+<p>  Changed in version 3.0: Most MongoDB distributions now include support for TLS/SSL.<br>See:</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/tutorial/configure-ssl/">Configure mongod and mongos for TLS/SSL</a> </li>
+<li><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/tutorial/configure-ssl-clients/">TLS/SSL Configuration for Clients</a> </li>
+</ol>
+<p>for more information about TLS/SSL and MongoDB.</p>
+<h3 id="net-ssl-PEMKeyFile"><a href="#net-ssl-PEMKeyFile" class="headerlink" title="net.ssl.PEMKeyFile"></a>net.ssl.PEMKeyFile</h3><pre><code> The .pem file that contains both the TLS/SSL certificate and key. Specify the file name of the .pem file using relative or absolute paths.
+ You must specify net.ssl.PEMKeyFile when TLS/SSL is enabled.
+ Changed in version 3.0: Most MongoDB distributions now include support for TLS/SSL.
+</code></pre>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/tutorial/configure-ssl/">Configure mongod and mongos for TLS/SSL</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/tutorial/configure-ssl-clients/">TLS/SSL Configuration for Clients</a></li>
+</ol>
+<h3 id="net-ssl-PEMKeyPassword"><a href="#net-ssl-PEMKeyPassword" class="headerlink" title="net.ssl.PEMKeyPassword"></a>net.ssl.PEMKeyPassword</h3><pre><code>  The password to de-crypt the certificate-key file (i.e. PEMKeyFile).
+  Use the net.ssl.PEMKeyPassword option only if the certificate-key file is encrypted.
+  In all cases, the mongos or mongod will redact the password from all logging and reporting output.
+</code></pre>
+<h3 id="net-ssl-clusterFile"><a href="#net-ssl-clusterFile" class="headerlink" title="net.ssl.clusterFile"></a>net.ssl.clusterFile</h3><pre><code>  The .pem file that contains the x.509 certificate-key file for membership authentication for the cluster or replica set.
+</code></pre>
+<h3 id="net-ssl-clusterPassword"><a href="#net-ssl-clusterPassword" class="headerlink" title="net.ssl.clusterPassword"></a>net.ssl.clusterPassword</h3><pre><code>  The password to de-crypt the x.509 certificate-key file specified with --sslClusterFile. Use the net.ssl.clusterPassword option only if the certificate-key file is encrypted. In all cases, the mongos or mongod will redact the password from all logging and reporting output.
+</code></pre>
+<h3 id="net-ssl-CAFile"><a href="#net-ssl-CAFile" class="headerlink" title="net.ssl.CAFile"></a>net.ssl.CAFile</h3><pre><code>  The .pem file that contains the root certificate chain from the Certificate Authority. Specify the file name of the .pem file using relative or absolute paths.
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">WARNING</span><br><span class="line">If the --sslCAFile option and its target file are not specified,</span><br><span class="line">x.509 client and member authentication will not function. mongod,</span><br><span class="line">and mongos in sharded systems, will not be able to verify the certificates of processes connecting to it against the trusted certificate authority (CA) that issued them,</span><br><span class="line">breaking the certificate chain.</span><br><span class="line">As of version 2.6.4, mongod will not start with x.509 authentication enabled if the CA file is not specified.</span><br></pre></td></tr></table></figure>
+
+<h3 id="net-ssl-CRLFile"><a href="#net-ssl-CRLFile" class="headerlink" title="net.ssl.CRLFile"></a>net.ssl.CRLFile</h3><pre><code>  The the .pem file that contains the Certificate Revocation List. Specify the file name of the .pem file using relative or absolute paths.
+</code></pre>
+<h3 id="net-ssl-allowConnectionsWithoutCertificates"><a href="#net-ssl-allowConnectionsWithoutCertificates" class="headerlink" title="net.ssl.allowConnectionsWithoutCertificates"></a>net.ssl.allowConnectionsWithoutCertificates</h3><pre><code>  Changed in version 3.0.0: net.ssl.weakCertificateValidation became net.ssl.allowConnectionsWithoutCertificates. For compatibility, MongoDB processes continue to accept net.ssl.weakCertificateValidation, but all users should update their configuration files.
+</code></pre>
+<h3 id="net-ssl-allowInvalidCertificates"><a href="#net-ssl-allowInvalidCertificates" class="headerlink" title="net.ssl.allowInvalidCertificates"></a>net.ssl.allowInvalidCertificates</h3><pre><code>  Enable or disable the validation checks for TLS/SSL certificates on other servers in the cluster and allows the use of invalid certificates.
+</code></pre>
+<h3 id="net-ssl-allowInvalidHostnames"><a href="#net-ssl-allowInvalidHostnames" class="headerlink" title="net.ssl.allowInvalidHostnames"></a>net.ssl.allowInvalidHostnames</h3><p><code>Default: False</code>  </p>
+<pre><code>  When net.ssl.allowInvalidHostnames is true, MongoDB disables the validation of the hostnames in TLS/SSL certificates, allowing mongod to connect to MongoDB instances if the hostname their certificates do not match the specified hostname.
+</code></pre>
+<h3 id="net-ssl-disabledProtocols"><a href="#net-ssl-disabledProtocols" class="headerlink" title="net.ssl.disabledProtocols"></a>net.ssl.disabledProtocols</h3><pre><code>  Prevents a MongoDB server running with SSL from accepting incoming connections that use a specific protocol or protocols. net.ssl.disabledProtocols recognizes the following protocols: TLS1_0, TLS1_1, and TLS1_2. Specifying an unrecognized protocol will prevent the server from starting.
+</code></pre>
+<h3 id="net-ssl-FIPSMode"><a href="#net-ssl-FIPSMode" class="headerlink" title="net.ssl.FIPSMode"></a>net.ssl.FIPSMode</h3><pre><code>  Enable or disable the use of the FIPS mode of the installed OpenSSL library for the mongos or mongod. Your system must have a FIPS compliant OpenSSL library to use the net.ssl.FIPSMode option.
+</code></pre>
+<h2 id="security-Options"><a href="#security-Options" class="headerlink" title="security Options"></a>security Options</h2><h3 id="security-keyFile"><a href="#security-keyFile" class="headerlink" title="security.keyFile"></a>security.keyFile</h3><pre><code>  The path to a key file that stores the shared secret that MongoDB instances use to authenticate to each other in a sharded cluster or replica set. keyFile implies security.authorization. See Internal Authentication for more information.
+</code></pre>
+<h3 id="security-clusterAuthMode"><a href="#security-clusterAuthMode" class="headerlink" title="security.clusterAuthMode"></a>security.clusterAuthMode</h3><p><code>Default: keyFile</code>  </p>
+<pre><code>  The authentication mode used for cluster authentication. If you use internal x.509 authentication, specify so here. This option can have one of the following values:
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th align="center">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>keyFile</td>
+<td align="center">Use a keyfile for authentication. Accept only keyfiles.</td>
+</tr>
+<tr>
+<td>sendKeyFile</td>
+<td align="center">For rolling upgrade purposes. Send a keyfile for authentication but can accept both keyfiles and x.509 certificates.</td>
+</tr>
+<tr>
+<td>sendX509</td>
+<td align="center">For rolling upgrade purposes. Send the x.509 certificate for authentication but can accept both keyfiles and x.509 certificates.</td>
+</tr>
+<tr>
+<td>x509</td>
+<td align="center">Recommended. Send the x.509 certificate for authentication and accept only x.509 certificates.</td>
+</tr>
+</tbody></table>
+<h3 id="security-authorization"><a href="#security-authorization" class="headerlink" title="security.authorization"></a>security.authorization</h3><p><code>Default: disabled</code>  </p>
+<pre><code>  Enable or disable Role-Based Access Control (RBAC) to govern each user’s access to database resources and operations.
+</code></pre>
+<p>Set this option to one of the following:<br>| Value       | Description                                                                                            |<br>| ——– |:——————————————————————————————————:|<br>| enabled  | A user can access only the database resources and actions for which they have been granted privileges. |<br>| disabled | A user can access any database and perform any action.                                                 |</p>
+<h3 id="security-javascriptEnabled"><a href="#security-javascriptEnabled" class="headerlink" title="security.javascriptEnabled"></a>security.javascriptEnabled</h3><p><code>Default: True</code>  </p>
+<pre><code>  Enables or disables the server-side JavaScript execution. When disabled, you cannot use operations that perform server-side execution of JavaScript code, such as the $where query operator, mapReduce command and the db.collection.mapReduce() method, group command and the db.collection.group() method.
+</code></pre>
+<h2 id="Key-Management-Configuration-Options"><a href="#Key-Management-Configuration-Options" class="headerlink" title="Key Management Configuration Options"></a>Key Management Configuration Options</h2><h3 id="security-enableEncryption"><a href="#security-enableEncryption" class="headerlink" title="security.enableEncryption"></a>security.enableEncryption</h3><pre><code>   3.2: Enables encryption for the WiredTiger storage engine. You must set to true to pass in encryption keys and configurations.
+</code></pre>
+<h3 id="security-encryptionCipherMode¶"><a href="#security-encryptionCipherMode¶" class="headerlink" title="security.encryptionCipherMode¶"></a>security.encryptionCipherMode¶</h3><p><code>Default: AES256-CBC</code>  </p>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th align="center">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AES256-CBC</td>
+<td align="center">256-bit Advanced Encryption Standard in Cipher Block Chaining Mode</td>
+</tr>
+<tr>
+<td>AES256-GCM</td>
+<td align="center">256-bit Advanced Encryption Standard in Galois/Counter Mode</td>
+</tr>
+</tbody></table>
+<h3 id="security-encryptionKeyFile"><a href="#security-encryptionKeyFile" class="headerlink" title="security.encryptionKeyFile"></a>security.encryptionKeyFile</h3><pre><code>  The path to the local keyfile when managing keys via process other than KMIP. Only set when managing keys via process other than KMIP. If data is already encrypted using KMIP, MongoDB will throw an error.
+</code></pre>
+<h3 id="security-kmip-keyIdentifier"><a href="#security-kmip-keyIdentifier" class="headerlink" title="security.kmip.keyIdentifier"></a>security.kmip.keyIdentifier</h3><pre><code>  Unique KMIP identifier for an existing key within the KMIP server. Include to use the key associated with the identifier as the system key. You can only use the setting the first time you enable encryption for the mongod instance. Requires security.enableEncryption to be true.
+</code></pre>
+<h3 id="security-kmip-rotateMasterKey"><a href="#security-kmip-rotateMasterKey" class="headerlink" title="security.kmip.rotateMasterKey"></a>security.kmip.rotateMasterKey</h3><pre><code>  If true, rotate the master key and re-encrypt the internal keystore.
+</code></pre>
+<h3 id="security-kmip-serverName"><a href="#security-kmip-serverName" class="headerlink" title="security.kmip.serverName"></a>security.kmip.serverName</h3><pre><code>  Hostname or IP address of key management solution running a KMIP server. Requires security.enableEncryption to be true.
+</code></pre>
+<h3 id="security-kmip-port"><a href="#security-kmip-port" class="headerlink" title="security.kmip.port"></a>security.kmip.port</h3><pre><code>  Port number the KMIP server is listening on. Requires that a security.kmip.serverName be provided. Requires security.enableEncryption to be true.
+</code></pre>
+<h3 id="security-kmip-clientCertificateFile"><a href="#security-kmip-clientCertificateFile" class="headerlink" title="security.kmip.clientCertificateFile"></a>security.kmip.clientCertificateFile</h3><pre><code>  String containing the path to the client certificate used for authenticating MongoDB to the KMIP server. Requires that a security.kmip.serverName be provided.
+</code></pre>
+<h3 id="security-kmip-clientCertificatePassword"><a href="#security-kmip-clientCertificatePassword" class="headerlink" title="security.kmip.clientCertificatePassword"></a>security.kmip.clientCertificatePassword</h3><pre><code>  The password to decrypt the client certificate (i.e. security.kmip.clientCertificateFile), used to authenticate MongoDB to the KMIP server. Use the option only if the certificate is encrypted.
+</code></pre>
+<h3 id="security-kmip-serverCAFile"><a href="#security-kmip-serverCAFile" class="headerlink" title="security.kmip.serverCAFile"></a>security.kmip.serverCAFile</h3><pre><code>  Path to CA File. Used for validating secure client connection to KMIP server.
+</code></pre>
+<h2 id="security-sasl-Options"><a href="#security-sasl-Options" class="headerlink" title="security.sasl Options"></a>security.sasl Options</h2><h3 id="security-sasl-hostName"><a href="#security-sasl-hostName" class="headerlink" title="security.sasl.hostName"></a>security.sasl.hostName</h3><pre><code>  A fully qualified server domain name for the purpose of configuring SASL and Kerberos authentication. The SASL hostname overrides the hostname only for the configuration of SASL and Kerberos.
+  For mongo shell and other MongoDB tools to connect to the new hostName, see the gssapiHostName option in the mongo shell and other tools.
+</code></pre>
+<h3 id="security-sasl-serviceName"><a href="#security-sasl-serviceName" class="headerlink" title="security.sasl.serviceName"></a>security.sasl.serviceName</h3><pre><code>  Registered name of the service using SASL. This option allows you to override the default Kerberos service name component of the Kerberos principal name, on a per-instance basis. If unspecified, the default value is mongodb.
+</code></pre>
+<h3 id="security-sasl-saslauthdSocketPath"><a href="#security-sasl-saslauthdSocketPath" class="headerlink" title="security.sasl.saslauthdSocketPath"></a>security.sasl.saslauthdSocketPath</h3><pre><code>  The path to the UNIX domain socket file for saslauthd.
+</code></pre>
+<h2 id="create-database"><a href="#create-database" class="headerlink" title="create database"></a>create database</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">use admin</span><br></pre></td></tr></table></figure>
+
+<h3 id="create-user"><a href="#create-user" class="headerlink" title="create user"></a>create user</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">db.createUser(</span><br><span class="line">  &#123;</span><br><span class="line">    user: &quot;yourUsername&quot;,</span><br><span class="line">    pwd: &quot;yourPassword&quot;,</span><br><span class="line">    roles: [ &#123; role: &quot;userAdminAnyDatabase&quot;, db: &quot;admin&quot; &#125; ]</span><br><span class="line">  &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h2 id="restart-service-and-testing"><a href="#restart-service-and-testing" class="headerlink" title="restart service and testing"></a>restart service and testing</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">service mongod restart</span><br><span class="line">mongo</span><br><span class="line">use admin</span><br><span class="line">db.auth(&quot;yourUsername&quot;,&quot;yourPassword&quot;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="create-DB"><a href="#create-DB" class="headerlink" title="create DB"></a>create DB</h3><p><code> use dbName</code></p>
+<h3 id="create-db-access"><a href="#create-db-access" class="headerlink" title="create db access"></a>create db access</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">db.createUser(</span><br><span class="line">&#123;</span><br><span class="line">    user: &quot;dbconnecter&quot;,</span><br><span class="line">    pwd: &quot;yourPassword&quot;,</span><br><span class="line">    roles: [ &#123; role: &quot;dbOwner&quot;, db: &quot;estate3&quot; &#125; ]</span><br><span class="line">  &#125;</span><br><span class="line">)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="mongodb-Auditing"><a href="#mongodb-Auditing" class="headerlink" title="mongodb Auditing"></a>mongodb Auditing</h2><p><code>db.grantRolesToUser(&quot;yourUsername&quot;,[&quot;root&quot;])</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">db.adminCommand( &#123; getParameter: 1, auditAuthorizationSuccess: true &#125; )</span><br><span class="line">&#123; &quot;auditAuthorizationSuccess&quot; : true, &quot;ok&quot; : 1 &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="mongodb-Replica-set-集群"><a href="#mongodb-Replica-set-集群" class="headerlink" title="mongodb Replica-set 集群"></a>mongodb Replica-set 集群</h2><p>Replica-set 集群至少由三个节点组成的，它为网络故障或是其他的系统故障提供冗余。有足够的分布式读操作的能力。<br>集群应该保持奇数个节点，这保证选举可以正常的进行。必须确保各个节点之间可以正常通讯。</p>
+<p>在配置集群配置完成前，security字段必须注释掉，否则会提示你输入密码认证，由于之前并没有设置密码，<br>所以无法登录数据库执行相关命令.</p>
+<h3 id="定义副本集群名称"><a href="#定义副本集群名称" class="headerlink" title="定义副本集群名称"></a>定义副本集群名称</h3><p>为集群定义一个唯一的名称，如: saasRS</p>
+<p>在配置文件中指定：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">replication:</span></span><br><span class="line">  <span class="attr">oplogSizeMB:</span> <span class="number">2000</span>          <span class="comment">#oplog的大小M</span></span><br><span class="line">  <span class="attr">replSetName:</span> <span class="string">saasRS</span>        <span class="comment">#副本集的名称</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="复制配置到其它两台"><a href="#复制配置到其它两台" class="headerlink" title="复制配置到其它两台."></a>复制配置到其它两台.</h3><p><strong>注意</strong>: </p>
+<ol>
+<li>如果有单独的投票节点，那么可以设置<code>storage.journal.enabled: false</code>，减少空间<br>占用，因为投票节点不参与数据存储.</li>
+<li>千万<strong>不要</strong>在拥有数据集的节点上设置 <code>journal.enabled 为 false</code> 。</li>
+</ol>
+<p>在三台mongodb全部启动后：<code>mongod -f etc/mongod.conf</code>， 然后进入<br>一台的<code>mongo shell</code>,配置副本集，必须使用admin数据库：</p>
+<h3 id="配置集群信息"><a href="#配置集群信息" class="headerlink" title="配置集群信息"></a>配置集群信息</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">config = &#123; <span class="attr">_id</span>:<span class="string">&quot;saasRS&quot;</span>, <span class="attr">members</span>:[</span><br><span class="line">  &#123;<span class="attr">_id</span>:<span class="number">0</span>,<span class="attr">host</span>:<span class="string">&quot;yourIp:27017&quot;</span>,<span class="attr">priority</span>:<span class="number">2</span>&#125;,</span><br><span class="line">  &#123;<span class="attr">_id</span>:<span class="number">1</span>,<span class="attr">host</span>:<span class="string">&quot;yourIp:27017&quot;</span>,<span class="attr">priority</span>:<span class="number">1</span>&#125;,</span><br><span class="line">  &#123;<span class="attr">_id</span>:<span class="number">2</span>,<span class="attr">host</span>:<span class="string">&quot;yourIp:27017&quot;</span>,<span class="attr">priority</span>:<span class="number">1</span>&#125;,</span><br><span class="line">  <span class="comment">//&#123;_id:2,host:&quot;10.30.0.90:27017&quot;,arbiterOnly:true&#125; //投票节点</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line">rs.initiate(config) <span class="comment">//初始化副本集</span></span><br><span class="line"></span><br><span class="line">rs.conf() <span class="comment">//校验副本集配置</span></span><br><span class="line">rs.status() <span class="comment">//检测状态</span></span><br><span class="line"></span><br><span class="line">rs.add(&#123;<span class="attr">_id</span>:<span class="number">6</span>,<span class="attr">host</span>:<span class="string">&quot;10.81.250.83&quot;</span>,<span class="attr">priority</span>:<span class="number">1</span>&#125;) <span class="comment">//加入副本集</span></span><br><span class="line"><span class="comment">//在创建超级管理员</span></span><br><span class="line">use admin</span><br><span class="line">db.createUser(</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">user</span>: <span class="string">&quot;admin&quot;</span>,</span><br><span class="line">    <span class="attr">pwd</span>: <span class="string">&quot;admin&quot;</span>,</span><br><span class="line">    <span class="attr">roles</span>: [ &#123; <span class="attr">role</span>: <span class="string">&quot;userAdminAnyDatabase&quot;</span>, <span class="attr">db</span>: <span class="string">&quot;admin&quot;</span> &#125; ]</span><br><span class="line">  &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="生成keyfile"><a href="#生成keyfile" class="headerlink" title="生成keyfile"></a>生成keyfile</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">openssl rand -base64 1024 &gt; /usr/<span class="built_in">local</span>/mongodb/keyfile</span><br><span class="line">chmod 600 /usr/<span class="built_in">local</span>/mongodb/keyfile</span><br></pre></td></tr></table></figure>
+
+<h3 id="启用内部安全机制"><a href="#启用内部安全机制" class="headerlink" title="启用内部安全机制"></a>启用内部安全机制</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">security:</span></span><br><span class="line">  <span class="attr">authorization:</span> <span class="string">enabled</span>                <span class="comment">#开启认证</span></span><br><span class="line">  <span class="attr">keyFile:</span> <span class="string">/data/mongo/mongodb-keyfile</span>  <span class="comment">#副本集使用keyFile进行相互认证</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sanbornzhang.github.io/2017/12/19/ops/mongo/index/" data-id="ckplx860000h2ucege39271hs" data-title="mongoDB双副本集安装" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mongoDB/" rel="tag">mongoDB</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ops/" rel="tag">ops</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9B%86%E7%BE%A4/" rel="tag">集群</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/11/nodejs/stream/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Nodejs Stream
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/10/21/nodejs/Nodejs_performance/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Nodejs优化相关的文章以及参数</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Mysql/">Mysql</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/">Node.js</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/EventEmitter/">EventEmitter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/OpenCV/">OpenCV</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/OpenCV/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/Promise/">Promise</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/child-process/">child_process</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/cluster/">cluster</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/cluster/child-process/">child_process</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/even-loop/">even loop</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/feature/">feature</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/kafka/">kafka</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/kafka/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/performance/">performance</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/stream/">stream</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/">Nodejs</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/koa/">koa</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/koa/%E6%A1%86%E6%9E%B6/">框架</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/redis/">redis</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/redis/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Proxy/">Proxy</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">algorithm</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/dataStructure/">dataStructure</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/dataStructure/Node-js/">Node.js</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/dataStructure/Node-js/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/dataStructure/Node-js/%E4%BD%8D%E8%BF%90%E7%AE%97/crypto/">crypto</a></li></ul></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ELK/">ELK</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ELK/logstash/">logstash</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ELK/logstash/grok/">grok</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/docker/">docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/docker/Kubernetes/">Kubernetes</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/docker/Kubernetes/pod/">pod</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/">ops</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/Nginx/">Nginx</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/Nginx/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/">负载均衡</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/Nginx/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/">反向代理</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/docker/">docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/docker/k8s/">k8s</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/docker/k8s/kubernetes/">kubernetes</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/docker/k8s/kubernetes/istio/">istio</a></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/performance/">performance</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/performance/Node-js/">Node.js</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/redis/">redis</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/ops/">ops</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/">linux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/TCPDump/">TCPDump</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/jenkins/">jenkins</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/jenkins/hexo/">hexo</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/mongoDB/">mongoDB</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/mongoDB/%E9%9B%86%E7%BE%A4/">集群</a></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/redis/algorithm/">algorithm</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/redis/algorithm/Node-js/">Node.js</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/CSS3/">CSS3</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/CSS3/%E5%B8%83%E5%B1%80/">布局</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/Canvas/">Canvas</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/Flexible/">Flexible</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/Flexible/H5/">H5</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9/">杂项</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9/zsh/">zsh</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/">幂等</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/%E7%A7%92%E6%9D%80/">秒杀</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/%E7%A7%92%E6%9D%80/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/">架构整洁之道导读</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BB%84%E4%BB%B6/">组件</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/">编程范式</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/">结构化编程</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/">面向对象编程</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/">函数式编程</a></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/">设计原则</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1/">短信服务</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%87%8D%E6%9E%84/">重构</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%87%8D%E6%9E%84/%E9%87%8D%E6%9E%84-%E6%94%B9%E5%96%84%E6%97%A2%E6%9C%89%E4%BB%A3%E7%A0%81%E7%9A%84%E8%AE%BE%E8%AE%A1/">重构 改善既有代码的设计</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS3/" rel="tag">CSS3</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Canvas/" rel="tag">Canvas</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELK/" rel="tag">ELK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EventEmitter/" rel="tag">EventEmitter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Flexible/" rel="tag">Flexible</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/H5/" rel="tag">H5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kubernetes/" rel="tag">Kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mysql/" rel="tag">Mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/" rel="tag">Nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/" rel="tag">OpenCV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Promise/" rel="tag">Promise</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Proxy/" rel="tag">Proxy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/" rel="tag">Redis数据持久化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCPDump/" rel="tag">TCPDump</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/object-Object/" rel="tag">[object Object]</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/" rel="tag">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/child-process/" rel="tag">child_process</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cluster/" rel="tag">cluster</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crypto/" rel="tag">crypto</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dataStructure/" rel="tag">dataStructure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/even-loop/" rel="tag">even loop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/feature/" rel="tag">feature</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grok/" rel="tag">grok</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/" rel="tag">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jenkins/" rel="tag">jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/" rel="tag">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/koa/" rel="tag">koa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/logstash/" rel="tag">logstash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongoDB/" rel="tag">mongoDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ops/" rel="tag">ops</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/performance/" rel="tag">performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pod/" rel="tag">pod</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/setImmediate-setTimeout-process-nextTick/" rel="tag">setImmediate setTimeout() process.nextTick()</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/stream/" rel="tag">stream</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zsh/" rel="tag">zsh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/" rel="tag">位运算</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" rel="tag">函数式编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" rel="tag">反向代理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" rel="tag">图像处理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B8%83%E5%B1%80/" rel="tag">布局</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%82%E7%AD%89/" rel="tag">幂等</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%89%8B%E5%86%99Promise/" rel="tag">手写Promise</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%94%B6%E8%97%8F%E7%9A%84%E6%96%87%E7%AB%A0/" rel="tag">收藏的文章</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E9%A1%B9/" rel="tag">杂项</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag">架构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/" rel="tag">架构整洁之道导读</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A1%86%E6%9E%B6/" rel="tag">框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B/" rel="tag">盒子模型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1/" rel="tag">短信服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/" rel="tag">短信服务设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%92%E6%9D%80/" rel="tag">秒杀</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B4%A2%E5%BC%95/" rel="tag">索引</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E4%BB%B6/" rel="tag">组件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/" rel="tag">结构化编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF/" rel="tag">缓存击穿</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/" rel="tag">缓存穿透</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9/" rel="tag">缓存雪崩</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/" rel="tag">编程范式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/" rel="tag">设计原则</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/" rel="tag">负载均衡</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%8D%E6%9E%84/" rel="tag">重构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%8D%E6%9E%84-%E6%94%B9%E5%96%84%E6%97%A2%E6%9C%89%E4%BB%A3%E7%A0%81%E7%9A%84%E8%AE%BE%E8%AE%A1/" rel="tag">重构 改善既有代码的设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9B%86%E7%BE%A4/" rel="tag">集群</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/" rel="tag">面向对象编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AD%94%E6%B3%95/" rel="tag">魔法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CSS3/" style="font-size: 10px;">CSS3</a> <a href="/tags/Canvas/" style="font-size: 10px;">Canvas</a> <a href="/tags/ELK/" style="font-size: 11.25px;">ELK</a> <a href="/tags/EventEmitter/" style="font-size: 10px;">EventEmitter</a> <a href="/tags/Flexible/" style="font-size: 10px;">Flexible</a> <a href="/tags/H5/" style="font-size: 10px;">H5</a> <a href="/tags/Kubernetes/" style="font-size: 13.75px;">Kubernetes</a> <a href="/tags/Mysql/" style="font-size: 11.25px;">Mysql</a> <a href="/tags/Nginx/" style="font-size: 11.25px;">Nginx</a> <a href="/tags/Node-js/" style="font-size: 17.5px;">Node.js</a> <a href="/tags/Nodejs/" style="font-size: 11.25px;">Nodejs</a> <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a> <a href="/tags/Promise/" style="font-size: 10px;">Promise</a> <a href="/tags/Proxy/" style="font-size: 10px;">Proxy</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/Redis%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/" style="font-size: 10px;">Redis数据持久化</a> <a href="/tags/TCPDump/" style="font-size: 10px;">TCPDump</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/object-Object/" style="font-size: 11.25px;">[object Object]</a> <a href="/tags/algorithm/" style="font-size: 12.5px;">algorithm</a> <a href="/tags/child-process/" style="font-size: 11.25px;">child_process</a> <a href="/tags/cluster/" style="font-size: 10px;">cluster</a> <a href="/tags/crypto/" style="font-size: 10px;">crypto</a> <a href="/tags/dataStructure/" style="font-size: 11.25px;">dataStructure</a> <a href="/tags/docker/" style="font-size: 16.25px;">docker</a> <a href="/tags/even-loop/" style="font-size: 10px;">even loop</a> <a href="/tags/feature/" style="font-size: 10px;">feature</a> <a href="/tags/grok/" style="font-size: 10px;">grok</a> <a href="/tags/hexo/" style="font-size: 11.25px;">hexo</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/jenkins/" style="font-size: 10px;">jenkins</a> <a href="/tags/k8s/" style="font-size: 10px;">k8s</a> <a href="/tags/kafka/" style="font-size: 10px;">kafka</a> <a href="/tags/koa/" style="font-size: 10px;">koa</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 18.75px;">linux</a> <a href="/tags/logstash/" style="font-size: 10px;">logstash</a> <a href="/tags/mongoDB/" style="font-size: 10px;">mongoDB</a> <a href="/tags/ops/" style="font-size: 20px;">ops</a> <a href="/tags/performance/" style="font-size: 12.5px;">performance</a> <a href="/tags/pod/" style="font-size: 10px;">pod</a> <a href="/tags/redis/" style="font-size: 15px;">redis</a> <a href="/tags/setImmediate-setTimeout-process-nextTick/" style="font-size: 10px;">setImmediate setTimeout() process.nextTick()</a> <a href="/tags/stream/" style="font-size: 10px;">stream</a> <a href="/tags/zsh/" style="font-size: 10px;">zsh</a> <a href="/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/" style="font-size: 10px;">位运算</a> <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">函数式编程</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 10px;">分布式</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 12.5px;">前端</a> <a href="/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" style="font-size: 10px;">反向代理</a> <a href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" style="font-size: 10px;">图像处理</a> <a href="/tags/%E5%B8%83%E5%B1%80/" style="font-size: 10px;">布局</a> <a href="/tags/%E5%B9%82%E7%AD%89/" style="font-size: 10px;">幂等</a> <a href="/tags/%E6%89%8B%E5%86%99Promise/" style="font-size: 10px;">手写Promise</a> <a href="/tags/%E6%94%B6%E8%97%8F%E7%9A%84%E6%96%87%E7%AB%A0/" style="font-size: 10px;">收藏的文章</a> <a href="/tags/%E6%9D%82%E9%A1%B9/" style="font-size: 11.25px;">杂项</a> <a href="/tags/%E6%9E%B6%E6%9E%84/" style="font-size: 13.75px;">架构</a> <a href="/tags/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/" style="font-size: 12.5px;">架构整洁之道导读</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">框架</a> <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" style="font-size: 11.25px;">消息队列</a> <a href="/tags/%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B/" style="font-size: 10px;">盒子模型</a> <a href="/tags/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1/" style="font-size: 10px;">短信服务</a> <a href="/tags/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/" style="font-size: 10px;">短信服务设计</a> <a href="/tags/%E7%A7%92%E6%9D%80/" style="font-size: 10px;">秒杀</a> <a href="/tags/%E7%B4%A2%E5%BC%95/" style="font-size: 10px;">索引</a> <a href="/tags/%E7%BB%84%E4%BB%B6/" style="font-size: 10px;">组件</a> <a href="/tags/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">结构化编程</a> <a href="/tags/%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF/" style="font-size: 10px;">缓存击穿</a> <a href="/tags/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/" style="font-size: 10px;">缓存穿透</a> <a href="/tags/%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9/" style="font-size: 10px;">缓存雪崩</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/" style="font-size: 10px;">编程范式</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/" style="font-size: 10px;">设计原则</a> <a href="/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/" style="font-size: 10px;">负载均衡</a> <a href="/tags/%E9%87%8D%E6%9E%84/" style="font-size: 10px;">重构</a> <a href="/tags/%E9%87%8D%E6%9E%84-%E6%94%B9%E5%96%84%E6%97%A2%E6%9C%89%E4%BB%A3%E7%A0%81%E7%9A%84%E8%AE%BE%E8%AE%A1/" style="font-size: 10px;">重构 改善既有代码的设计</a> <a href="/tags/%E9%9B%86%E7%BE%A4/" style="font-size: 10px;">集群</a> <a href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">面向对象编程</a> <a href="/tags/%E9%AD%94%E6%B3%95/" style="font-size: 10px;">魔法</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/06/05/%E6%9D%82%E9%A1%B9/CORS/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/05/%E5%89%8D%E7%AB%AF/CSS/border/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/05/nodejs/child/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/05/nodejs/cluster/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/05/nodejs/evenloop/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

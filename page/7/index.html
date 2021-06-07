@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Sanborn</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="个人博客，随缘记录">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sanborn">
+<meta property="og:url" content="https://sanbornzhang.github.io/page/7/index.html">
+<meta property="og:site_name" content="Sanborn">
+<meta property="og:description" content="个人博客，随缘记录">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Sanborn" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sanborn</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Sanborn</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://Sanbornzhang.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-架构/幂等" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/10/11/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/" class="article-date">
+  <time class="dt-published" datetime="2018-10-10T16:00:00.000Z" itemprop="datePublished">2018-10-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a>►<a class="article-category-link" href="/categories/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/">幂等</a>►<a class="article-category-link" href="/categories/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/%E7%A7%92%E6%9D%80/">秒杀</a>►<a class="article-category-link" href="/categories/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/%E7%A7%92%E6%9D%80/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/10/11/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/">幂等性</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="幂等幂等性"><a href="#幂等幂等性" class="headerlink" title="幂等幂等性"></a>幂等幂等性</h1><h2 id="什么是幂等"><a href="#什么是幂等" class="headerlink" title="什么是幂等"></a>什么是幂等</h2><pre><code>在编程中一个幂等操作的特点是其任意多次执行所产生的影响均与一次执行的影响相同。幂等函数，或幂等方法，是指可以使用相同参数重复执行，并能获得相同结果的函数。这些函数不会影响系统状态，也不用担心重复执行会对系统造成改变
+
+一个HTTP方法是幂等的，指的是同样的请求被执行一次与连续执行多次的效果是一样的，服务器的状态也是一样的。换句话说就是，幂等方法不应该具有副作用（统计用途除外）。在正确实现的条件下，GET，HEAD，PUT和DELETE 等方法都是幂等的，而 POST 方法不是。所有的 safe 方法也都是幂等的。
+</code></pre>
+        
+          <p class="article-more-link">
+            <a href="/2018/10/11/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sanbornzhang.github.io/2018/10/11/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/" data-id="ckplx85wd001tucegavrs3g6q" data-title="幂等性" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B9%82%E7%AD%89/" rel="tag">幂等</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag">架构</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%A7%92%E6%9D%80/" rel="tag">秒杀</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-架构/组件" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/10/11/%E6%9E%B6%E6%9E%84/%E7%BB%84%E4%BB%B6/" class="article-date">
+  <time class="dt-published" datetime="2018-10-10T16:00:00.000Z" itemprop="datePublished">2018-10-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a>►<a class="article-category-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/">架构整洁之道导读</a>►<a class="article-category-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BB%84%E4%BB%B6/">组件</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/10/11/%E6%9E%B6%E6%9E%84/%E7%BB%84%E4%BB%B6/">组件</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h1><h2 id="组件聚合"><a href="#组件聚合" class="headerlink" title="组件聚合"></a>组件聚合</h2><p><img src="images/1670863ecf734d7e.png" alt="组件张力图"><br>对于大部分应用程序来说，可维护性大于可复用性，但是再项目的演变过程中会根据时间不断调整。    </p>
+<blockquote>
+<p>例如: 在项目初期<code>CCP</code>原则会比<code>REP</code>原则更加重要</p>
+</blockquote>
+        
+          <p class="article-more-link">
+            <a href="/2018/10/11/%E6%9E%B6%E6%9E%84/%E7%BB%84%E4%BB%B6/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sanbornzhang.github.io/2018/10/11/%E6%9E%B6%E6%9E%84/%E7%BB%84%E4%BB%B6/" data-id="ckplx85we001wucegca6cbrti" data-title="组件" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag">架构</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/" rel="tag">架构整洁之道导读</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BB%84%E4%BB%B6/" rel="tag">组件</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-架构/设计原则" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/09/30/%E6%9E%B6%E6%9E%84/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/" class="article-date">
+  <time class="dt-published" datetime="2018-09-29T16:00:00.000Z" itemprop="datePublished">2018-09-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a>►<a class="article-category-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/">架构整洁之道导读</a>►<a class="article-category-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/">设计原则</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/09/30/%E6%9E%B6%E6%9E%84/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/">设计原则</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="设计原则"><a href="#设计原则" class="headerlink" title="设计原则"></a>设计原则</h1><p>SOLID原则:</p>
+<ol>
+<li>SRP: 单一职责<br>一个软件系统的最佳结构高度依赖于开发这个系统的组织内部结构。这样，每个软件模块都有且只有一个需要被改变的理由。</li>
+<li>OCP: 开闭原则<br>如果软件系统想要更容易改变，那么设计的时候就必须允许新增代码来修改系统行为，而不是只能靠修改原来的代码</li>
+<li>LSP: 里氏替换原则<br>如果想用可替换的组件来构建软件系统，那么这些组件就必须遵守同一个约定，以便让这些组件能够相互替换</li>
+<li>ISP: 接口隔离原则<br>在设计中应该避免不必要的依赖</li>
+<li>DIP: 依赖反转原则<br>高层策略代码不应该依赖于实现底层细节的代码。相反的是，实现底层细节的代码应该依赖于高层策略代码。
+        
+          <p class="article-more-link">
+            <a href="/2018/09/30/%E6%9E%B6%E6%9E%84/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sanbornzhang.github.io/2018/09/30/%E6%9E%B6%E6%9E%84/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/" data-id="ckplx85wg0022ucegcetwc12n" data-title="设计原则" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag">架构</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/" rel="tag">架构整洁之道导读</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/" rel="tag">设计原则</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-架构/编程范式" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/09/21/%E6%9E%B6%E6%9E%84/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/" class="article-date">
+  <time class="dt-published" datetime="2018-09-20T16:00:00.000Z" itemprop="datePublished">2018-09-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a>►<a class="article-category-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/">架构整洁之道导读</a>►<a class="article-category-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/">编程范式</a>►<a class="article-category-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/">结构化编程</a>►<a class="article-category-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/">面向对象编程</a>►<a class="article-category-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/">函数式编程</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/09/21/%E6%9E%B6%E6%9E%84/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/">编程范式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="编程范式"><a href="#编程范式" class="headerlink" title="编程范式"></a>编程范式</h1><p>编程范式： 程序编写的模式，与具体的编程语言关系相对较小。</p>
+<h2 id="结构化编程"><a href="#结构化编程" class="headerlink" title="结构化编程"></a>结构化编程</h2><pre><code>机构化变成对程序的控制权的直接转移进行了限制以及规范
+</code></pre>
+<p>一种编程典范。它采用子程序、程式码区块（英语：block structures）、for循环以及while循环等结构，来取代传统的 goto。希望借此来改善计算机程序的明晰性、品质以及开发时间，并且避免写出面条式代码。</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/09/21/%E6%9E%B6%E6%9E%84/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sanbornzhang.github.io/2018/09/21/%E6%9E%B6%E6%9E%84/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/" data-id="ckplx85wf001zuceg1jdl5tod" data-title="编程范式" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" rel="tag">函数式编程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag">架构</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/" rel="tag">架构整洁之道导读</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/" rel="tag">结构化编程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/" rel="tag">编程范式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/" rel="tag">面向对象编程</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-ops/linux/using-perf-analysis-CPU-usage" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/09/16/ops/linux/using-perf-analysis-CPU-usage/" class="article-date">
+  <time class="dt-published" datetime="2018-09-15T16:00:00.000Z" itemprop="datePublished">2018-09-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/linux/">linux</a>►<a class="article-category-link" href="/categories/linux/ops/">ops</a>►<a class="article-category-link" href="/categories/linux/ops/performance/">performance</a>►<a class="article-category-link" href="/categories/linux/ops/performance/Node-js/">Node.js</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/09/16/ops/linux/using-perf-analysis-CPU-usage/">使用perf定位 Node.js CPU占用性能问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="使用perf定位-Node-js-CPU占用性能问题"><a href="#使用perf定位-Node-js-CPU占用性能问题" class="headerlink" title="使用perf定位 Node.js CPU占用性能问题"></a>使用<code>perf</code>定位 <code>Node.js</code> <code>CPU</code>占用性能问题</h1><pre><code>Perf 是用来进行软件性能分析的工具。
+
+通过它，应用程序可以利用 PMU，tracepoint 和内核中的特殊计数器来进行性能统计。它不但可以分析指定应用程序的性能问题 (per thread)，也可以用来分析内核的性能问题，当然也可以同时分析应用代码和内核，从而全面理解应用程序中的性能瓶颈。
+</code></pre>
+<h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install linux-tools-common linux-tools-generic linux-tools-`uname -r`</span><br></pre></td></tr></table></figure>
+        
+          <p class="article-more-link">
+            <a href="/2018/09/16/ops/linux/using-perf-analysis-CPU-usage/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sanbornzhang.github.io/2018/09/16/ops/linux/using-perf-analysis-CPU-usage/" data-id="ckplx85xn005fuceg8x1w4h47" data-title="使用perf定位 Node.js CPU占用性能问题" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ops/" rel="tag">ops</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/performance/" rel="tag">performance</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-ops/ELK/logstash" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/08/20/ops/ELK/logstash/" class="article-date">
+  <time class="dt-published" datetime="2018-08-19T16:00:00.000Z" itemprop="datePublished">2018-08-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/linux/">linux</a>►<a class="article-category-link" href="/categories/linux/ELK/">ELK</a>►<a class="article-category-link" href="/categories/linux/ELK/logstash/">logstash</a>►<a class="article-category-link" href="/categories/linux/ELK/logstash/grok/">grok</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/08/20/ops/ELK/logstash/">logstash 的使用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="logstash-的使用"><a href="#logstash-的使用" class="headerlink" title="logstash 的使用"></a>logstash 的使用</h1><h2 id="Input-输入插件"><a href="#Input-输入插件" class="headerlink" title="Input 输入插件"></a>Input 输入插件</h2><h3 id="Stdin-标准输入"><a href="#Stdin-标准输入" class="headerlink" title="Stdin 标准输入"></a>Stdin 标准输入</h3><pre><code>Stdin 一般是用来debug，也可以在源数据中添加字段。
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    stdin &#123;</span><br><span class="line">        add_field =&gt; &#123;&quot;key&quot; =&gt; &quot;value&quot;&#125;</span><br><span class="line">        codec =&gt; &quot;plain&quot;</span><br><span class="line">        tags =&gt; [&quot;add&quot;]</span><br><span class="line">        type =&gt; &quot;std&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        
+          <p class="article-more-link">
+            <a href="/2018/08/20/ops/ELK/logstash/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sanbornzhang.github.io/2018/08/20/ops/ELK/logstash/" data-id="ckplx85x8004guceg6yn9ccz9" data-title="logstash 的使用" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ELK/" rel="tag">ELK</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/grok/" rel="tag">grok</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/logstash/" rel="tag">logstash</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ops/" rel="tag">ops</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Algorithm/LRU" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/07/16/Algorithm/LRU/" class="article-date">
+  <time class="dt-published" datetime="2018-07-15T16:00:00.000Z" itemprop="datePublished">2018-07-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/redis/">redis</a>►<a class="article-category-link" href="/categories/redis/algorithm/">algorithm</a>►<a class="article-category-link" href="/categories/redis/algorithm/Node-js/">Node.js</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/07/16/Algorithm/LRU/">LRU 算法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="LRU-算法以及实现"><a href="#LRU-算法以及实现" class="headerlink" title="LRU 算法以及实现"></a>LRU 算法以及实现</h1><h2 id="什么是LRU"><a href="#什么是LRU" class="headerlink" title="什么是LRU"></a>什么是LRU</h2><pre><code>LRU（Least recently used，最近最少使用）算法根据数据的历史访问记录来进行淘汰数据，其核心思想是 &#39;如果数据最近被访问过，那么将来被访问的几率也更高&#39;。
+</code></pre>
+<h2 id="为什么使用链表"><a href="#为什么使用链表" class="headerlink" title="为什么使用链表"></a>为什么使用链表</h2><ul>
+<li>数组<br>数组的内存地址是连续的，一般来讲里面类型也是一致的。只是js做了特殊的处理。[如果长度大于2000，如果类型不一致，就会带来相当大的性能影响]</li>
+<li>链表<br>链表中的元素可存储在内存的任何地方。链表的每个元素都存储了下一个元素的地址，从而使一系列随机的内存地址串在一起。</li>
+</ul>
+<h2 id="双向链表的简单实现"><a href="#双向链表的简单实现" class="headerlink" title="双向链表的简单实现"></a>双向链表的简单实现</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line">class Node &#123;</span><br><span class="line">  constructor(data, next = null, previous = null) &#123;</span><br><span class="line">    this.data = data</span><br><span class="line">    this.next = next</span><br><span class="line">    this.previous = previous</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class LList &#123;</span><br><span class="line">  constructor() &#123;</span><br><span class="line">    this.head = null</span><br><span class="line">    this.length = 0</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  findV(v) &#123;</span><br><span class="line">    let current = this.head</span><br><span class="line">    while (current.data !== current.data) &#123;</span><br><span class="line">      current = current.next</span><br><span class="line">    &#125;</span><br><span class="line">    return current</span><br><span class="line">  &#125;</span><br><span class="line">  findI(i) &#123;</span><br><span class="line">    let current = this.head</span><br><span class="line">    let index = 0</span><br><span class="line">    if (i &lt; 0) return null</span><br><span class="line">    while (i !== index) &#123;</span><br><span class="line">      current = current.next</span><br><span class="line">      index++</span><br><span class="line">    &#125;</span><br><span class="line">    return current</span><br><span class="line">  &#125;</span><br><span class="line">  insert(v, i) &#123;</span><br><span class="line">    const newNode = new Node(v)</span><br><span class="line">    if (!this.head) &#123;</span><br><span class="line">      this.head = newNode</span><br><span class="line">    &#125; else if (i) &#123;</span><br><span class="line">      if (i === 0) &#123;</span><br><span class="line">        const node = this.head</span><br><span class="line">        newNode.next = node</span><br><span class="line">      &#125;</span><br><span class="line">      if (i) &#123;</span><br><span class="line">        const current = this.findI(i)</span><br><span class="line">        if (current) &#123;</span><br><span class="line">          const node = current.next</span><br><span class="line">          node.previous = node</span><br><span class="line">          current.next = newNode</span><br><span class="line">          newNode.next = node</span><br><span class="line">          newNode.previous = current</span><br><span class="line">          </span><br><span class="line">        &#125; else &#123;</span><br><span class="line">          // if can&#x27;t find previous node is new list</span><br><span class="line">          this.head = newNode</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      const lastNode = this.end()</span><br><span class="line">      lastNode.next = newNode</span><br><span class="line">      newNode.previous = lastNode</span><br><span class="line">    &#125;</span><br><span class="line">    this.length ++</span><br><span class="line">    return newNode</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  remove(i) &#123;</span><br><span class="line">    const node = this.findI(i)</span><br><span class="line">    let result = 0</span><br><span class="line">    if (node !== null &amp;&amp; Object.keys(node).length) &#123;</span><br><span class="line">      const previous = node.previous</span><br><span class="line">      if (previous !== null  &amp;&amp; Object.keys(previous).length) &#123;</span><br><span class="line">        previous.next = node.next</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        this.head = node.next</span><br><span class="line">      &#125;</span><br><span class="line">      result = 1</span><br><span class="line">    &#125;</span><br><span class="line">    this.length --</span><br><span class="line">    return result</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  end() &#123;</span><br><span class="line">    let current = this.head</span><br><span class="line">    while (current.next) &#123;</span><br><span class="line">      current = current.next</span><br><span class="line">    &#125;</span><br><span class="line">    return current</span><br><span class="line">  &#125;</span><br><span class="line">  iterator()&#123;</span><br><span class="line">    let current = this.head</span><br><span class="line">    const list = []</span><br><span class="line">    list.push(current.data)</span><br><span class="line">    while (current.next) &#123;      </span><br><span class="line">      current = current.next</span><br><span class="line">      list.push(current.data)</span><br><span class="line">    &#125;</span><br><span class="line">    return list</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">module.exports = LList</span><br></pre></td></tr></table></figure>
+
+<h2 id="LRU实现"><a href="#LRU实现" class="headerlink" title="LRU实现"></a>LRU实现</h2><p>我们采用<code>双链表 + Object</code>的方式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">const LinkList = require(&#x27;./utils/LList&#x27;)</span><br><span class="line">const assert = require(&#x27;assert&#x27;)</span><br><span class="line">class LRUCache &#123;</span><br><span class="line">    constructor(limit) &#123;</span><br><span class="line">        this.limit = limit || 1000</span><br><span class="line">        this.linkList = new LinkList()</span><br><span class="line">        this.map = &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    set(k, v) &#123;</span><br><span class="line">        const cacheNodeData = this.get(k)</span><br><span class="line"></span><br><span class="line">        if (cacheNodeData !== undefined &amp;&amp; cacheNodeData !== null) &#123;</span><br><span class="line">            return cacheNodeData</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            if (this.linkList.length === this.limit) &#123;</span><br><span class="line">                let latestNode = this.linkList.end()</span><br><span class="line">                this.linkList.remove(this.linkList.length - 1)</span><br><span class="line">                const latestKey = latestNode.key</span><br><span class="line">                this[&#x27;map&#x27;][latestKey][&#x27;node&#x27;] = null</span><br><span class="line">                this[&#x27;map&#x27;][latestKey] = null</span><br><span class="line">            &#125;</span><br><span class="line">            this[&#x27;map&#x27;][k] = &#123;&#125;</span><br><span class="line">            const node = this.linkList.insert(v)</span><br><span class="line">            node.key = k</span><br><span class="line">            this[&#x27;map&#x27;][k][&#x27;node&#x27;] = node</span><br><span class="line">            return node</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    get(k) &#123;</span><br><span class="line">        if (this[&#x27;map&#x27;][k] !== undefined &amp;&amp; this[&#x27;map&#x27;][k] !== null &amp;&amp;</span><br><span class="line">            Object.keys(this[&#x27;map&#x27;][k])) &#123;</span><br><span class="line">            if (this[&#x27;map&#x27;][k][&#x27;node&#x27;] === this.linkList.head) &#123;</span><br><span class="line">                return this.linkList.head.data</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                const node = this[&#x27;map&#x27;][k][&#x27;node&#x27;]</span><br><span class="line">                const previous = node.previous</span><br><span class="line">                if (previous) &#123;</span><br><span class="line">                    const next = node.next</span><br><span class="line">                    previous.next = next</span><br><span class="line">                    if (next) &#123;</span><br><span class="line">                        next.previous = previous</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                this.linkList.head.previous = node</span><br><span class="line">                node.next = this.linkList.head</span><br><span class="line"></span><br><span class="line">                node.previous = null</span><br><span class="line">                this.linkList.head = node</span><br><span class="line">                return node.data</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            return null</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">const test = (count = 10 * 100 * 1000) =&gt; &#123;</span><br><span class="line">    console.time(&#x27;cache test&#x27;)</span><br><span class="line">    const cacheInstance = new LRUCache(200)</span><br><span class="line">    for (let loop = 0; loop &lt; count; loop++) &#123;</span><br><span class="line">        for (let i = 1; i &lt; 3000; i++) &#123;</span><br><span class="line">            cacheInstance.set(i, i)</span><br><span class="line">            const v = cacheInstance.get(i)</span><br><span class="line">            assert(v !== undefined &amp;&amp; v === i, `k: $&#123;i&#125; v:$&#123;v&#125;,$&#123;JSON.stringify(cacheInstance.data)&#125;`)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    console.timeEnd(&#x27;cache test&#x27;)</span><br><span class="line">    const item = cacheInstance.linkList.iterator()</span><br><span class="line">    console.log(item.length)</span><br><span class="line">    console.time(&#x27;cache get&#x27;)</span><br><span class="line">    cacheInstance.get(99)</span><br><span class="line">    console.timeEnd(&#x27;cache get&#x27;)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">test(10000)</span><br></pre></td></tr></table></figure>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cache test: 16298.695ms</span><br><span class="line">链表长度: 20</span><br><span class="line">cache get: 0.004ms</span><br><span class="line">-----------------------</span><br><span class="line">cache test: 55168.847ms</span><br><span class="line">链表长度: 200</span><br><span class="line">cache get: 0.006ms</span><br></pre></td></tr></table></figure>
+
+<h3 id="TODO-优化"><a href="#TODO-优化" class="headerlink" title="TODO:优化"></a>TODO:优化</h3><p>可以存<code>链表的end</code>结尾，不然随着数据的超出限制以后 set 速度会随之下降 O(n)</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sanbornzhang.github.io/2018/07/16/Algorithm/LRU/" data-id="ckplx85v90002ucegakmw28s3" data-title="LRU 算法" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/" rel="tag">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/" rel="tag">redis</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-nodejs/手撸一个框架" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/07/16/nodejs/%E6%89%8B%E6%92%B8%E4%B8%80%E4%B8%AA%E6%A1%86%E6%9E%B6/" class="article-date">
+  <time class="dt-published" datetime="2018-07-15T16:00:00.000Z" itemprop="datePublished">2018-07-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Nodejs/">Nodejs</a>►<a class="article-category-link" href="/categories/Nodejs/koa/">koa</a>►<a class="article-category-link" href="/categories/Nodejs/koa/%E6%A1%86%E6%9E%B6/">框架</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/07/16/nodejs/%E6%89%8B%E6%92%B8%E4%B8%80%E4%B8%AA%E6%A1%86%E6%9E%B6/">自己动手搭框架RestFul系列 1</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="自己手动搭建框架系列1"><a href="#自己手动搭建框架系列1" class="headerlink" title="自己手动搭建框架系列1"></a>自己手动搭建框架系列1</h1><h2 id="一个完整的框架应该包含什么"><a href="#一个完整的框架应该包含什么" class="headerlink" title="一个完整的框架应该包含什么"></a>一个完整的框架应该包含什么</h2><ol>
+<li> 完整的单元测试</li>
+<li> 完整的日记记录</li>
+<li> ORM</li>
+<li> 简单便捷的开发方式</li>
+</ol>
+        
+          <p class="article-more-link">
+            <a href="/2018/07/16/nodejs/%E6%89%8B%E6%92%B8%E4%B8%80%E4%B8%AA%E6%A1%86%E6%9E%B6/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sanbornzhang.github.io/2018/07/16/nodejs/%E6%89%8B%E6%92%B8%E4%B8%80%E4%B8%AA%E6%A1%86%E6%9E%B6/" data-id="ckplx85w7001buceg43ages5m" data-title="自己动手搭框架RestFul系列 1" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nodejs/" rel="tag">Nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/koa/" rel="tag">koa</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A1%86%E6%9E%B6/" rel="tag">框架</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-杂项/proxy" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/07/16/%E6%9D%82%E9%A1%B9/proxy/" class="article-date">
+  <time class="dt-published" datetime="2018-07-15T16:00:00.000Z" itemprop="datePublished">2018-07-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Proxy/">Proxy</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/07/16/%E6%9D%82%E9%A1%B9/proxy/">在 linux 或者 Windows 中使用代理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Shadowsocks"><a href="#Shadowsocks" class="headerlink" title="Shadowsocks"></a>Shadowsocks</h2><h3 id="server-side-install"><a href="#server-side-install" class="headerlink" title="server side install"></a>server side install</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install software-properties-common -y</span><br><span class="line">sudo add-apt-repository ppa:max-c-lv/shadowsocks-libev -y</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt install -y shadowsocks-libev</span><br><span class="line">echo &#x27;&#123;</span><br><span class="line">    &quot;server&quot;:&quot;0.0.0.0&quot;,</span><br><span class="line">    &quot;server_port&quot;:$&#123;yourPort&#125;,</span><br><span class="line">    &quot;local_port&quot;:1080,</span><br><span class="line">    &quot;password&quot;:&quot;$&#123;yourPass&#125;&quot;,</span><br><span class="line">    &quot;timeout&quot;:60,</span><br><span class="line">    &quot;method&quot;:&quot;aes-256-cfb&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x27;&gt;/etc/shadowsocks-libev/config.json</span><br><span class="line">service shadowsocks-libev restart</span><br></pre></td></tr></table></figure>
+        
+          <p class="article-more-link">
+            <a href="/2018/07/16/%E6%9D%82%E9%A1%B9/proxy/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sanbornzhang.github.io/2018/07/16/%E6%9D%82%E9%A1%B9/proxy/" data-id="ckplx85w8001euceg6t9zclo5" data-title="在 linux 或者 Windows 中使用代理" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Proxy/" rel="tag">Proxy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ops/" rel="tag">ops</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-研发2.3事/mysql优化" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/07/16/%E7%A0%94%E5%8F%912.3%E4%BA%8B/mysql%E4%BC%98%E5%8C%96/" class="article-date">
+  <time class="dt-published" datetime="2018-07-15T16:00:00.000Z" itemprop="datePublished">2018-07-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Mysql/">Mysql</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/07/16/%E7%A0%94%E5%8F%912.3%E4%BA%8B/mysql%E4%BC%98%E5%8C%96/">Mysql 优化查询相关</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <span id="more"></span> 
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sanbornzhang.github.io/2018/07/16/%E7%A0%94%E5%8F%912.3%E4%BA%8B/mysql%E4%BC%98%E5%8C%96/" data-id="ckplx85wh0025ucegarnu2sqs" data-title="Mysql 优化查询相关" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mysql/" rel="tag">Mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/object-Object/" rel="tag">[object Object]</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/6/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/8/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Mysql/">Mysql</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/">Node.js</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/EventEmitter/">EventEmitter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/OpenCV/">OpenCV</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/OpenCV/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/Promise/">Promise</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/child-process/">child_process</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/cluster/">cluster</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/cluster/child-process/">child_process</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/even-loop/">even loop</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/feature/">feature</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/kafka/">kafka</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/kafka/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/performance/">performance</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/stream/">stream</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/">Nodejs</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/koa/">koa</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/koa/%E6%A1%86%E6%9E%B6/">框架</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/redis/">redis</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/redis/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Proxy/">Proxy</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">algorithm</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/dataStructure/">dataStructure</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/dataStructure/Node-js/">Node.js</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/dataStructure/Node-js/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/dataStructure/Node-js/%E4%BD%8D%E8%BF%90%E7%AE%97/crypto/">crypto</a></li></ul></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ELK/">ELK</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ELK/logstash/">logstash</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ELK/logstash/grok/">grok</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/docker/">docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/docker/Kubernetes/">Kubernetes</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/docker/Kubernetes/pod/">pod</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/">ops</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/Nginx/">Nginx</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/Nginx/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/">负载均衡</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/Nginx/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/">反向代理</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/docker/">docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/docker/k8s/">k8s</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/docker/k8s/kubernetes/">kubernetes</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/docker/k8s/kubernetes/istio/">istio</a></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/performance/">performance</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/performance/Node-js/">Node.js</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/redis/">redis</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/ops/">ops</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/">linux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/TCPDump/">TCPDump</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/jenkins/">jenkins</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/jenkins/hexo/">hexo</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/mongoDB/">mongoDB</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/mongoDB/%E9%9B%86%E7%BE%A4/">集群</a></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/redis/algorithm/">algorithm</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/redis/algorithm/Node-js/">Node.js</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/CSS3/">CSS3</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/CSS3/%E5%B8%83%E5%B1%80/">布局</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/Canvas/">Canvas</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/Flexible/">Flexible</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/Flexible/H5/">H5</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9/">杂项</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9/zsh/">zsh</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/">幂等</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/%E7%A7%92%E6%9D%80/">秒杀</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/%E7%A7%92%E6%9D%80/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/">架构整洁之道导读</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BB%84%E4%BB%B6/">组件</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/">编程范式</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/">结构化编程</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/">面向对象编程</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/">函数式编程</a></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/">设计原则</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1/">短信服务</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%87%8D%E6%9E%84/">重构</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%87%8D%E6%9E%84/%E9%87%8D%E6%9E%84-%E6%94%B9%E5%96%84%E6%97%A2%E6%9C%89%E4%BB%A3%E7%A0%81%E7%9A%84%E8%AE%BE%E8%AE%A1/">重构 改善既有代码的设计</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS3/" rel="tag">CSS3</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Canvas/" rel="tag">Canvas</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELK/" rel="tag">ELK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EventEmitter/" rel="tag">EventEmitter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Flexible/" rel="tag">Flexible</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/H5/" rel="tag">H5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kubernetes/" rel="tag">Kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mysql/" rel="tag">Mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/" rel="tag">Nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/" rel="tag">OpenCV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Promise/" rel="tag">Promise</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Proxy/" rel="tag">Proxy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/" rel="tag">Redis数据持久化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCPDump/" rel="tag">TCPDump</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/object-Object/" rel="tag">[object Object]</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/" rel="tag">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/child-process/" rel="tag">child_process</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cluster/" rel="tag">cluster</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crypto/" rel="tag">crypto</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dataStructure/" rel="tag">dataStructure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/even-loop/" rel="tag">even loop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/feature/" rel="tag">feature</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grok/" rel="tag">grok</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/" rel="tag">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jenkins/" rel="tag">jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/" rel="tag">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/koa/" rel="tag">koa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/logstash/" rel="tag">logstash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongoDB/" rel="tag">mongoDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ops/" rel="tag">ops</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/performance/" rel="tag">performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pod/" rel="tag">pod</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/setImmediate-setTimeout-process-nextTick/" rel="tag">setImmediate setTimeout() process.nextTick()</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/stream/" rel="tag">stream</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zsh/" rel="tag">zsh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/" rel="tag">位运算</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" rel="tag">函数式编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" rel="tag">反向代理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" rel="tag">图像处理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B8%83%E5%B1%80/" rel="tag">布局</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%82%E7%AD%89/" rel="tag">幂等</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%89%8B%E5%86%99Promise/" rel="tag">手写Promise</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%94%B6%E8%97%8F%E7%9A%84%E6%96%87%E7%AB%A0/" rel="tag">收藏的文章</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E9%A1%B9/" rel="tag">杂项</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag">架构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/" rel="tag">架构整洁之道导读</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A1%86%E6%9E%B6/" rel="tag">框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B/" rel="tag">盒子模型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1/" rel="tag">短信服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/" rel="tag">短信服务设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%92%E6%9D%80/" rel="tag">秒杀</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B4%A2%E5%BC%95/" rel="tag">索引</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E4%BB%B6/" rel="tag">组件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/" rel="tag">结构化编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF/" rel="tag">缓存击穿</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/" rel="tag">缓存穿透</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9/" rel="tag">缓存雪崩</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/" rel="tag">编程范式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/" rel="tag">设计原则</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/" rel="tag">负载均衡</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%8D%E6%9E%84/" rel="tag">重构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%8D%E6%9E%84-%E6%94%B9%E5%96%84%E6%97%A2%E6%9C%89%E4%BB%A3%E7%A0%81%E7%9A%84%E8%AE%BE%E8%AE%A1/" rel="tag">重构 改善既有代码的设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9B%86%E7%BE%A4/" rel="tag">集群</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/" rel="tag">面向对象编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AD%94%E6%B3%95/" rel="tag">魔法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CSS3/" style="font-size: 10px;">CSS3</a> <a href="/tags/Canvas/" style="font-size: 10px;">Canvas</a> <a href="/tags/ELK/" style="font-size: 11.25px;">ELK</a> <a href="/tags/EventEmitter/" style="font-size: 10px;">EventEmitter</a> <a href="/tags/Flexible/" style="font-size: 10px;">Flexible</a> <a href="/tags/H5/" style="font-size: 10px;">H5</a> <a href="/tags/Kubernetes/" style="font-size: 13.75px;">Kubernetes</a> <a href="/tags/Mysql/" style="font-size: 11.25px;">Mysql</a> <a href="/tags/Nginx/" style="font-size: 11.25px;">Nginx</a> <a href="/tags/Node-js/" style="font-size: 17.5px;">Node.js</a> <a href="/tags/Nodejs/" style="font-size: 11.25px;">Nodejs</a> <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a> <a href="/tags/Promise/" style="font-size: 10px;">Promise</a> <a href="/tags/Proxy/" style="font-size: 10px;">Proxy</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/Redis%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/" style="font-size: 10px;">Redis数据持久化</a> <a href="/tags/TCPDump/" style="font-size: 10px;">TCPDump</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/object-Object/" style="font-size: 11.25px;">[object Object]</a> <a href="/tags/algorithm/" style="font-size: 12.5px;">algorithm</a> <a href="/tags/child-process/" style="font-size: 11.25px;">child_process</a> <a href="/tags/cluster/" style="font-size: 10px;">cluster</a> <a href="/tags/crypto/" style="font-size: 10px;">crypto</a> <a href="/tags/dataStructure/" style="font-size: 11.25px;">dataStructure</a> <a href="/tags/docker/" style="font-size: 16.25px;">docker</a> <a href="/tags/even-loop/" style="font-size: 10px;">even loop</a> <a href="/tags/feature/" style="font-size: 10px;">feature</a> <a href="/tags/grok/" style="font-size: 10px;">grok</a> <a href="/tags/hexo/" style="font-size: 11.25px;">hexo</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/jenkins/" style="font-size: 10px;">jenkins</a> <a href="/tags/k8s/" style="font-size: 10px;">k8s</a> <a href="/tags/kafka/" style="font-size: 10px;">kafka</a> <a href="/tags/koa/" style="font-size: 10px;">koa</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 18.75px;">linux</a> <a href="/tags/logstash/" style="font-size: 10px;">logstash</a> <a href="/tags/mongoDB/" style="font-size: 10px;">mongoDB</a> <a href="/tags/ops/" style="font-size: 20px;">ops</a> <a href="/tags/performance/" style="font-size: 12.5px;">performance</a> <a href="/tags/pod/" style="font-size: 10px;">pod</a> <a href="/tags/redis/" style="font-size: 15px;">redis</a> <a href="/tags/setImmediate-setTimeout-process-nextTick/" style="font-size: 10px;">setImmediate setTimeout() process.nextTick()</a> <a href="/tags/stream/" style="font-size: 10px;">stream</a> <a href="/tags/zsh/" style="font-size: 10px;">zsh</a> <a href="/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/" style="font-size: 10px;">位运算</a> <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">函数式编程</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 10px;">分布式</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 12.5px;">前端</a> <a href="/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" style="font-size: 10px;">反向代理</a> <a href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" style="font-size: 10px;">图像处理</a> <a href="/tags/%E5%B8%83%E5%B1%80/" style="font-size: 10px;">布局</a> <a href="/tags/%E5%B9%82%E7%AD%89/" style="font-size: 10px;">幂等</a> <a href="/tags/%E6%89%8B%E5%86%99Promise/" style="font-size: 10px;">手写Promise</a> <a href="/tags/%E6%94%B6%E8%97%8F%E7%9A%84%E6%96%87%E7%AB%A0/" style="font-size: 10px;">收藏的文章</a> <a href="/tags/%E6%9D%82%E9%A1%B9/" style="font-size: 11.25px;">杂项</a> <a href="/tags/%E6%9E%B6%E6%9E%84/" style="font-size: 13.75px;">架构</a> <a href="/tags/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/" style="font-size: 12.5px;">架构整洁之道导读</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">框架</a> <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" style="font-size: 11.25px;">消息队列</a> <a href="/tags/%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B/" style="font-size: 10px;">盒子模型</a> <a href="/tags/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1/" style="font-size: 10px;">短信服务</a> <a href="/tags/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/" style="font-size: 10px;">短信服务设计</a> <a href="/tags/%E7%A7%92%E6%9D%80/" style="font-size: 10px;">秒杀</a> <a href="/tags/%E7%B4%A2%E5%BC%95/" style="font-size: 10px;">索引</a> <a href="/tags/%E7%BB%84%E4%BB%B6/" style="font-size: 10px;">组件</a> <a href="/tags/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">结构化编程</a> <a href="/tags/%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF/" style="font-size: 10px;">缓存击穿</a> <a href="/tags/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/" style="font-size: 10px;">缓存穿透</a> <a href="/tags/%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9/" style="font-size: 10px;">缓存雪崩</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/" style="font-size: 10px;">编程范式</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/" style="font-size: 10px;">设计原则</a> <a href="/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/" style="font-size: 10px;">负载均衡</a> <a href="/tags/%E9%87%8D%E6%9E%84/" style="font-size: 10px;">重构</a> <a href="/tags/%E9%87%8D%E6%9E%84-%E6%94%B9%E5%96%84%E6%97%A2%E6%9C%89%E4%BB%A3%E7%A0%81%E7%9A%84%E8%AE%BE%E8%AE%A1/" style="font-size: 10px;">重构 改善既有代码的设计</a> <a href="/tags/%E9%9B%86%E7%BE%A4/" style="font-size: 10px;">集群</a> <a href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">面向对象编程</a> <a href="/tags/%E9%AD%94%E6%B3%95/" style="font-size: 10px;">魔法</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/06/05/%E6%9D%82%E9%A1%B9/CORS/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/05/%E5%89%8D%E7%AB%AF/CSS/border/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/05/nodejs/child/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/05/nodejs/cluster/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/05/nodejs/evenloop/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
