@@ -1,330 +1,37 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-  
-  <title>Linux下性能分析工具 | Sanborn</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="Linux 下的性能分析uptimeuptime - Tell how long the system has been running.  DESCRIPTION   uptime gives a one line display of the following information.  The cur‐    rent time, how long the system has been">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Linux下性能分析工具">
-<meta property="og:url" content="https://sanbornzhang.github.io/2018/07/16/ops/linux/performance-analysis/index.html">
-<meta property="og:site_name" content="Sanborn">
-<meta property="og:description" content="Linux 下的性能分析uptimeuptime - Tell how long the system has been running.  DESCRIPTION   uptime gives a one line display of the following information.  The cur‐    rent time, how long the system has been">
-<meta property="og:locale">
-<meta property="article:published_time" content="2018-07-15T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-06-05T08:06:12.024Z">
-<meta property="article:author" content="Sanborn">
-<meta property="article:tag" content="performance">
-<meta property="article:tag" content="ops">
-<meta property="article:tag" content="linux">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Sanborn" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
-
-  
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
-
-  
-<meta name="generator" content="Hexo 5.4.0"></head>
-
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Sanborn</a>
-      </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">爱吃酸菜的鱼</a>
-        </h2>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://Sanbornzhang.github.io"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main"><article id="post-ops/linux/performance-analysis" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/07/16/ops/linux/performance-analysis/" class="article-date">
-  <time class="dt-published" datetime="2018-07-15T16:00:00.000Z" itemprop="datePublished">2018-07-16</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/linux/">linux</a>►<a class="article-category-link" href="/categories/linux/ops/">ops</a>►<a class="article-category-link" href="/categories/linux/ops/performance/">performance</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="p-name article-title" itemprop="headline name">
-      Linux下性能分析工具
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="Linux-下的性能分析"><a href="#Linux-下的性能分析" class="headerlink" title="Linux 下的性能分析"></a><code>Linux</code> 下的性能分析</h1><h2 id="uptime"><a href="#uptime" class="headerlink" title="uptime"></a>uptime</h2><pre><code>uptime - Tell how long the system has been running.
-</code></pre>
-<h3 id="DESCRIPTION"><a href="#DESCRIPTION" class="headerlink" title="DESCRIPTION"></a>DESCRIPTION</h3><pre><code>   uptime gives a one line display of the following information.  The cur‐
-   rent time, how long the system has been running,  how  many  users  are
-   currently  logged  on,  and the system load averages for the past 1, 5,
-   and 15 minutes.
-
-   This is the same information contained in the header line displayed  by
-   w(1).
-
-   System load averages is the average number of processes that are either
-   in a runnable or uninterruptable state.  A process in a runnable  state
-   is  either using the CPU or waiting to use the CPU.  A process in unin‐
-   terruptable state is waiting for some I/O access, eg waiting for  disk.
-   The  averages  are  taken over the three time intervals.  Load averages
-   are not normalized for the number of CPUs in a system, so a load  aver‐
-   age  of 1 means a single CPU system is loaded all the time while on a 4
-   CPU system it means it was idle 75% of the time.
-</code></pre>
-<p>我们可以看出： 系统平均负载是过去1、5、15分钟值, 在之下又有解释说明 1 在 4C的机器中说明它**75%**都是处于空闲状态，那么也就是说 1C 的平均为1最佳[实际上80%就可以了]</p>
-<span id="more"></span>
-<ul>
-<li><p>一台线上的实例</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">grep &#x27;CPU&#x27; /proc/cpuinfo |wc -l</span><br><span class="line">2</span><br><span class="line"></span><br><span class="line">uptime </span><br><span class="line">    09:38:06 up 153 days, 21:38,  2 users,  load average: 0.71, 1.00, 0.85</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>这是一台2C的机器，我们看出这台机器基本上使用了1C的cpu 负载在50%左右</p>
-</blockquote>
-</li>
-</ul>
-<h2 id="sysstat"><a href="#sysstat" class="headerlink" title="sysstat"></a>sysstat</h2><ul>
-<li><p><code>mpstat -P ALL 5   </code><br>监控所有的CPU 每隔<em>5S</em> 输出到屏幕</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Linux 4.4.0-117-generic (k8s-master)    05/31/2019      _x86_64_        (2 CPU)</span><br><span class="line"></span><br><span class="line">09:57:38 AM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle</span><br><span class="line">09:57:43 AM  all    5.16    0.00    3.44    0.40    0.00    0.10    0.00    0.00    0.00   90.90</span><br><span class="line">09:57:43 AM    0    5.67    0.00    3.44    0.20    0.00    0.20    0.00    0.00    0.00   90.49</span><br><span class="line">09:57:43 AM    1    4.66    0.00    3.44    0.40    0.00    0.00    0.00    0.00    0.00   91.50</span><br><span class="line"></span><br><span class="line">09:57:43 AM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle</span><br><span class="line">09:57:48 AM  all    4.78    0.00    3.39    0.40    0.00    0.20    0.00    0.00    0.00   91.24</span><br><span class="line">09:57:48 AM    0    5.20    0.00    3.00    0.40    0.00    0.00    0.00    0.00    0.00   91.40</span><br><span class="line">09:57:48 AM    1    4.18    0.00    3.78    0.60    0.00    0.20    0.00    0.00    0.00   91.24</span><br><span class="line"></span><br><span class="line">09:57:48 AM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle</span><br><span class="line">09:57:53 AM  all    5.32    0.00    2.81    0.60    0.00    0.10    0.00    0.00    0.00   91.16</span><br><span class="line">09:57:53 AM    0    5.21    0.00    3.61    0.60    0.00    0.20    0.00    0.00    0.00   90.38</span><br><span class="line">09:57:53 AM    1    5.61    0.00    2.00    0.60    0.00    0.20    0.00    0.00    0.00   91.58</span><br><span class="line"></span><br><span class="line">09:57:53 AM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle</span><br><span class="line">09:57:58 AM  all    6.07    0.00    3.38    0.50    0.00    0.20    0.00    0.00    0.00   89.85</span><br></pre></td></tr></table></figure></li>
-<li><p><code>pidstat -u 5 1 </code>: 间隔<code>5S</code>后输出1组数据[CPU使用指标]</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">Linux 4.4.0-117-generic (k8s-master)    05/31/2019      _x86_64_        (2 CPU)</span><br><span class="line"></span><br><span class="line">10:00:16 AM   UID       PID    %usr %system  %guest    %CPU   CPU  Command</span><br><span class="line">10:00:21 AM     0        13    0.00    0.20    0.00    0.20     1  ksoftirqd/1</span><br><span class="line">10:00:21 AM   999      2750   17.96    0.20    0.00   18.16     0  mysqld</span><br><span class="line">10:00:21 AM     0      4928    2.20    0.80    0.00    2.99     1  kubelet</span><br><span class="line">10:00:21 AM     0      9244    1.00    0.00    0.00    1.00     0  dockerd</span><br><span class="line">10:00:21 AM   999      9513    0.00    0.20    0.00    0.20     1  redis-server</span><br><span class="line">10:00:21 AM     0     10026    0.40    0.00    0.00    0.40     1  containerd-shim</span><br><span class="line">10:00:21 AM     0     10034    0.40    0.20    0.00    0.60     1  kube-scheduler</span><br><span class="line">10:00:21 AM     0     10066    1.80    1.00    0.00    2.79     1  kube-apiserver</span><br><span class="line">10:00:21 AM     0     10148    1.20    0.60    0.00    1.80     1  etcd</span><br><span class="line">10:00:21 AM     0     10580    0.00    0.20    0.00    0.20     1  kube-proxy</span><br><span class="line">10:00:21 AM     0     10944    0.00    0.20    0.00    0.20     1  coredns</span><br><span class="line">10:00:21 AM     0     11195    0.00    0.20    0.00    0.20     1  coredns</span><br><span class="line">10:00:21 AM     0     11248    0.20    0.60    0.00    0.80     1  calico-node</span><br><span class="line">10:00:21 AM     0     11419    0.80    1.00    0.00    1.80     1  kube-controller</span><br><span class="line">10:00:21 AM     0     20587    0.20    0.20    0.00    0.40     1  containerd</span><br><span class="line">10:00:21 AM   999     24608    0.20    0.00    0.00    0.20     1  redis-server</span><br><span class="line">10:00:21 AM     0     27397    0.40    0.00    0.00    0.40     1  AliYunDun</span><br><span class="line"></span><br><span class="line">Average:      UID       PID    %usr %system  %guest    %CPU   CPU  Command</span><br><span class="line">Average:        0        13    0.00    0.20    0.00    0.20     -  ksoftirqd/1</span><br><span class="line">Average:      999      2750   17.96    0.20    0.00   18.16     -  mysqld</span><br><span class="line">Average:        0      4928    2.20    0.80    0.00    2.99     -  kubelet</span><br><span class="line">Average:        0      9244    1.00    0.00    0.00    1.00     -  dockerd</span><br><span class="line">Average:      999      9513    0.00    0.20    0.00    0.20     -  redis-server</span><br><span class="line">Average:        0     10026    0.40    0.00    0.00    0.40     -  containerd-shim</span><br><span class="line">Average:        0     10034    0.40    0.20    0.00    0.60     -  kube-scheduler</span><br><span class="line">Average:        0     10066    1.80    1.00    0.00    2.79     -  kube-apiserver</span><br><span class="line">Average:        0     10148    1.20    0.60    0.00    1.80     -  etcd</span><br><span class="line">Average:        0     10580    0.00    0.20    0.00    0.20     -  kube-proxy</span><br><span class="line">Average:        0     10944    0.00    0.20    0.00    0.20     -  coredns</span><br><span class="line">Average:        0     11195    0.00    0.20    0.00    0.20     -  coredns</span><br><span class="line">Average:        0     11248    0.20    0.60    0.00    0.80     -  calico-node</span><br><span class="line">Average:        0     11419    0.80    1.00    0.00    1.80     -  kube-controller</span><br><span class="line">Average:        0     20587    0.20    0.20    0.00    0.40     -  containerd</span><br><span class="line">Average:      999     24608    0.20    0.00    0.00    0.20     -  redis-server</span><br><span class="line">Average:        0     27397    0.40    0.00    0.00    0.40     -  AliYunDun</span><br></pre></td></tr></table></figure></li>
-<li><p>pidstat -w -u 5              cswch/s 自愿切换上下文   nvcswch 非自愿切换上下文                                        </p>
- <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">Linux 4.4.0-117-generic (k8s-master)    05/31/2019      _x86_64_        (2 CPU)</span><br><span class="line"></span><br><span class="line">11:42:29 AM   UID       PID    %usr %system  %guest    %CPU   CPU  Command</span><br><span class="line">11:42:34 AM   999      2750   15.80    0.20    0.00   16.00     0  mysqld</span><br><span class="line">11:42:34 AM  1001      4329    0.40    0.00    0.00    0.40     0  prometheus</span><br><span class="line">11:42:34 AM   112      4563    0.20    0.00    0.00    0.20     1  grafana-server</span><br><span class="line">11:42:34 AM     0      4928    1.80    0.60    0.00    2.40     1  kubelet</span><br><span class="line">11:42:34 AM     0      9244    1.20    0.20    0.00    1.40     0  dockerd</span><br><span class="line">11:42:34 AM   999      9513    0.20    0.60    0.00    0.80     0  redis-server</span><br><span class="line">11:42:34 AM     0     10026    0.40    0.00    0.00    0.40     0  containerd-shim</span><br><span class="line">11:42:34 AM     0     10034    0.20    0.40    0.00    0.60     0  kube-scheduler</span><br><span class="line">11:42:34 AM     0     10066    1.00    0.80    0.00    1.80     1  kube-apiserver</span><br><span class="line">11:42:34 AM     0     10148    0.40    0.40    0.00    0.80     1  etcd</span><br><span class="line">11:42:34 AM     0     10944    0.00    0.20    0.00    0.20     1  coredns</span><br><span class="line">11:42:34 AM     0     11195    0.00    0.20    0.00    0.20     1  coredns</span><br><span class="line">11:42:34 AM     0     11248    0.40    0.20    0.00    0.60     0  calico-node</span><br><span class="line">11:42:34 AM     0     11254    0.00    0.20    0.00    0.20     0  calico-node</span><br><span class="line">11:42:34 AM     0     11419    1.00    0.80    0.00    1.80     0  kube-controller</span><br><span class="line">11:42:34 AM     0     17373    0.00    0.20    0.00    0.20     1  pidstat</span><br><span class="line">11:42:34 AM     0     20587    0.00    0.20    0.00    0.20     1  containerd</span><br><span class="line">11:42:34 AM     0     27397    0.20    0.20    0.00    0.40     0  AliYunDun</span><br><span class="line"></span><br><span class="line">11:42:29 AM   UID       PID   cswch/s nvcswch/s  Command</span><br><span class="line">11:42:34 AM     0         1      0.20      0.00  systemd</span><br><span class="line">11:42:34 AM     0         3      6.80      0.00  ksoftirqd/0</span><br><span class="line">11:42:34 AM     0         7    106.20      0.00  rcu_sched</span><br><span class="line">11:42:34 AM     0         9      2.20      0.00  migration/0</span><br><span class="line">11:42:34 AM     0        10      0.40      0.00  watchdog/0</span><br><span class="line">11:42:34 AM     0        11      0.40      0.00  watchdog/1</span><br><span class="line">11:42:34 AM     0        12      2.00      0.00  migration/1</span><br><span class="line">11:42:34 AM     0        13     25.20      0.00  ksoftirqd/1</span><br><span class="line">11:42:34 AM     0       155      4.20      0.00  kworker/0:1H</span><br><span class="line">11:42:34 AM     0       161     15.80      0.00  kworker/1:1H</span><br><span class="line">11:42:34 AM     0       163     15.00      3.60  jbd2/vda1-8</span><br><span class="line">11:42:34 AM     0       242      0.20      0.00  systemd-udevd</span><br><span class="line">11:42:34 AM   108       749      1.00      0.00  ntpd</span><br><span class="line">11:42:34 AM  1001      4329      0.60      0.40  prometheus</span><br><span class="line">11:42:34 AM     0      8802      0.20      0.00  rpcbind</span><br><span class="line">11:42:34 AM   999      9513    257.20      0.40  redis-server</span><br><span class="line">11:42:34 AM     0     10026      0.20      0.00  containerd-shim</span><br><span class="line">11:42:34 AM     0     10034     71.00     31.40  kube-scheduler</span><br><span class="line">11:42:34 AM     0     10110      0.20      0.00  runsvdir</span><br><span class="line">11:42:34 AM     0     11248      9.80      0.60  calico-node</span><br></pre></td></tr></table></figure></li>
-<li><p>vmstat</p>
- <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----</span><br><span class="line"> r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st</span><br><span class="line"> 0  0      0 135488 167788 1630900    0    0     4   119    1    1  6  3 90  1  0</span><br><span class="line"> 0  0      0 134924 167796 1630916    0    0     0   442 5056 11673 14  4 82  1  0</span><br><span class="line"> 0  0      0 135068 167804 1630940    0    0     0   218 4560 11000  5  3 91  0  0</span><br><span class="line"> 1  0      0 136240 167812 1630960    0    0     0   203 4394 10925  6  3 91  0  0</span><br><span class="line"> 0  0      0 134628 167816 1630984    0    0     0    85 4320 10626  8  3 89  0  0</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
-<li><p>查看系统软切换信息 <code>cat /proc/softirqs</code> </p>
- <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">                    CPU0       CPU1</span><br><span class="line">          HI:          0          0</span><br><span class="line">       TIMER: 1436812899 1411920240</span><br><span class="line">      NET_TX:        448        528</span><br><span class="line">      NET_RX: 1343882698 1964105257</span><br><span class="line">       BLOCK:          0          0</span><br><span class="line">BLOCK_IOPOLL:          0          0</span><br><span class="line">     TASKLET:       2319       2601</span><br><span class="line">       SCHED: 1315915373 1298055124</span><br><span class="line">     HRTIMER:          0          0</span><br><span class="line">         RCU: 1522799034 1508787415</span><br></pre></td></tr></table></figure>
-<p> NET_TX: 网络接收中断<br> NET_RX: 网络发送中断</p>
-</li>
-<li><p>查看系统中断信息  <code>cat /proc/interrupts  </code></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">           CPU0       CPU1</span><br><span class="line">  0:         19          0   IO-APIC   2-edge      timer</span><br><span class="line">  1:         11        191   IO-APIC   1-edge      i8042</span><br><span class="line">  4:       1009          0   IO-APIC   4-edge      serial</span><br><span class="line">  6:          3          0   IO-APIC   6-edge      floppy</span><br><span class="line">  8:          0          0   IO-APIC   8-edge      rtc0</span><br><span class="line">  9:          0          0   IO-APIC   9-fasteoi   acpi</span><br><span class="line"> 11:         35          0   IO-APIC  11-fasteoi   virtio3, uhci_hcd:usb1</span><br><span class="line"> 12:         16        404   IO-APIC  12-edge      i8042</span><br><span class="line"> 14:          0          0   IO-APIC  14-edge      ata_piix</span><br><span class="line"> 15:          0          0   IO-APIC  15-edge      ata_piix</span><br><span class="line"> 24:          0          0   PCI-MSI 65536-edge      virtio1-config</span><br><span class="line"> 25:         32         18   PCI-MSI 65537-edge      virtio1-virtqueues</span><br><span class="line"> 26:          0          0   PCI-MSI 81920-edge      virtio2-config</span><br><span class="line"> 27:       4834  262320824   PCI-MSI 81921-edge      virtio2-req.0</span><br><span class="line"> 28:          1         22   PCI-MSI 49152-edge      virtio0-config</span><br><span class="line"> 29:        160  237500253   PCI-MSI 49153-edge      virtio0-input.0</span><br><span class="line"> 30:        164  201980849   PCI-MSI 49154-edge      virtio0-output.0</span><br><span class="line"> 31:          1  191833242   PCI-MSI 49155-edge      virtio0-input.1</span><br><span class="line"> 32:          1  202416880   PCI-MSI 49156-edge      virtio0-output.1</span><br><span class="line">NMI:          0          0   Non-maskable interrupts</span><br><span class="line">LOC: 1853064730 1867757275   Local timer interrupts</span><br><span class="line">SPU:          0          0   Spurious interrupts</span><br><span class="line">PMI:          0          0   Performance monitoring interrupts</span><br><span class="line">IWI:    4923006    4921126   IRQ work interrupts</span><br><span class="line">RTR:          0          0   APIC ICR read retries</span><br><span class="line">RES: 1704347415 1653338725   Rescheduling interrupts</span><br><span class="line">CAL:  468302632  252609617   Function call interrupts</span><br><span class="line">TLB:  252283278  251329281   TLB shootdowns</span><br></pre></td></tr></table></figure></li>
-<li><p><code>cat /proc/stat</code> 中的 <code>intr</code> 也包含系统中断的信息</p>
-</li>
-</ul>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul>
-<li>自愿上下文切换变多了，说明进程都在等待资源，有可能发生了 I/O问题</li>
-<li>非自愿上下文切换变多了，说明进程都在被强制调度，也就是都在争抢 CPU，说明 CPU 的确成了瓶颈；</li>
-<li>中断次数变多了，说明 CPU 被中断处理程序占用，</li>
-</ul>
-<h2 id="CPU-优化"><a href="#CPU-优化" class="headerlink" title="CPU 优化"></a>CPU 优化</h2><h3 id="应用程序优化"><a href="#应用程序优化" class="headerlink" title="应用程序优化"></a>应用程序优化</h3><ol>
-<li>编译器优化</li>
-<li>算法优化</li>
-<li>异步处理 [Node.js call back]</li>
-<li>多线程替代多进程[进程上下文切换，线程上下文切换(不涉及进程地址空间)]</li>
-<li>善用缓存</li>
-</ol>
-<h3 id="系统优化"><a href="#系统优化" class="headerlink" title="系统优化"></a>系统优化</h3><ol>
-<li>CPU绑定: 将进程绑定到一个或者多个CPU上，提高CPU缓存命中率。减少跨CPU调度带来的上下文切换问题。[taskset,sched_setaffinity]</li>
-<li>CPU独占</li>
-<li>优先级调整[PRI: 优先级(越小越先), NI: nice值(为负值优先级 <strong>值</strong> 变小), nice指定]</li>
-<li>对进程设置资源限制</li>
-<li>NUMA优化，让CPU尽可能之访问本地内存</li>
-<li>中断负载均衡<h2 id="REF"><a href="#REF" class="headerlink" title="REF"></a>REF</h2><a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/cn/linux/l-cn-linuxkernelint/index.html">Linux 内核中断内幕</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/rainharder/article/details/73198010">Nginx服务器上软中断过高问题如何解决？</a></li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://sanbornzhang.github.io/2018/07/16/ops/linux/performance-analysis/" data-id="ckplx85xk0057ucege2gic8ld" data-title="Linux下性能分析工具" class="article-share-link">Teilen</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ops/" rel="tag">ops</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/performance/" rel="tag">performance</a></li></ul>
-
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2018/07/16/ops/docker/trouble-shooting/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Neuer</strong>
-      <div class="article-nav-title">
-        
-          Docker Trouble Shooting
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2018/07/16/ops/linux/ulimit/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Älter</strong>
-      <div class="article-nav-title">linux ulimit 调参与优化</div>
-    </a>
-  
-</nav>
-
-  
-</article>
+{% extends '_layout.swig' %}
+{% import '_macro/post.swig' as post_template %}
+{% import '_macro/sidebar.swig' as sidebar_template %}
 
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Kategorien</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Mysql/">Mysql</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/">Node.js</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/EventEmitter/">EventEmitter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/OpenCV/">OpenCV</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/OpenCV/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/Promise/">Promise</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/child-process/">child_process</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/cluster/">cluster</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/cluster/child-process/">child_process</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/even-loop/">even loop</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/feature/">feature</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/kafka/">kafka</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/kafka/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/performance/">performance</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/stream/">stream</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/">Nodejs</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/koa/">koa</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/koa/%E6%A1%86%E6%9E%B6/">框架</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/redis/">redis</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/redis/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Proxy/">Proxy</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">algorithm</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/dataStructure/">dataStructure</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/dataStructure/Node-js/">Node.js</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/dataStructure/Node-js/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/dataStructure/Node-js/%E4%BD%8D%E8%BF%90%E7%AE%97/crypto/">crypto</a></li></ul></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ELK/">ELK</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ELK/logstash/">logstash</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ELK/logstash/grok/">grok</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/docker/">docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/docker/Kubernetes/">Kubernetes</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/docker/Kubernetes/pod/">pod</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/">ops</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/Nginx/">Nginx</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/Nginx/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/">负载均衡</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/Nginx/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/">反向代理</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/docker/">docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/docker/k8s/">k8s</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/docker/k8s/kubernetes/">kubernetes</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/docker/k8s/kubernetes/istio/">istio</a></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/performance/">performance</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/performance/Node-js/">Node.js</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/redis/">redis</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/ops/">ops</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/">linux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/TCPDump/">TCPDump</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/jenkins/">jenkins</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/jenkins/hexo/">hexo</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/mongoDB/">mongoDB</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/mongoDB/%E9%9B%86%E7%BE%A4/">集群</a></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/redis/algorithm/">algorithm</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/redis/algorithm/Node-js/">Node.js</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/CSS3/">CSS3</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/CSS3/%E5%B8%83%E5%B1%80/">布局</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/Canvas/">Canvas</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/Flexible/">Flexible</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/Flexible/H5/">H5</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9/">杂项</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9/zsh/">zsh</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/">幂等</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/%E7%A7%92%E6%9D%80/">秒杀</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/%E7%A7%92%E6%9D%80/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/">架构整洁之道导读</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BB%84%E4%BB%B6/">组件</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/">编程范式</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/">结构化编程</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/">面向对象编程</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/">函数式编程</a></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/">设计原则</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1/">短信服务</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%87%8D%E6%9E%84/">重构</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%87%8D%E6%9E%84/%E9%87%8D%E6%9E%84-%E6%94%B9%E5%96%84%E6%97%A2%E6%9C%89%E4%BB%A3%E7%A0%81%E7%9A%84%E8%AE%BE%E8%AE%A1/">重构 改善既有代码的设计</a></li></ul></li></ul>
+{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+
+{% block page_class %}page-post-detail{% endblock %}
+
+
+{% block content %}
+
+  <div id="posts" class="posts-expand">
+    {{ post_template.render(page) }}
+
+    <div class="post-spread">
+      {% if theme.jiathis %}
+        {% include '_partials/share/jiathis.swig' %}
+      {% elseif theme.baidushare %}
+        {% include '_partials/share/baidushare.swig' %}
+      {% elseif theme.add_this_id %}
+        {% include '_partials/share/add-this.swig' %}
+      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
+        {% include '_partials/share/duoshuo_share.swig' %}
+      {% endif %}
     </div>
   </div>
 
+{% endblock %}
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS3/" rel="tag">CSS3</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Canvas/" rel="tag">Canvas</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELK/" rel="tag">ELK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EventEmitter/" rel="tag">EventEmitter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Flexible/" rel="tag">Flexible</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/H5/" rel="tag">H5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kubernetes/" rel="tag">Kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mysql/" rel="tag">Mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/" rel="tag">Nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/" rel="tag">OpenCV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Promise/" rel="tag">Promise</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Proxy/" rel="tag">Proxy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/" rel="tag">Redis数据持久化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCPDump/" rel="tag">TCPDump</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/object-Object/" rel="tag">[object Object]</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/" rel="tag">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/child-process/" rel="tag">child_process</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cluster/" rel="tag">cluster</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crypto/" rel="tag">crypto</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dataStructure/" rel="tag">dataStructure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/even-loop/" rel="tag">even loop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/feature/" rel="tag">feature</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grok/" rel="tag">grok</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/" rel="tag">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jenkins/" rel="tag">jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/" rel="tag">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/koa/" rel="tag">koa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/logstash/" rel="tag">logstash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongoDB/" rel="tag">mongoDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ops/" rel="tag">ops</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/performance/" rel="tag">performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pod/" rel="tag">pod</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/setImmediate-setTimeout-process-nextTick/" rel="tag">setImmediate setTimeout() process.nextTick()</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/stream/" rel="tag">stream</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zsh/" rel="tag">zsh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/" rel="tag">位运算</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" rel="tag">函数式编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" rel="tag">反向代理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" rel="tag">图像处理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B8%83%E5%B1%80/" rel="tag">布局</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%82%E7%AD%89/" rel="tag">幂等</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%89%8B%E5%86%99Promise/" rel="tag">手写Promise</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%94%B6%E8%97%8F%E7%9A%84%E6%96%87%E7%AB%A0/" rel="tag">收藏的文章</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E9%A1%B9/" rel="tag">杂项</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag">架构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/" rel="tag">架构整洁之道导读</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A1%86%E6%9E%B6/" rel="tag">框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B/" rel="tag">盒子模型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1/" rel="tag">短信服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/" rel="tag">短信服务设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%92%E6%9D%80/" rel="tag">秒杀</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B4%A2%E5%BC%95/" rel="tag">索引</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E4%BB%B6/" rel="tag">组件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/" rel="tag">结构化编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF/" rel="tag">缓存击穿</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/" rel="tag">缓存穿透</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9/" rel="tag">缓存雪崩</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/" rel="tag">编程范式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/" rel="tag">设计原则</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/" rel="tag">负载均衡</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%8D%E6%9E%84/" rel="tag">重构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%8D%E6%9E%84-%E6%94%B9%E5%96%84%E6%97%A2%E6%9C%89%E4%BB%A3%E7%A0%81%E7%9A%84%E8%AE%BE%E8%AE%A1/" rel="tag">重构 改善既有代码的设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9B%86%E7%BE%A4/" rel="tag">集群</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/" rel="tag">面向对象编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AD%94%E6%B3%95/" rel="tag">魔法</a></li></ul>
-    </div>
-  </div>
+{% block sidebar %}
+  {{ sidebar_template.render(true) }}
+{% endblock %}
 
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/CSS3/" style="font-size: 10px;">CSS3</a> <a href="/tags/Canvas/" style="font-size: 10px;">Canvas</a> <a href="/tags/ELK/" style="font-size: 11.25px;">ELK</a> <a href="/tags/EventEmitter/" style="font-size: 10px;">EventEmitter</a> <a href="/tags/Flexible/" style="font-size: 10px;">Flexible</a> <a href="/tags/H5/" style="font-size: 10px;">H5</a> <a href="/tags/Kubernetes/" style="font-size: 13.75px;">Kubernetes</a> <a href="/tags/Mysql/" style="font-size: 11.25px;">Mysql</a> <a href="/tags/Nginx/" style="font-size: 11.25px;">Nginx</a> <a href="/tags/Node-js/" style="font-size: 17.5px;">Node.js</a> <a href="/tags/Nodejs/" style="font-size: 11.25px;">Nodejs</a> <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a> <a href="/tags/Promise/" style="font-size: 10px;">Promise</a> <a href="/tags/Proxy/" style="font-size: 10px;">Proxy</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/Redis%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/" style="font-size: 10px;">Redis数据持久化</a> <a href="/tags/TCPDump/" style="font-size: 10px;">TCPDump</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/object-Object/" style="font-size: 11.25px;">[object Object]</a> <a href="/tags/algorithm/" style="font-size: 12.5px;">algorithm</a> <a href="/tags/child-process/" style="font-size: 11.25px;">child_process</a> <a href="/tags/cluster/" style="font-size: 10px;">cluster</a> <a href="/tags/crypto/" style="font-size: 10px;">crypto</a> <a href="/tags/dataStructure/" style="font-size: 11.25px;">dataStructure</a> <a href="/tags/docker/" style="font-size: 16.25px;">docker</a> <a href="/tags/even-loop/" style="font-size: 10px;">even loop</a> <a href="/tags/feature/" style="font-size: 10px;">feature</a> <a href="/tags/grok/" style="font-size: 10px;">grok</a> <a href="/tags/hexo/" style="font-size: 11.25px;">hexo</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/jenkins/" style="font-size: 10px;">jenkins</a> <a href="/tags/k8s/" style="font-size: 10px;">k8s</a> <a href="/tags/kafka/" style="font-size: 10px;">kafka</a> <a href="/tags/koa/" style="font-size: 10px;">koa</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 18.75px;">linux</a> <a href="/tags/logstash/" style="font-size: 10px;">logstash</a> <a href="/tags/mongoDB/" style="font-size: 10px;">mongoDB</a> <a href="/tags/ops/" style="font-size: 20px;">ops</a> <a href="/tags/performance/" style="font-size: 12.5px;">performance</a> <a href="/tags/pod/" style="font-size: 10px;">pod</a> <a href="/tags/redis/" style="font-size: 15px;">redis</a> <a href="/tags/setImmediate-setTimeout-process-nextTick/" style="font-size: 10px;">setImmediate setTimeout() process.nextTick()</a> <a href="/tags/stream/" style="font-size: 10px;">stream</a> <a href="/tags/zsh/" style="font-size: 10px;">zsh</a> <a href="/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/" style="font-size: 10px;">位运算</a> <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">函数式编程</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 10px;">分布式</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 12.5px;">前端</a> <a href="/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" style="font-size: 10px;">反向代理</a> <a href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" style="font-size: 10px;">图像处理</a> <a href="/tags/%E5%B8%83%E5%B1%80/" style="font-size: 10px;">布局</a> <a href="/tags/%E5%B9%82%E7%AD%89/" style="font-size: 10px;">幂等</a> <a href="/tags/%E6%89%8B%E5%86%99Promise/" style="font-size: 10px;">手写Promise</a> <a href="/tags/%E6%94%B6%E8%97%8F%E7%9A%84%E6%96%87%E7%AB%A0/" style="font-size: 10px;">收藏的文章</a> <a href="/tags/%E6%9D%82%E9%A1%B9/" style="font-size: 11.25px;">杂项</a> <a href="/tags/%E6%9E%B6%E6%9E%84/" style="font-size: 13.75px;">架构</a> <a href="/tags/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/" style="font-size: 12.5px;">架构整洁之道导读</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">框架</a> <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" style="font-size: 11.25px;">消息队列</a> <a href="/tags/%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B/" style="font-size: 10px;">盒子模型</a> <a href="/tags/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1/" style="font-size: 10px;">短信服务</a> <a href="/tags/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/" style="font-size: 10px;">短信服务设计</a> <a href="/tags/%E7%A7%92%E6%9D%80/" style="font-size: 10px;">秒杀</a> <a href="/tags/%E7%B4%A2%E5%BC%95/" style="font-size: 10px;">索引</a> <a href="/tags/%E7%BB%84%E4%BB%B6/" style="font-size: 10px;">组件</a> <a href="/tags/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">结构化编程</a> <a href="/tags/%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF/" style="font-size: 10px;">缓存击穿</a> <a href="/tags/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/" style="font-size: 10px;">缓存穿透</a> <a href="/tags/%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9/" style="font-size: 10px;">缓存雪崩</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/" style="font-size: 10px;">编程范式</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/" style="font-size: 10px;">设计原则</a> <a href="/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/" style="font-size: 10px;">负载均衡</a> <a href="/tags/%E9%87%8D%E6%9E%84/" style="font-size: 10px;">重构</a> <a href="/tags/%E9%87%8D%E6%9E%84-%E6%94%B9%E5%96%84%E6%97%A2%E6%9C%89%E4%BB%A3%E7%A0%81%E7%9A%84%E8%AE%BE%E8%AE%A1/" style="font-size: 10px;">重构 改善既有代码的设计</a> <a href="/tags/%E9%9B%86%E7%BE%A4/" style="font-size: 10px;">集群</a> <a href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">面向对象编程</a> <a href="/tags/%E9%AD%94%E6%B3%95/" style="font-size: 10px;">魔法</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archiv</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">letzter Beitrag</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2021/06/05/%E6%9D%82%E9%A1%B9/CORS/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/05/%E5%89%8D%E7%AB%AF/CSS/border/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/05/nodejs/child/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/05/nodejs/cluster/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/05/nodejs/evenloop/">(no title)</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2021 Sanborn<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
-</body>
-</html>
+{% block script_extra %}
+  {% include '_scripts/pages/post-details.swig' %}
+{% endblock %}

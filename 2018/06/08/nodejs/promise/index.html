@@ -1,321 +1,37 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-  
-  <title>Promise | Sanborn</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="PromisePromisePromise 对象是 JavaScript 的异步操作解决方案，为异步操作提供统一接口。它起到代理作用（proxy），充当异步操作与回调函数之间的中介，使得异步操作具备同步操作的接口。Promise 可以让异步操作写起来，就像在写同步操作的流程，而不必一层层地嵌套回调函数。 Callback Hell">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Promise">
-<meta property="og:url" content="https://sanbornzhang.github.io/2018/06/08/nodejs/promise/index.html">
-<meta property="og:site_name" content="Sanborn">
-<meta property="og:description" content="PromisePromisePromise 对象是 JavaScript 的异步操作解决方案，为异步操作提供统一接口。它起到代理作用（proxy），充当异步操作与回调函数之间的中介，使得异步操作具备同步操作的接口。Promise 可以让异步操作写起来，就像在写同步操作的流程，而不必一层层地嵌套回调函数。 Callback Hell">
-<meta property="og:locale">
-<meta property="og:image" content="https://sanbornzhang.github.io/2018/06/08/nodejs/promise/images/callback-hell.jpg">
-<meta property="article:published_time" content="2018-06-07T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-06-05T08:06:12.000Z">
-<meta property="article:author" content="Sanborn">
-<meta property="article:tag" content="Node.js">
-<meta property="article:tag" content="Promise">
-<meta property="article:tag" content="手写Promise">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://sanbornzhang.github.io/2018/06/08/nodejs/promise/images/callback-hell.jpg">
-  
-    <link rel="alternate" href="/atom.xml" title="Sanborn" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
-
-  
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
-
-  
-<meta name="generator" content="Hexo 5.4.0"></head>
-
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Sanborn</a>
-      </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">爱吃酸菜的鱼</a>
-        </h2>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://Sanbornzhang.github.io"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main"><article id="post-nodejs/promise" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/06/08/nodejs/promise/" class="article-date">
-  <time class="dt-published" datetime="2018-06-07T16:00:00.000Z" itemprop="datePublished">2018-06-08</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Node-js/">Node.js</a>►<a class="article-category-link" href="/categories/Node-js/Promise/">Promise</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="p-name article-title" itemprop="headline name">
-      Promise
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h1><h2 id="Promise-1"><a href="#Promise-1" class="headerlink" title="Promise"></a>Promise</h2><p>Promise 对象是 JavaScript 的异步操作解决方案，为异步操作提供统一接口。它起到代理作用（proxy），充当异步操作与回调函数之间的中介，使得异步操作具备同步操作的接口。Promise 可以让异步操作写起来，就像在写同步操作的流程，而不必一层层地嵌套回调函数。</p>
-<h3 id="Callback-Hell"><a href="#Callback-Hell" class="headerlink" title="Callback Hell"></a>Callback Hell</h3><p><img src="images/callback-hell.jpg" alt="Callback Hell"></p>
-<span id="more"></span> 
-<blockquote>
-<p>在使用callback的同时会遇到一些痛点</p>
-</blockquote>
-<ul>
-<li>代码不利于维护以及阅读.</li>
-<li>回调函数基本上都是匿名函数不利于DEBUG.<h3 id="Promise-2"><a href="#Promise-2" class="headerlink" title="Promise"></a>Promise</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">step1</span><br><span class="line">.then(step2)</span><br><span class="line">.then(step3)</span><br><span class="line">.then(step4)</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-  可以看出使用了<code>Promise</code>之后流程变得非常清晰，代码也变得通熟易懂。<h3 id="Promise-A-规范"><a href="#Promise-A-规范" class="headerlink" title="Promise A+ 规范"></a><code>Promise A+</code> 规范</h3><h4 id="Promise-三种状态"><a href="#Promise-三种状态" class="headerlink" title="Promise 三种状态"></a>Promise 三种状态</h4></li>
-<li>Fulfilled<br>处于执行态时，promise 需满足以下条件：<ul>
-<li>不能迁移至其他任何状态</li>
-<li>必须拥有一个不可以改变的值</li>
-</ul>
-</li>
-<li>Rejected<br>处于拒绝态时，promise 需满足以下条件：<ul>
-<li>不能迁移至其他任何状态</li>
-<li>必须有一个原因，以及不可以改变。</li>
-</ul>
-</li>
-<li>pending<br>处于等待态时，promise 需满足以下条件：<ol>
-<li>可以迁移至执行态或拒绝态<h4 id="Then-方法"><a href="#Then-方法" class="headerlink" title="Then 方法"></a><code>Then</code> 方法</h4>一个<code>Promise</code> 必须提供一个<code>then</code>方法，可以访问当前值或中值和拒绝原因<br>Promise 的 then 方法接受2个参数  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Promise.then(onFulfilled, onRejected)</span><br></pre></td></tr></table></figure></li>
-</ol>
-<ul>
-<li>onFulfilled 以及 onRejected 都是可选参数 但是都必须为函数</li>
-<li>function: onFulfilled<ul>
-<li>必须在Promise完成以后调用也就是状态为 <code>Fulfilled</code>, 值为第一个参数。</li>
-<li>必须在完成以后才能调用。也就是说<code>.then(value=&gt;&#123;&#125;)</code> 值必须是这个<code>Promise</code>完成以后才会拥有</li>
-<li>只能够被调用一次</li>
-</ul>
-</li>
-<li>function: onRejected<ul>
-<li>只能在被拒绝之后调用，并且值为原因。一般是Error。</li>
-<li>在Rejected之后才会调用</li>
-<li>也只能被调用一次 </li>
-</ul>
-</li>
-<li><code>onFulfilled</code>或者<code>onRejected</code>在执行上下文堆栈仅包含平台代码之前不得调用</li>
-<li><code>onFulfilled</code>并且<code>onRejected</code>必须作为函数调用（即没有this值)</li>
-<li><code>then</code>方法可以在同一个<code>Promise</code>中被调用多次</li>
-<li><code>then</code> 方法必须返回的是一个<code>Promise</code>  </li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">promise2 = promise1.then(onFulfilled, onRejected);</span><br></pre></td></tr></table></figure>
-<ul>
-<li>如果 onFulfilled 或者 onRejected 返回一个值 x ，则运行下面的 Promise 解决过程：[[Resolve]](promise2, x)</li>
-<li>如果 onFulfilled 或者 onRejected 抛出一个异常 e ，则 promise2 必须拒绝执行，并返回拒因 e</li>
-<li>如果 onFulfilled 不是函数且 promise1 成功执行， promise2 必须成功执行并返回相同的值</li>
-<li>如果 onRejected 不是函数且 promise1 拒绝执行， promise2 必须拒绝执行并返回相同的据因<br>以上也是Promise可以使用调用链的原因<h3 id="手动实现Promise"><a href="#手动实现Promise" class="headerlink" title="手动实现Promise"></a>手动实现<code>Promise</code></h3>  没有实现Promise的链式调用以及需要改为setImmediate 或者是 process.nextTick<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line">function myPromise(exec) &#123;</span><br><span class="line">  const self = this</span><br><span class="line">  self.statusMap = &#123;</span><br><span class="line">    PENDING: &#x27;pending&#x27;,</span><br><span class="line">    FULFILLED: &#x27;fulfilled&#x27;,</span><br><span class="line">    REJECTED: &#x27;rejected&#x27;,</span><br><span class="line">  &#125;</span><br><span class="line">  self.status = self.statusMap.PENDING</span><br><span class="line">  self.data = undefined</span><br><span class="line">  function resolve(data) &#123;</span><br><span class="line">    if (self.status === self.statusMap.PENDING) &#123; // 状态必须为 pending 才能赋值</span><br><span class="line">      self.status = self.statusMap.FULFILLED</span><br><span class="line">      self.data = data</span><br><span class="line">    &#125;</span><br><span class="line">   &#125;</span><br><span class="line">  function reject(err) &#123;</span><br><span class="line">    if (self.status === self.statusMap.PENDING) &#123; // 状态必须为 pending 才能赋值</span><br><span class="line">      self.status = self.statusMap.REJECTED</span><br><span class="line">      self.error = err</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  try &#123;</span><br><span class="line">    exec(resolve, reject)</span><br><span class="line">  &#125; catch (error) &#123;</span><br><span class="line">    reject(error)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">myPromise.resolve = (data)=&gt;new myPromise((resolve, reject)=&gt;resolve(data))</span><br><span class="line">myPromise.reject= (reason)=&gt;new myPromise((resolve, reject)=&gt;reject(reason))</span><br><span class="line">// 实例.then方法</span><br><span class="line">/** </span><br><span class="line"> * then function</span><br><span class="line"> * @param &#123;Function&#125; onFulfilled</span><br><span class="line"> * @param &#123;Function&#125; onRejected</span><br><span class="line"> */</span><br><span class="line">myPromise.prototype.then = function (onFulfilled, onRejected) &#123;</span><br><span class="line">  if(this.status === this.statusMap.FULFILLED) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">      onFulfilled = typeof onFulfilled === &#x27;function&#x27; ? onFulfilled : function() &#123;&#125;</span><br><span class="line">      const result = onFulfilled(this.data)</span><br><span class="line">      if( result instanceof myPromise) result.then(myPromise.resolve, myPromise.reject)</span><br><span class="line">      myPromise.resolve(this.data)</span><br><span class="line">    &#125; catch (error) &#123;</span><br><span class="line">      myPromise.reject(error)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  if(this.status === this.statusMap.REJECTED) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">      onRejected = typeof onFulfilled === &#x27;function&#x27; ? onFulfilled : function() &#123;&#125;</span><br><span class="line">      const result = onRejected(this.data)</span><br><span class="line">      if( result instanceof myPromise) result.then(myPromise.resolve, myPromise.reject)</span><br><span class="line">      myPromise.resolve(this.data)</span><br><span class="line">    &#125; catch (error) &#123;</span><br><span class="line">      myPromise.reject(error)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  if(this.status === this.statusMap.PENDING) &#123;</span><br><span class="line">    if (onFulfilled) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">      const result = onFulfilled(this.data)</span><br><span class="line">      if( result instanceof myPromise) result.then(myPromise.resolve, myPromise.reject)</span><br><span class="line">      myPromise.resolve(this.data)</span><br><span class="line">      &#125; catch (error) &#123;</span><br><span class="line">        myPromise.reject(error)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    else if (onRejected) &#123;</span><br><span class="line">      try &#123;</span><br><span class="line">        const result = onRejected(this.data)</span><br><span class="line">        if( result instanceof myPromise) result.then(myPromise.resolve, myPromise.reject)</span><br><span class="line">        myPromise.resolve(this.data)</span><br><span class="line">      &#125; catch (error) &#123;</span><br><span class="line">        myPromise.reject(error)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  else &#123;</span><br><span class="line">    onFulfilled = typeof onFulfilled === &#x27;function&#x27; ? onFulfilled : function() &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">myPromise.prototype.catch = function(onRejected)&#123;</span><br><span class="line">  return this.then(null, onRejected)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="Promise-执行顺序"><a href="#Promise-执行顺序" class="headerlink" title="Promise 执行顺序"></a>Promise 执行顺序</h3>在很多时候我们需要执行一些有状态的异步调用,有相互依赖关系.<br>这时候我们可以选择 <code>bluebird</code>的<a target="_blank" rel="noopener" href="http://bluebirdjs.com/docs/api/promise.reduce.html">reduce</a>函数，或则是使用<code>async/await </code>,<br>当然也可以用<code>array.reduce</code>构建自己的函数.<br>其实Promise函数在创建的时候就已经开始运行了，<br>那么确保创建的时候是顺序的那么自然确保了执行的结果是顺序的。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">const sleep = (time)=&gt;&#123;</span><br><span class="line">  return new Promise(resolve=&gt;&#123;</span><br><span class="line">     setTimeout(_=&gt;&#123;</span><br><span class="line">       return resolve(time)&#125;,time)</span><br><span class="line">   &#125;)</span><br><span class="line"> &#125;</span><br><span class="line"> // .then 构建 复杂且阅读 大量的重复代码</span><br><span class="line"> sleep(30)</span><br><span class="line"> .then(_=&gt;&#123;</span><br><span class="line">   return sleep(10)</span><br><span class="line"> &#125;)</span><br><span class="line"> .then(_=&gt;&#123;</span><br><span class="line">   return sleep(20)</span><br><span class="line"> &#125;)</span><br><span class="line"> .then(_=&gt;&#123;</span><br><span class="line">   return sleep(25)</span><br><span class="line"> &#125;)</span><br><span class="line"> </span><br><span class="line">//  构建queue函数</span><br><span class="line"> const queue = (params = [], promiseFunc)=&gt;&#123;</span><br><span class="line">   const result = []</span><br><span class="line">   return params.reduce((promiseList, value)=&gt;&#123;</span><br><span class="line">     return promiseList.then(_=&gt;&#123;</span><br><span class="line">      return promiseFunc(value)</span><br><span class="line">    &#125;).then(_=&gt;&#123;</span><br><span class="line">      if (_ !== undefined)&#123;</span><br><span class="line">        result.push(_)</span><br><span class="line">      &#125;</span><br><span class="line">      return result</span><br><span class="line">    &#125;)</span><br><span class="line">   &#125;,</span><br><span class="line">   Promise.resolve() //起始值</span><br><span class="line">   )</span><br><span class="line"> </span><br><span class="line"> &#125;</span><br><span class="line"> queue([40,10,5,30,20],sleep)</span><br><span class="line"> .then(_=&gt;&#123;</span><br><span class="line">   console.log(&#x27;quqe&#x27;,_)</span><br><span class="line"> &#125;)</span><br></pre></td></tr></table></figure>
-<h3 id="其它常用的一些API"><a href="#其它常用的一些API" class="headerlink" title="其它常用的一些API"></a>其它常用的一些API</h3></li>
-<li>Promise.all</li>
-<li>Promise.reject()</li>
-<li>Promise.resolve()<h3 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h3><a target="_blank" rel="noopener" href="https://promisesaplus.com/">Promise A+</a><br><a target="_blank" rel="noopener" href="http://www.ituring.com.cn/article/66566">Promise A+[中文版]</a><br><a target="_blank" rel="noopener" href="http://javascript.ruanyifeng.com/advanced/promise.html">阮一峰 Promise</a><br><a target="_blank" rel="noopener" href="https://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html">We have a problem with promises</a><br><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/v8/v8/+/3.29.45/src/promise.js?autodive=0/">google git Promise</a><br><a target="_blank" rel="noopener" href="https://github.com/kriskowal/q/tree/v1/design">q design</a></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://sanbornzhang.github.io/2018/06/08/nodejs/promise/" data-id="ckplx85w20013uceg9e3c7s52" data-title="Promise" class="article-share-link">Teilen</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Promise/" rel="tag">Promise</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%89%8B%E5%86%99Promise/" rel="tag">手写Promise</a></li></ul>
-
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2018/06/08/nodejs/even-loop/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Neuer</strong>
-      <div class="article-nav-title">
-        
-          从 *even loop*中说 `setImmediate()`、`setTimeout()`、`process.nextTick()`的区别
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2018/06/05/nodejs/Google_IO/What_is_new_in_JavaScript/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Älter</strong>
-      <div class="article-nav-title">What’s new in JavaScript (Google I/O ’19)</div>
-    </a>
-  
-</nav>
-
-  
-</article>
+{% extends '_layout.swig' %}
+{% import '_macro/post.swig' as post_template %}
+{% import '_macro/sidebar.swig' as sidebar_template %}
 
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Kategorien</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Mysql/">Mysql</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/">Node.js</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/EventEmitter/">EventEmitter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/OpenCV/">OpenCV</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/OpenCV/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/Promise/">Promise</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/child-process/">child_process</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/cluster/">cluster</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/cluster/child-process/">child_process</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/even-loop/">even loop</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/feature/">feature</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/kafka/">kafka</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/kafka/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/performance/">performance</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/stream/">stream</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/">Nodejs</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/koa/">koa</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/koa/%E6%A1%86%E6%9E%B6/">框架</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/redis/">redis</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/redis/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Proxy/">Proxy</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">algorithm</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/dataStructure/">dataStructure</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/dataStructure/Node-js/">Node.js</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/dataStructure/Node-js/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/dataStructure/Node-js/%E4%BD%8D%E8%BF%90%E7%AE%97/crypto/">crypto</a></li></ul></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ELK/">ELK</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ELK/logstash/">logstash</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ELK/logstash/grok/">grok</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/docker/">docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/docker/Kubernetes/">Kubernetes</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/docker/Kubernetes/pod/">pod</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/">ops</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/Nginx/">Nginx</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/Nginx/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/">负载均衡</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/Nginx/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/">反向代理</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/docker/">docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/docker/k8s/">k8s</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/docker/k8s/kubernetes/">kubernetes</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/docker/k8s/kubernetes/istio/">istio</a></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/performance/">performance</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/performance/Node-js/">Node.js</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/ops/redis/">redis</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/ops/">ops</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/">linux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/TCPDump/">TCPDump</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/jenkins/">jenkins</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/jenkins/hexo/">hexo</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/mongoDB/">mongoDB</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/ops/linux/mongoDB/%E9%9B%86%E7%BE%A4/">集群</a></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/redis/algorithm/">algorithm</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/redis/algorithm/Node-js/">Node.js</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/CSS3/">CSS3</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/CSS3/%E5%B8%83%E5%B1%80/">布局</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/Canvas/">Canvas</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/Flexible/">Flexible</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/Flexible/H5/">H5</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9/">杂项</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9/zsh/">zsh</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/">幂等</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/%E7%A7%92%E6%9D%80/">秒杀</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/%E7%A7%92%E6%9D%80/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/">架构整洁之道导读</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BB%84%E4%BB%B6/">组件</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/">编程范式</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/">结构化编程</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/">面向对象编程</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/">函数式编程</a></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/">设计原则</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1/">短信服务</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%87%8D%E6%9E%84/">重构</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%87%8D%E6%9E%84/%E9%87%8D%E6%9E%84-%E6%94%B9%E5%96%84%E6%97%A2%E6%9C%89%E4%BB%A3%E7%A0%81%E7%9A%84%E8%AE%BE%E8%AE%A1/">重构 改善既有代码的设计</a></li></ul></li></ul>
+{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+
+{% block page_class %}page-post-detail{% endblock %}
+
+
+{% block content %}
+
+  <div id="posts" class="posts-expand">
+    {{ post_template.render(page) }}
+
+    <div class="post-spread">
+      {% if theme.jiathis %}
+        {% include '_partials/share/jiathis.swig' %}
+      {% elseif theme.baidushare %}
+        {% include '_partials/share/baidushare.swig' %}
+      {% elseif theme.add_this_id %}
+        {% include '_partials/share/add-this.swig' %}
+      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
+        {% include '_partials/share/duoshuo_share.swig' %}
+      {% endif %}
     </div>
   </div>
 
+{% endblock %}
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS3/" rel="tag">CSS3</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Canvas/" rel="tag">Canvas</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELK/" rel="tag">ELK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EventEmitter/" rel="tag">EventEmitter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Flexible/" rel="tag">Flexible</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/H5/" rel="tag">H5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kubernetes/" rel="tag">Kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mysql/" rel="tag">Mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/" rel="tag">Nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/" rel="tag">OpenCV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Promise/" rel="tag">Promise</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Proxy/" rel="tag">Proxy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/" rel="tag">Redis数据持久化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCPDump/" rel="tag">TCPDump</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/object-Object/" rel="tag">[object Object]</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/" rel="tag">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/child-process/" rel="tag">child_process</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cluster/" rel="tag">cluster</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crypto/" rel="tag">crypto</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dataStructure/" rel="tag">dataStructure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/even-loop/" rel="tag">even loop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/feature/" rel="tag">feature</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grok/" rel="tag">grok</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/" rel="tag">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jenkins/" rel="tag">jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/" rel="tag">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/koa/" rel="tag">koa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/logstash/" rel="tag">logstash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongoDB/" rel="tag">mongoDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ops/" rel="tag">ops</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/performance/" rel="tag">performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pod/" rel="tag">pod</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/setImmediate-setTimeout-process-nextTick/" rel="tag">setImmediate setTimeout() process.nextTick()</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/stream/" rel="tag">stream</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zsh/" rel="tag">zsh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/" rel="tag">位运算</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" rel="tag">函数式编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" rel="tag">反向代理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" rel="tag">图像处理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B8%83%E5%B1%80/" rel="tag">布局</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%82%E7%AD%89/" rel="tag">幂等</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%89%8B%E5%86%99Promise/" rel="tag">手写Promise</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%94%B6%E8%97%8F%E7%9A%84%E6%96%87%E7%AB%A0/" rel="tag">收藏的文章</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E9%A1%B9/" rel="tag">杂项</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag">架构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/" rel="tag">架构整洁之道导读</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A1%86%E6%9E%B6/" rel="tag">框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B/" rel="tag">盒子模型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1/" rel="tag">短信服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/" rel="tag">短信服务设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%92%E6%9D%80/" rel="tag">秒杀</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B4%A2%E5%BC%95/" rel="tag">索引</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E4%BB%B6/" rel="tag">组件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/" rel="tag">结构化编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF/" rel="tag">缓存击穿</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/" rel="tag">缓存穿透</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9/" rel="tag">缓存雪崩</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/" rel="tag">编程范式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/" rel="tag">设计原则</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/" rel="tag">负载均衡</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%8D%E6%9E%84/" rel="tag">重构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%8D%E6%9E%84-%E6%94%B9%E5%96%84%E6%97%A2%E6%9C%89%E4%BB%A3%E7%A0%81%E7%9A%84%E8%AE%BE%E8%AE%A1/" rel="tag">重构 改善既有代码的设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9B%86%E7%BE%A4/" rel="tag">集群</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/" rel="tag">面向对象编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AD%94%E6%B3%95/" rel="tag">魔法</a></li></ul>
-    </div>
-  </div>
+{% block sidebar %}
+  {{ sidebar_template.render(true) }}
+{% endblock %}
 
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/CSS3/" style="font-size: 10px;">CSS3</a> <a href="/tags/Canvas/" style="font-size: 10px;">Canvas</a> <a href="/tags/ELK/" style="font-size: 11.25px;">ELK</a> <a href="/tags/EventEmitter/" style="font-size: 10px;">EventEmitter</a> <a href="/tags/Flexible/" style="font-size: 10px;">Flexible</a> <a href="/tags/H5/" style="font-size: 10px;">H5</a> <a href="/tags/Kubernetes/" style="font-size: 13.75px;">Kubernetes</a> <a href="/tags/Mysql/" style="font-size: 11.25px;">Mysql</a> <a href="/tags/Nginx/" style="font-size: 11.25px;">Nginx</a> <a href="/tags/Node-js/" style="font-size: 17.5px;">Node.js</a> <a href="/tags/Nodejs/" style="font-size: 11.25px;">Nodejs</a> <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a> <a href="/tags/Promise/" style="font-size: 10px;">Promise</a> <a href="/tags/Proxy/" style="font-size: 10px;">Proxy</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/Redis%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/" style="font-size: 10px;">Redis数据持久化</a> <a href="/tags/TCPDump/" style="font-size: 10px;">TCPDump</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/object-Object/" style="font-size: 11.25px;">[object Object]</a> <a href="/tags/algorithm/" style="font-size: 12.5px;">algorithm</a> <a href="/tags/child-process/" style="font-size: 11.25px;">child_process</a> <a href="/tags/cluster/" style="font-size: 10px;">cluster</a> <a href="/tags/crypto/" style="font-size: 10px;">crypto</a> <a href="/tags/dataStructure/" style="font-size: 11.25px;">dataStructure</a> <a href="/tags/docker/" style="font-size: 16.25px;">docker</a> <a href="/tags/even-loop/" style="font-size: 10px;">even loop</a> <a href="/tags/feature/" style="font-size: 10px;">feature</a> <a href="/tags/grok/" style="font-size: 10px;">grok</a> <a href="/tags/hexo/" style="font-size: 11.25px;">hexo</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/jenkins/" style="font-size: 10px;">jenkins</a> <a href="/tags/k8s/" style="font-size: 10px;">k8s</a> <a href="/tags/kafka/" style="font-size: 10px;">kafka</a> <a href="/tags/koa/" style="font-size: 10px;">koa</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 18.75px;">linux</a> <a href="/tags/logstash/" style="font-size: 10px;">logstash</a> <a href="/tags/mongoDB/" style="font-size: 10px;">mongoDB</a> <a href="/tags/ops/" style="font-size: 20px;">ops</a> <a href="/tags/performance/" style="font-size: 12.5px;">performance</a> <a href="/tags/pod/" style="font-size: 10px;">pod</a> <a href="/tags/redis/" style="font-size: 15px;">redis</a> <a href="/tags/setImmediate-setTimeout-process-nextTick/" style="font-size: 10px;">setImmediate setTimeout() process.nextTick()</a> <a href="/tags/stream/" style="font-size: 10px;">stream</a> <a href="/tags/zsh/" style="font-size: 10px;">zsh</a> <a href="/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/" style="font-size: 10px;">位运算</a> <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">函数式编程</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 10px;">分布式</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 12.5px;">前端</a> <a href="/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" style="font-size: 10px;">反向代理</a> <a href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" style="font-size: 10px;">图像处理</a> <a href="/tags/%E5%B8%83%E5%B1%80/" style="font-size: 10px;">布局</a> <a href="/tags/%E5%B9%82%E7%AD%89/" style="font-size: 10px;">幂等</a> <a href="/tags/%E6%89%8B%E5%86%99Promise/" style="font-size: 10px;">手写Promise</a> <a href="/tags/%E6%94%B6%E8%97%8F%E7%9A%84%E6%96%87%E7%AB%A0/" style="font-size: 10px;">收藏的文章</a> <a href="/tags/%E6%9D%82%E9%A1%B9/" style="font-size: 11.25px;">杂项</a> <a href="/tags/%E6%9E%B6%E6%9E%84/" style="font-size: 13.75px;">架构</a> <a href="/tags/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/" style="font-size: 12.5px;">架构整洁之道导读</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">框架</a> <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" style="font-size: 11.25px;">消息队列</a> <a href="/tags/%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B/" style="font-size: 10px;">盒子模型</a> <a href="/tags/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1/" style="font-size: 10px;">短信服务</a> <a href="/tags/%E7%9F%AD%E4%BF%A1%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/" style="font-size: 10px;">短信服务设计</a> <a href="/tags/%E7%A7%92%E6%9D%80/" style="font-size: 10px;">秒杀</a> <a href="/tags/%E7%B4%A2%E5%BC%95/" style="font-size: 10px;">索引</a> <a href="/tags/%E7%BB%84%E4%BB%B6/" style="font-size: 10px;">组件</a> <a href="/tags/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">结构化编程</a> <a href="/tags/%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF/" style="font-size: 10px;">缓存击穿</a> <a href="/tags/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/" style="font-size: 10px;">缓存穿透</a> <a href="/tags/%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9/" style="font-size: 10px;">缓存雪崩</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/" style="font-size: 10px;">编程范式</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/" style="font-size: 10px;">设计原则</a> <a href="/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/" style="font-size: 10px;">负载均衡</a> <a href="/tags/%E9%87%8D%E6%9E%84/" style="font-size: 10px;">重构</a> <a href="/tags/%E9%87%8D%E6%9E%84-%E6%94%B9%E5%96%84%E6%97%A2%E6%9C%89%E4%BB%A3%E7%A0%81%E7%9A%84%E8%AE%BE%E8%AE%A1/" style="font-size: 10px;">重构 改善既有代码的设计</a> <a href="/tags/%E9%9B%86%E7%BE%A4/" style="font-size: 10px;">集群</a> <a href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">面向对象编程</a> <a href="/tags/%E9%AD%94%E6%B3%95/" style="font-size: 10px;">魔法</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archiv</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">letzter Beitrag</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2021/06/05/%E6%9D%82%E9%A1%B9/CORS/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/05/%E5%89%8D%E7%AB%AF/CSS/border/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/05/nodejs/child/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/05/nodejs/cluster/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/05/nodejs/evenloop/">(no title)</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2021 Sanborn<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
-</body>
-</html>
+{% block script_extra %}
+  {% include '_scripts/pages/post-details.swig' %}
+{% endblock %}
