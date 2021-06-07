@@ -1,23 +1,2292 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
-{% block title %}{{ config.title }}{% if theme.index_with_subtitle and config.subtitle %} - {{config.subtitle }}{% endif %}{% endblock %}
 
-{% block page_class %}
-  {% if is_home() %}page-home{% endif -%}
-{% endblock %}
 
-{% block content %}
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="恍惚而过，不落昏沉">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sanborn">
+<meta property="og:url" content="https://sanbornzhang.github.io/page/6/index.html">
+<meta property="og:site_name" content="Sanborn">
+<meta property="og:description" content="恍惚而过，不落昏沉">
+<meta property="og:locale">
+<meta property="article:author" content="Sanborn">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://Sanbornzhang.github.io/page/6/"/>
+
+
+
+
+
+  <title>Sanborn</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left 
+  page-home">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sanborn</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">爱吃酸菜的鱼</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
   <section id="posts" class="posts-expand">
-    {% for post in page.posts %}
-      {{ post_template.render(post, true) }}
-    {% endfor %}
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Sanbornzhang.github.io/2018/10/16/ops/redis/index/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sanborn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sanborn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/16/ops/redis/index/" itemprop="url">Redis 安装、备份、集群</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-16T00:00:00+08:00">
+                2018-10-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/ops/" itemprop="url" rel="index">
+                    <span itemprop="name">ops</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/ops/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="Redis-简单的数据结构"><a href="#Redis-简单的数据结构" class="headerlink" title="Redis 简单的数据结构"></a>Redis 简单的数据结构</h1><h2 id="set"><a href="#set" class="headerlink" title="set"></a>set</h2>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/10/16/ops/redis/index/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Sanbornzhang.github.io/2018/10/11/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sanborn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sanborn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/11/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/" itemprop="url">幂等性</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-11T00:00:00+08:00">
+                2018-10-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9E%B6%E6%9E%84/" itemprop="url" rel="index">
+                    <span itemprop="name">架构</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/" itemprop="url" rel="index">
+                    <span itemprop="name">幂等</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/%E7%A7%92%E6%9D%80/" itemprop="url" rel="index">
+                    <span itemprop="name">秒杀</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/%E7%A7%92%E6%9D%80/%E5%88%86%E5%B8%83%E5%BC%8F/" itemprop="url" rel="index">
+                    <span itemprop="name">分布式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="幂等幂等性"><a href="#幂等幂等性" class="headerlink" title="幂等幂等性"></a>幂等幂等性</h1><h2 id="什么是幂等"><a href="#什么是幂等" class="headerlink" title="什么是幂等"></a>什么是幂等</h2><pre><code>在编程中一个幂等操作的特点是其任意多次执行所产生的影响均与一次执行的影响相同。幂等函数，或幂等方法，是指可以使用相同参数重复执行，并能获得相同结果的函数。这些函数不会影响系统状态，也不用担心重复执行会对系统造成改变
+
+一个HTTP方法是幂等的，指的是同样的请求被执行一次与连续执行多次的效果是一样的，服务器的状态也是一样的。换句话说就是，幂等方法不应该具有副作用（统计用途除外）。在正确实现的条件下，GET，HEAD，PUT和DELETE 等方法都是幂等的，而 POST 方法不是。所有的 safe 方法也都是幂等的。
+</code></pre>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/10/11/%E6%9E%B6%E6%9E%84/%E5%B9%82%E7%AD%89/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Sanbornzhang.github.io/2018/10/11/%E6%9E%B6%E6%9E%84/%E7%BB%84%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sanborn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sanborn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/11/%E6%9E%B6%E6%9E%84/%E7%BB%84%E4%BB%B6/" itemprop="url">组件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-11T00:00:00+08:00">
+                2018-10-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9E%B6%E6%9E%84/" itemprop="url" rel="index">
+                    <span itemprop="name">架构</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/" itemprop="url" rel="index">
+                    <span itemprop="name">架构整洁之道导读</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BB%84%E4%BB%B6/" itemprop="url" rel="index">
+                    <span itemprop="name">组件</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h1><h2 id="组件聚合"><a href="#组件聚合" class="headerlink" title="组件聚合"></a>组件聚合</h2><p><img src="images/1670863ecf734d7e.png" alt="组件张力图"><br>对于大部分应用程序来说，可维护性大于可复用性，但是再项目的演变过程中会根据时间不断调整。    </p>
+<blockquote>
+<p>例如: 在项目初期<code>CCP</code>原则会比<code>REP</code>原则更加重要</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/10/11/%E6%9E%B6%E6%9E%84/%E7%BB%84%E4%BB%B6/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Sanbornzhang.github.io/2018/09/30/%E6%9E%B6%E6%9E%84/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sanborn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sanborn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/30/%E6%9E%B6%E6%9E%84/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/" itemprop="url">设计原则</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-30T00:00:00+08:00">
+                2018-09-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9E%B6%E6%9E%84/" itemprop="url" rel="index">
+                    <span itemprop="name">架构</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/" itemprop="url" rel="index">
+                    <span itemprop="name">架构整洁之道导读</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/" itemprop="url" rel="index">
+                    <span itemprop="name">设计原则</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="设计原则"><a href="#设计原则" class="headerlink" title="设计原则"></a>设计原则</h1><p>SOLID原则:</p>
+<ol>
+<li>SRP: 单一职责<br>一个软件系统的最佳结构高度依赖于开发这个系统的组织内部结构。这样，每个软件模块都有且只有一个需要被改变的理由。</li>
+<li>OCP: 开闭原则<br>如果软件系统想要更容易改变，那么设计的时候就必须允许新增代码来修改系统行为，而不是只能靠修改原来的代码</li>
+<li>LSP: 里氏替换原则<br>如果想用可替换的组件来构建软件系统，那么这些组件就必须遵守同一个约定，以便让这些组件能够相互替换</li>
+<li>ISP: 接口隔离原则<br>在设计中应该避免不必要的依赖</li>
+<li>DIP: 依赖反转原则<br>高层策略代码不应该依赖于实现底层细节的代码。相反的是，实现底层细节的代码应该依赖于高层策略代码。
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/09/30/%E6%9E%B6%E6%9E%84/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Sanbornzhang.github.io/2018/09/21/%E6%9E%B6%E6%9E%84/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sanborn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sanborn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/21/%E6%9E%B6%E6%9E%84/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/" itemprop="url">编程范式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-21T00:00:00+08:00">
+                2018-09-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9E%B6%E6%9E%84/" itemprop="url" rel="index">
+                    <span itemprop="name">架构</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/" itemprop="url" rel="index">
+                    <span itemprop="name">架构整洁之道导读</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/" itemprop="url" rel="index">
+                    <span itemprop="name">编程范式</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index">
+                    <span itemprop="name">结构化编程</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index">
+                    <span itemprop="name">面向对象编程</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E5%AF%BC%E8%AF%BB/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index">
+                    <span itemprop="name">函数式编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="编程范式"><a href="#编程范式" class="headerlink" title="编程范式"></a>编程范式</h1><p>编程范式： 程序编写的模式，与具体的编程语言关系相对较小。</p>
+<h2 id="结构化编程"><a href="#结构化编程" class="headerlink" title="结构化编程"></a>结构化编程</h2><pre><code>机构化变成对程序的控制权的直接转移进行了限制以及规范
+</code></pre>
+<p>一种编程典范。它采用子程序、程式码区块（英语：block structures）、for循环以及while循环等结构，来取代传统的 goto。希望借此来改善计算机程序的明晰性、品质以及开发时间，并且避免写出面条式代码。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/09/21/%E6%9E%B6%E6%9E%84/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Sanbornzhang.github.io/2018/09/16/ops/linux/using-perf-analysis-CPU-usage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sanborn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sanborn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/16/ops/linux/using-perf-analysis-CPU-usage/" itemprop="url">使用perf定位 Node.js CPU占用性能问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-16T00:00:00+08:00">
+                2018-09-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/ops/" itemprop="url" rel="index">
+                    <span itemprop="name">ops</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/ops/performance/" itemprop="url" rel="index">
+                    <span itemprop="name">performance</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/ops/performance/Node-js/" itemprop="url" rel="index">
+                    <span itemprop="name">Node.js</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="使用perf定位-Node-js-CPU占用性能问题"><a href="#使用perf定位-Node-js-CPU占用性能问题" class="headerlink" title="使用perf定位 Node.js CPU占用性能问题"></a>使用<code>perf</code>定位 <code>Node.js</code> <code>CPU</code>占用性能问题</h1><pre><code>Perf 是用来进行软件性能分析的工具。
+
+通过它，应用程序可以利用 PMU，tracepoint 和内核中的特殊计数器来进行性能统计。它不但可以分析指定应用程序的性能问题 (per thread)，也可以用来分析内核的性能问题，当然也可以同时分析应用代码和内核，从而全面理解应用程序中的性能瓶颈。
+</code></pre>
+<h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install linux-tools-common linux-tools-generic linux-tools-`uname -r`</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/09/16/ops/linux/using-perf-analysis-CPU-usage/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Sanbornzhang.github.io/2018/08/20/ops/ELK/logstash/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sanborn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sanborn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/20/ops/ELK/logstash/" itemprop="url">logstash 的使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-20T00:00:00+08:00">
+                2018-08-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/ELK/" itemprop="url" rel="index">
+                    <span itemprop="name">ELK</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/ELK/logstash/" itemprop="url" rel="index">
+                    <span itemprop="name">logstash</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/ELK/logstash/grok/" itemprop="url" rel="index">
+                    <span itemprop="name">grok</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="logstash-的使用"><a href="#logstash-的使用" class="headerlink" title="logstash 的使用"></a>logstash 的使用</h1><h2 id="Input-输入插件"><a href="#Input-输入插件" class="headerlink" title="Input 输入插件"></a>Input 输入插件</h2><h3 id="Stdin-标准输入"><a href="#Stdin-标准输入" class="headerlink" title="Stdin 标准输入"></a>Stdin 标准输入</h3><pre><code>Stdin 一般是用来debug，也可以在源数据中添加字段。
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    stdin &#123;</span><br><span class="line">        add_field =&gt; &#123;&quot;key&quot; =&gt; &quot;value&quot;&#125;</span><br><span class="line">        codec =&gt; &quot;plain&quot;</span><br><span class="line">        tags =&gt; [&quot;add&quot;]</span><br><span class="line">        type =&gt; &quot;std&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/08/20/ops/ELK/logstash/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Sanbornzhang.github.io/2018/07/16/Algorithm/LRU/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sanborn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sanborn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/16/Algorithm/LRU/" itemprop="url">LRU 算法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-16T00:00:00+08:00">
+                2018-07-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/redis/algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">algorithm</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/redis/algorithm/Node-js/" itemprop="url" rel="index">
+                    <span itemprop="name">Node.js</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="LRU-算法以及实现"><a href="#LRU-算法以及实现" class="headerlink" title="LRU 算法以及实现"></a>LRU 算法以及实现</h1><h2 id="什么是LRU"><a href="#什么是LRU" class="headerlink" title="什么是LRU"></a>什么是LRU</h2><pre><code>LRU（Least recently used，最近最少使用）算法根据数据的历史访问记录来进行淘汰数据，其核心思想是 &#39;如果数据最近被访问过，那么将来被访问的几率也更高&#39;。
+</code></pre>
+<h2 id="为什么使用链表"><a href="#为什么使用链表" class="headerlink" title="为什么使用链表"></a>为什么使用链表</h2><ul>
+<li>数组<br>数组的内存地址是连续的，一般来讲里面类型也是一致的。只是js做了特殊的处理。[如果长度大于2000，如果类型不一致，就会带来相当大的性能影响]</li>
+<li>链表<br>链表中的元素可存储在内存的任何地方。链表的每个元素都存储了下一个元素的地址，从而使一系列随机的内存地址串在一起。</li>
+</ul>
+<h2 id="双向链表的简单实现"><a href="#双向链表的简单实现" class="headerlink" title="双向链表的简单实现"></a>双向链表的简单实现</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line">class Node &#123;</span><br><span class="line">  constructor(data, next = null, previous = null) &#123;</span><br><span class="line">    this.data = data</span><br><span class="line">    this.next = next</span><br><span class="line">    this.previous = previous</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class LList &#123;</span><br><span class="line">  constructor() &#123;</span><br><span class="line">    this.head = null</span><br><span class="line">    this.length = 0</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  findV(v) &#123;</span><br><span class="line">    let current = this.head</span><br><span class="line">    while (current.data !== current.data) &#123;</span><br><span class="line">      current = current.next</span><br><span class="line">    &#125;</span><br><span class="line">    return current</span><br><span class="line">  &#125;</span><br><span class="line">  findI(i) &#123;</span><br><span class="line">    let current = this.head</span><br><span class="line">    let index = 0</span><br><span class="line">    if (i &lt; 0) return null</span><br><span class="line">    while (i !== index) &#123;</span><br><span class="line">      current = current.next</span><br><span class="line">      index++</span><br><span class="line">    &#125;</span><br><span class="line">    return current</span><br><span class="line">  &#125;</span><br><span class="line">  insert(v, i) &#123;</span><br><span class="line">    const newNode = new Node(v)</span><br><span class="line">    if (!this.head) &#123;</span><br><span class="line">      this.head = newNode</span><br><span class="line">    &#125; else if (i) &#123;</span><br><span class="line">      if (i === 0) &#123;</span><br><span class="line">        const node = this.head</span><br><span class="line">        newNode.next = node</span><br><span class="line">      &#125;</span><br><span class="line">      if (i) &#123;</span><br><span class="line">        const current = this.findI(i)</span><br><span class="line">        if (current) &#123;</span><br><span class="line">          const node = current.next</span><br><span class="line">          node.previous = node</span><br><span class="line">          current.next = newNode</span><br><span class="line">          newNode.next = node</span><br><span class="line">          newNode.previous = current</span><br><span class="line">          </span><br><span class="line">        &#125; else &#123;</span><br><span class="line">          // if can&#x27;t find previous node is new list</span><br><span class="line">          this.head = newNode</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      const lastNode = this.end()</span><br><span class="line">      lastNode.next = newNode</span><br><span class="line">      newNode.previous = lastNode</span><br><span class="line">    &#125;</span><br><span class="line">    this.length ++</span><br><span class="line">    return newNode</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  remove(i) &#123;</span><br><span class="line">    const node = this.findI(i)</span><br><span class="line">    let result = 0</span><br><span class="line">    if (node !== null &amp;&amp; Object.keys(node).length) &#123;</span><br><span class="line">      const previous = node.previous</span><br><span class="line">      if (previous !== null  &amp;&amp; Object.keys(previous).length) &#123;</span><br><span class="line">        previous.next = node.next</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        this.head = node.next</span><br><span class="line">      &#125;</span><br><span class="line">      result = 1</span><br><span class="line">    &#125;</span><br><span class="line">    this.length --</span><br><span class="line">    return result</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  end() &#123;</span><br><span class="line">    let current = this.head</span><br><span class="line">    while (current.next) &#123;</span><br><span class="line">      current = current.next</span><br><span class="line">    &#125;</span><br><span class="line">    return current</span><br><span class="line">  &#125;</span><br><span class="line">  iterator()&#123;</span><br><span class="line">    let current = this.head</span><br><span class="line">    const list = []</span><br><span class="line">    list.push(current.data)</span><br><span class="line">    while (current.next) &#123;      </span><br><span class="line">      current = current.next</span><br><span class="line">      list.push(current.data)</span><br><span class="line">    &#125;</span><br><span class="line">    return list</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">module.exports = LList</span><br></pre></td></tr></table></figure>
+
+<h2 id="LRU实现"><a href="#LRU实现" class="headerlink" title="LRU实现"></a>LRU实现</h2><p>我们采用<code>双链表 + Object</code>的方式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">const LinkList = require(&#x27;./utils/LList&#x27;)</span><br><span class="line">const assert = require(&#x27;assert&#x27;)</span><br><span class="line">class LRUCache &#123;</span><br><span class="line">    constructor(limit) &#123;</span><br><span class="line">        this.limit = limit || 1000</span><br><span class="line">        this.linkList = new LinkList()</span><br><span class="line">        this.map = &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    set(k, v) &#123;</span><br><span class="line">        const cacheNodeData = this.get(k)</span><br><span class="line"></span><br><span class="line">        if (cacheNodeData !== undefined &amp;&amp; cacheNodeData !== null) &#123;</span><br><span class="line">            return cacheNodeData</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            if (this.linkList.length === this.limit) &#123;</span><br><span class="line">                let latestNode = this.linkList.end()</span><br><span class="line">                this.linkList.remove(this.linkList.length - 1)</span><br><span class="line">                const latestKey = latestNode.key</span><br><span class="line">                this[&#x27;map&#x27;][latestKey][&#x27;node&#x27;] = null</span><br><span class="line">                this[&#x27;map&#x27;][latestKey] = null</span><br><span class="line">            &#125;</span><br><span class="line">            this[&#x27;map&#x27;][k] = &#123;&#125;</span><br><span class="line">            const node = this.linkList.insert(v)</span><br><span class="line">            node.key = k</span><br><span class="line">            this[&#x27;map&#x27;][k][&#x27;node&#x27;] = node</span><br><span class="line">            return node</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    get(k) &#123;</span><br><span class="line">        if (this[&#x27;map&#x27;][k] !== undefined &amp;&amp; this[&#x27;map&#x27;][k] !== null &amp;&amp;</span><br><span class="line">            Object.keys(this[&#x27;map&#x27;][k])) &#123;</span><br><span class="line">            if (this[&#x27;map&#x27;][k][&#x27;node&#x27;] === this.linkList.head) &#123;</span><br><span class="line">                return this.linkList.head.data</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                const node = this[&#x27;map&#x27;][k][&#x27;node&#x27;]</span><br><span class="line">                const previous = node.previous</span><br><span class="line">                if (previous) &#123;</span><br><span class="line">                    const next = node.next</span><br><span class="line">                    previous.next = next</span><br><span class="line">                    if (next) &#123;</span><br><span class="line">                        next.previous = previous</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                this.linkList.head.previous = node</span><br><span class="line">                node.next = this.linkList.head</span><br><span class="line"></span><br><span class="line">                node.previous = null</span><br><span class="line">                this.linkList.head = node</span><br><span class="line">                return node.data</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            return null</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">const test = (count = 10 * 100 * 1000) =&gt; &#123;</span><br><span class="line">    console.time(&#x27;cache test&#x27;)</span><br><span class="line">    const cacheInstance = new LRUCache(200)</span><br><span class="line">    for (let loop = 0; loop &lt; count; loop++) &#123;</span><br><span class="line">        for (let i = 1; i &lt; 3000; i++) &#123;</span><br><span class="line">            cacheInstance.set(i, i)</span><br><span class="line">            const v = cacheInstance.get(i)</span><br><span class="line">            assert(v !== undefined &amp;&amp; v === i, `k: $&#123;i&#125; v:$&#123;v&#125;,$&#123;JSON.stringify(cacheInstance.data)&#125;`)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    console.timeEnd(&#x27;cache test&#x27;)</span><br><span class="line">    const item = cacheInstance.linkList.iterator()</span><br><span class="line">    console.log(item.length)</span><br><span class="line">    console.time(&#x27;cache get&#x27;)</span><br><span class="line">    cacheInstance.get(99)</span><br><span class="line">    console.timeEnd(&#x27;cache get&#x27;)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">test(10000)</span><br></pre></td></tr></table></figure>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cache test: 16298.695ms</span><br><span class="line">链表长度: 20</span><br><span class="line">cache get: 0.004ms</span><br><span class="line">-----------------------</span><br><span class="line">cache test: 55168.847ms</span><br><span class="line">链表长度: 200</span><br><span class="line">cache get: 0.006ms</span><br></pre></td></tr></table></figure>
+
+<h3 id="TODO-优化"><a href="#TODO-优化" class="headerlink" title="TODO:优化"></a>TODO:优化</h3><p>可以存<code>链表的end</code>结尾，不然随着数据的超出限制以后 set 速度会随之下降 O(n)</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Sanbornzhang.github.io/2018/07/16/nodejs/%E6%89%8B%E6%92%B8%E4%B8%80%E4%B8%AA%E6%A1%86%E6%9E%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sanborn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sanborn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/16/nodejs/%E6%89%8B%E6%92%B8%E4%B8%80%E4%B8%AA%E6%A1%86%E6%9E%B6/" itemprop="url">自己动手搭框架RestFul系列 1</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-16T00:00:00+08:00">
+                2018-07-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Nodejs/" itemprop="url" rel="index">
+                    <span itemprop="name">Nodejs</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Nodejs/koa/" itemprop="url" rel="index">
+                    <span itemprop="name">koa</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Nodejs/koa/%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index">
+                    <span itemprop="name">框架</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="自己手动搭建框架系列1"><a href="#自己手动搭建框架系列1" class="headerlink" title="自己手动搭建框架系列1"></a>自己手动搭建框架系列1</h1><h2 id="一个完整的框架应该包含什么"><a href="#一个完整的框架应该包含什么" class="headerlink" title="一个完整的框架应该包含什么"></a>一个完整的框架应该包含什么</h2><ol>
+<li> 完整的单元测试</li>
+<li> 完整的日记记录</li>
+<li> ORM</li>
+<li> 简单便捷的开发方式</li>
+</ol>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/07/16/nodejs/%E6%89%8B%E6%92%B8%E4%B8%80%E4%B8%AA%E6%A1%86%E6%9E%B6/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Sanbornzhang.github.io/2018/07/16/%E6%9D%82%E9%A1%B9/proxy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sanborn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sanborn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/16/%E6%9D%82%E9%A1%B9/proxy/" itemprop="url">在 linux 或者 Windows 中使用代理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-16T00:00:00+08:00">
+                2018-07-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Proxy/" itemprop="url" rel="index">
+                    <span itemprop="name">Proxy</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="Shadowsocks"><a href="#Shadowsocks" class="headerlink" title="Shadowsocks"></a>Shadowsocks</h2><h3 id="server-side-install"><a href="#server-side-install" class="headerlink" title="server side install"></a>server side install</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install software-properties-common -y</span><br><span class="line">sudo add-apt-repository ppa:max-c-lv/shadowsocks-libev -y</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt install -y shadowsocks-libev</span><br><span class="line">echo &#x27;&#123;</span><br><span class="line">    &quot;server&quot;:&quot;0.0.0.0&quot;,</span><br><span class="line">    &quot;server_port&quot;:$&#123;yourPort&#125;,</span><br><span class="line">    &quot;local_port&quot;:1080,</span><br><span class="line">    &quot;password&quot;:&quot;$&#123;yourPass&#125;&quot;,</span><br><span class="line">    &quot;timeout&quot;:60,</span><br><span class="line">    &quot;method&quot;:&quot;aes-256-cfb&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x27;&gt;/etc/shadowsocks-libev/config.json</span><br><span class="line">service shadowsocks-libev restart</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/07/16/%E6%9D%82%E9%A1%B9/proxy/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
-  {% include '_partials/pagination.swig' %}
-{% endblock %}
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/5/">&lt;i class&#x3D;&quot;fa fa-angle-left&quot;&gt;&lt;&#x2F;i&gt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/7/">&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;</a>
+  </nav>
 
-{% block sidebar %}
-  {{ sidebar_template.render(false) }}
-{% endblock %}
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg"
+                alt="Sanborn" />
+            
+              <p class="site-author-name" itemprop="name">Sanborn</p>
+              <p class="site-description motion-element" itemprop="description">恍惚而过，不落昏沉</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Sanbornzhang" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sanborn</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

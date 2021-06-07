@@ -1,37 +1,847 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ops,linux,ELK,logstash,grok," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="logstash 的使用Input 输入插件Stdin 标准输入Stdin 一般是用来debug，也可以在源数据中添加字段。  12345678input &amp;#123;    stdin &amp;#123;        add_field &#x3D;&gt; &amp;#123;&quot;key&quot; &#x3D;&gt; &quot;value&quot;&amp;#125;        codec &#x3D;&gt; &amp;quot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="logstash 的使用">
+<meta property="og:url" content="https://sanbornzhang.github.io/2018/08/20/ops/ELK/logstash/index.html">
+<meta property="og:site_name" content="Sanborn">
+<meta property="og:description" content="logstash 的使用Input 输入插件Stdin 标准输入Stdin 一般是用来debug，也可以在源数据中添加字段。  12345678input &amp;#123;    stdin &amp;#123;        add_field &#x3D;&gt; &amp;#123;&quot;key&quot; &#x3D;&gt; &quot;value&quot;&amp;#125;        codec &#x3D;&gt; &amp;quot">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-08-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-05T08:06:12.008Z">
+<meta property="article:author" content="Sanborn">
+<meta property="article:tag" content="ops">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="ELK">
+<meta property="article:tag" content="logstash">
+<meta property="article:tag" content="grok">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://Sanbornzhang.github.io/2018/08/20/ops/ELK/logstash/"/>
+
+
+
+
+
+  <title>logstash 的使用 | Sanborn</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sanborn</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">爱吃酸菜的鱼</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Sanbornzhang.github.io/2018/08/20/ops/ELK/logstash/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sanborn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sanborn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">logstash 的使用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-20T00:00:00+08:00">
+                2018-08-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/ELK/" itemprop="url" rel="index">
+                    <span itemprop="name">ELK</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/ELK/logstash/" itemprop="url" rel="index">
+                    <span itemprop="name">logstash</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/ELK/logstash/grok/" itemprop="url" rel="index">
+                    <span itemprop="name">grok</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="logstash-的使用"><a href="#logstash-的使用" class="headerlink" title="logstash 的使用"></a>logstash 的使用</h1><h2 id="Input-输入插件"><a href="#Input-输入插件" class="headerlink" title="Input 输入插件"></a>Input 输入插件</h2><h3 id="Stdin-标准输入"><a href="#Stdin-标准输入" class="headerlink" title="Stdin 标准输入"></a>Stdin 标准输入</h3><pre><code>Stdin 一般是用来debug，也可以在源数据中添加字段。
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    stdin &#123;</span><br><span class="line">        add_field =&gt; &#123;&quot;key&quot; =&gt; &quot;value&quot;&#125;</span><br><span class="line">        codec =&gt; &quot;plain&quot;</span><br><span class="line">        tags =&gt; [&quot;add&quot;]</span><br><span class="line">        type =&gt; &quot;std&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<h3 id="File-读取文件"><a href="#File-读取文件" class="headerlink" title="File 读取文件"></a>File 读取文件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">input</span><br><span class="line">    file &#123;</span><br><span class="line">        path =&gt; [&quot;/var/log/*.log&quot;, &quot;/var/log/message&quot;]</span><br><span class="line">        type =&gt; &quot;system&quot;</span><br><span class="line">        start_position =&gt; &quot;beginning&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="TCP-读取网络数据-常用"><a href="#TCP-读取网络数据-常用" class="headerlink" title="TCP 读取网络数据[常用]"></a>TCP 读取网络数据[常用]</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    tcp &#123;</span><br><span class="line">        port =&gt; 8888</span><br><span class="line">        mode =&gt; &quot;server&quot;</span><br><span class="line">        ssl_enable =&gt; false</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Output-输出插件"><a href="#Output-输出插件" class="headerlink" title="Output 输出插件"></a>Output 输出插件</h2><h3 id="Stdout-标准输出"><a href="#Stdout-标准输出" class="headerlink" title="Stdout 标准输出"></a>Stdout 标准输出</h3><pre><code>重要和常见的用途就是调试。所以在不太有效的时候，加上命令行参数 -vv 运行，查看更多详细调试信息。
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">output &#123;</span><br><span class="line">    stdout &#123;</span><br><span class="line">        codec =&gt; rubydebug</span><br><span class="line">        workers =&gt; 2</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="保存进-Elasticsearch"><a href="#保存进-Elasticsearch" class="headerlink" title="保存进 Elasticsearch"></a>保存进 Elasticsearch</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">output &#123;</span><br><span class="line">    elasticsearch &#123;</span><br><span class="line">        host =&gt; &quot;192.168.0.2&quot;</span><br><span class="line">        protocol =&gt; &quot;http&quot;</span><br><span class="line">        index =&gt; &quot;logstash-%&#123;type&#125;-%&#123;+YYYY.MM.dd&#125;&quot;</span><br><span class="line">        index_type =&gt; &quot;%&#123;type&#125;&quot;</span><br><span class="line">        workers =&gt; 5</span><br><span class="line">        template_overwrite =&gt; true</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="TCP-发送网络数据"><a href="#TCP-发送网络数据" class="headerlink" title="TCP 发送网络数据"></a>TCP 发送网络数据</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">output &#123;</span><br><span class="line">    tcp &#123;</span><br><span class="line">        host  =&gt; &quot;192.168.0.2&quot;</span><br><span class="line">        port  =&gt; 8888</span><br><span class="line">        codec =&gt; json_lines</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Exec-调用命令执行"><a href="#Exec-调用命令执行" class="headerlink" title="Exec 调用命令执行"></a>Exec 调用命令执行</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">output &#123;</span><br><span class="line">    exec &#123;</span><br><span class="line">        command =&gt; &quot;sendsms.pl \&quot;%&#123;message&#125;\&quot; -t %&#123;user&#125;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h2><h3 id="Grok"><a href="#Grok" class="headerlink" title="Grok"></a><code>Grok</code></h3><pre><code>Grok 是 Logstash 最重要的插件。你可以在 grok 里预定义好命名正则表达式，在稍后(grok参数或者其他正则表达式里)引用它。
+</code></pre>
+<h4 id="使用："><a href="#使用：" class="headerlink" title="使用："></a>使用：</h4><ol>
+<li>在<code>pattern_definitions</code> 中定义你所想拆分的正则表达式</li>
+<li>在<code>match</code>中使用：<br>grok 表达式的打印复制格式的完整语法是下面这样的：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%&#123;PATTERN_NAME:capture_name:data_type&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>一个例子:<br>   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">grok &#123;</span><br><span class="line">  pattern_definitions =&gt; &#123;</span><br><span class="line">    &quot;MY_DATA&quot; =&gt; &quot;[0-9]&#123;4&#125;-[01]?[1-9]?-[0-3]?[0-9]?-[0-5]?[0-9]?-[0-5]?[0-9]?&quot;</span><br><span class="line">    &quot;LOG4J_FIELD&quot; =&gt; &quot;\[[^\[\]]+\]&quot;</span><br><span class="line">    &quot;ANY_DATA&quot; =&gt; &quot;.*&quot;</span><br><span class="line">  &#125;</span><br><span class="line">  match =&gt; &#123; </span><br><span class="line">    &quot;message&quot; =&gt; &quot;^  %&#123;MY_DATA:Date_time&#125; %&#123;LOG4J_FIELD:thread&#125; %&#123;LOG4J_FIELD:class&#125; %&#123;LOG4J_FIELD:log_level&#125; - %&#123;ANY_DATA:log_data&#125;&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><p><code>grok</code> 在性能和资源损耗方面被广为诟病<br>但是如果使用良好的<code>正则表达式</code>对性能的影响实际上也没有那么大.<br>关于<code>grok 性能</code>可以看一下:<br><a target="_blank" rel="noopener" href="https://www.elastic.co/blog/do-you-grok-grok">do-you-grok-grok</a>  </p>
+<p>在<code>某些</code>场景下可以用 <code>dissect</code> 替代: <a target="_blank" rel="noopener" href="https://www.elastic.co/blog/logstash-dude-wheres-my-chainsaw-i-need-to-dissect-my-logs">Logstash Dude, where’s my chainsaw? I need to dissect my logs</a>  </p>
+<h3 id="dissect"><a href="#dissect" class="headerlink" title="dissect"></a>dissect</h3><pre><code>Dissect过滤器是一种拆分操作。与常规拆分不同，此操​​作将一组分隔符应用于字符串值。Dissect不使用正则表达式，速度非常快。
+</code></pre>
+<h4 id="例子："><a href="#例子：" class="headerlink" title="例子："></a>例子：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">filter &#123;</span><br><span class="line">  dissect &#123;</span><br><span class="line">    mapping =&gt; &#123;</span><br><span class="line">      &quot;message&quot; =&gt; &quot;%&#123;ts&#125; %&#123;+ts&#125; %&#123;+ts&#125; %&#123;src&#125; %&#123;&#125; %&#123;prog&#125;[%&#123;pid&#125;]: %&#123;msg&#125;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Date"><a href="#Date" class="headerlink" title="Date"></a>Date</h3><pre><code>`date` 插件可以用来转换你的日志记录中的时间字符串，变成 LogStash::Timestamp 对象，然后转存到 @timestamp 字段里。
+</code></pre>
+<h4 id="date五种时间格式："><a href="#date五种时间格式：" class="headerlink" title="date五种时间格式："></a>date五种时间格式：</h4><ol>
+<li>ISO8601</li>
+<li>UNIX</li>
+<li>UNIX_MS</li>
+<li>TAI64N</li>
+<li>Joda-Time 库</li>
+</ol>
+<h4 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">filter &#123;</span><br><span class="line">    grok &#123;</span><br><span class="line">        match =&gt; [&quot;message&quot;, &quot;%&#123;HTTPDATE:logdate&#125;&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">    date &#123;</span><br><span class="line">        match =&gt; [&quot;logdate&quot;, &quot;dd/MMM/yyyy:HH:mm:ss Z&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="JSON"><a href="#JSON" class="headerlink" title="JSON"></a>JSON</h3><pre><code>我们可以通过在input的时候直接使用 `codec =&gt; &quot;json&quot;`作为 JSON 编码。我们也可以单独启用 JSON 解码插件
+</code></pre>
+<h4 id="例子-1"><a href="#例子-1" class="headerlink" title="例子"></a>例子</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">filter &#123;</span><br><span class="line">    json &#123;</span><br><span class="line">        source =&gt; &quot;message&quot;</span><br><span class="line">        target =&gt; &quot;jsoncontent&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果不打算使用多层结构的话，可以直接删掉 <code>target</code></p>
+</blockquote>
+<h3 id="Mutate-数据修改"><a href="#Mutate-数据修改" class="headerlink" title="Mutate 数据修改"></a>Mutate 数据修改</h3><pre><code>mutate 插件是 Logstash 另一个重要插件。它提供了丰富的基础类型数据处理能力。包括类型转换，字符串处理和字段处理等。
+</code></pre>
+<h4 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">filter &#123;</span><br><span class="line">    mutate &#123;</span><br><span class="line">        convert =&gt; [&quot;request_time&quot;, &quot;float&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="字符串处理"><a href="#字符串处理" class="headerlink" title="字符串处理"></a>字符串处理</h4><ol>
+<li><p>gsub 仅对字符串类型字段有效</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gsub =&gt; [&quot;urlparams&quot;, &quot;[\\?#]&quot;, &quot;_&quot;]</span><br></pre></td></tr></table></figure></li>
+<li><p>split</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">filter &#123;</span><br><span class="line">    mutate &#123;</span><br><span class="line">        split =&gt; [&quot;message&quot;, &quot;|&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>join 对数组类型字段有效</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">filter &#123;</span><br><span class="line"> mutate &#123;</span><br><span class="line">     split =&gt; [&quot;message&quot;, &quot;|&quot;]</span><br><span class="line"> &#125;</span><br><span class="line"> mutate &#123;</span><br><span class="line">     join =&gt; [&quot;message&quot;, &quot;,&quot;]</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>merge 合并两个数组或者哈希字段。依然在之前 split 的基础上继续：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">filter &#123;</span><br><span class="line">    mutate &#123;</span><br><span class="line">        split =&gt; [&quot;message&quot;, &quot;|&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">    mutate &#123;</span><br><span class="line">        merge =&gt; [&quot;message&quot;, &quot;message&quot;]</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="字段处理"><a href="#字段处理" class="headerlink" title="字段处理"></a>字段处理</h4><ul>
+<li><p>rename: 重命名某个字段，如果目的字段已经存在，会被覆盖掉：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">filter &#123;</span><br><span class="line">    mutate &#123;</span><br><span class="line">        rename =&gt; [&quot;syslog_host&quot;, &quot;host&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>update: 更新某个字段的内容。如果字段不存在，不会新建。</p>
+</li>
+<li><p>replace: 作用和 update 类似，但是当字段不存在的时候，它会起到 add_field 参数一样的效果，自动添加新的字段。</p>
+</li>
+</ul>
+<h3 id="GeoIP-地址查询归类"><a href="#GeoIP-地址查询归类" class="headerlink" title="GeoIP 地址查询归类"></a>GeoIP 地址查询归类</h3><pre><code>GeoIP 是最常见的免费 IP 地址归类查询库，同时也有收费版可以采购。GeoIP 库可以根据 IP 地址提供对应的地域信息，包括国别，省市，经纬度等，对于可视化地图和区域统计非常有用。
+</code></pre>
+<h4 id="例子：-1"><a href="#例子：-1" class="headerlink" title="例子："></a>例子：</h4>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">filter &#123;</span><br><span class="line">    geoip &#123;</span><br><span class="line">        source =&gt; &quot;message&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>只是简单的介绍了 <code>Logstash</code> 配置文件的使用，具体的可以参考 REF 的内容。</p>
+<h2 id="REF"><a href="#REF" class="headerlink" title="REF"></a>REF</h2><p><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/logstash/current/index.html">Logstash Reference</a><br><a target="_blank" rel="noopener" href="https://doc.yonyoucloud.com/doc/logstash-best-practice-cn/index.html">Logstash 最佳实践</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ops/" rel="tag"># ops</a>
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/ELK/" rel="tag"># ELK</a>
+          
+            <a href="/tags/logstash/" rel="tag"># logstash</a>
+          
+            <a href="/tags/grok/" rel="tag"># grok</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/16/Algorithm/LRU/" rel="next" title="LRU 算法">
+                <i class="fa fa-chevron-left"></i> LRU 算法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/16/ops/linux/using-perf-analysis-CPU-usage/" rel="prev" title="使用perf定位 Node.js CPU占用性能问题">
+                使用perf定位 Node.js CPU占用性能问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          </div>
+          
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg"
+                alt="Sanborn" />
+            
+              <p class="site-author-name" itemprop="name">Sanborn</p>
+              <p class="site-description motion-element" itemprop="description">恍惚而过，不落昏沉</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Sanbornzhang" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#logstash-%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">logstash 的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Input-%E8%BE%93%E5%85%A5%E6%8F%92%E4%BB%B6"><span class="nav-number">1.1.</span> <span class="nav-text">Input 输入插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Stdin-%E6%A0%87%E5%87%86%E8%BE%93%E5%85%A5"><span class="nav-number">1.1.1.</span> <span class="nav-text">Stdin 标准输入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#File-%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.2.</span> <span class="nav-text">File 读取文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-%E8%AF%BB%E5%8F%96%E7%BD%91%E7%BB%9C%E6%95%B0%E6%8D%AE-%E5%B8%B8%E7%94%A8"><span class="nav-number">1.1.3.</span> <span class="nav-text">TCP 读取网络数据[常用]</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Output-%E8%BE%93%E5%87%BA%E6%8F%92%E4%BB%B6"><span class="nav-number">1.2.</span> <span class="nav-text">Output 输出插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Stdout-%E6%A0%87%E5%87%86%E8%BE%93%E5%87%BA"><span class="nav-number">1.2.1.</span> <span class="nav-text">Stdout 标准输出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%9D%E5%AD%98%E8%BF%9B-Elasticsearch"><span class="nav-number">1.2.2.</span> <span class="nav-text">保存进 Elasticsearch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-%E5%8F%91%E9%80%81%E7%BD%91%E7%BB%9C%E6%95%B0%E6%8D%AE"><span class="nav-number">1.2.3.</span> <span class="nav-text">TCP 发送网络数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Exec-%E8%B0%83%E7%94%A8%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="nav-number">1.2.4.</span> <span class="nav-text">Exec 调用命令执行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#filter"><span class="nav-number">1.3.</span> <span class="nav-text">filter</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Grok"><span class="nav-number">1.3.1.</span> <span class="nav-text">Grok</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">使用：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dissect"><span class="nav-number">1.3.2.</span> <span class="nav-text">dissect</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90%EF%BC%9A"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">例子：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Date"><span class="nav-number">1.3.3.</span> <span class="nav-text">Date</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#date%E4%BA%94%E7%A7%8D%E6%97%B6%E9%97%B4%E6%A0%BC%E5%BC%8F%EF%BC%9A"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">date五种时间格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">例子</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSON"><span class="nav-number">1.3.4.</span> <span class="nav-text">JSON</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90-1"><span class="nav-number">1.3.4.1.</span> <span class="nav-text">例子</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mutate-%E6%95%B0%E6%8D%AE%E4%BF%AE%E6%94%B9"><span class="nav-number">1.3.5.</span> <span class="nav-text">Mutate 数据修改</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="nav-number">1.3.5.1.</span> <span class="nav-text">类型转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%A4%84%E7%90%86"><span class="nav-number">1.3.5.2.</span> <span class="nav-text">字符串处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E6%AE%B5%E5%A4%84%E7%90%86"><span class="nav-number">1.3.5.3.</span> <span class="nav-text">字段处理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GeoIP-%E5%9C%B0%E5%9D%80%E6%9F%A5%E8%AF%A2%E5%BD%92%E7%B1%BB"><span class="nav-number">1.3.6.</span> <span class="nav-text">GeoIP 地址查询归类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90%EF%BC%9A-1"><span class="nav-number">1.3.6.1.</span> <span class="nav-text">例子：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#REF"><span class="nav-number">1.5.</span> <span class="nav-text">REF</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sanborn</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

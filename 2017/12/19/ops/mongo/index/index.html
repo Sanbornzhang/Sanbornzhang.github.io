@@ -1,37 +1,1049 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ops,linux,mongoDB,集群," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="mongodb install(ubuntu 14.04)在ubuntu中安装mongodb 1234sudo apt-key adv --keyserver hkp:&#x2F;&#x2F;keyserver.ubuntu.com:80 --recv EA312927echo &quot;deb http:&#x2F;&#x2F;repo.mongodb.com&#x2F;apt&#x2F;ubuntu trusty&#x2F;mongodb-enterprise">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mongoDB双副本集安装">
+<meta property="og:url" content="https://sanbornzhang.github.io/2017/12/19/ops/mongo/index/index.html">
+<meta property="og:site_name" content="Sanborn">
+<meta property="og:description" content="mongodb install(ubuntu 14.04)在ubuntu中安装mongodb 1234sudo apt-key adv --keyserver hkp:&#x2F;&#x2F;keyserver.ubuntu.com:80 --recv EA312927echo &quot;deb http:&#x2F;&#x2F;repo.mongodb.com&#x2F;apt&#x2F;ubuntu trusty&#x2F;mongodb-enterprise">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-12-18T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-05T08:06:12.024Z">
+<meta property="article:author" content="Sanborn">
+<meta property="article:tag" content="ops">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="mongoDB">
+<meta property="article:tag" content="集群">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://Sanbornzhang.github.io/2017/12/19/ops/mongo/index/"/>
+
+
+
+
+
+  <title>mongoDB双副本集安装 | Sanborn</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sanborn</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">爱吃酸菜的鱼</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Sanbornzhang.github.io/2017/12/19/ops/mongo/index/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sanborn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sanborn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">mongoDB双副本集安装</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-19T00:00:00+08:00">
+                2017-12-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ops/" itemprop="url" rel="index">
+                    <span itemprop="name">ops</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ops/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ops/linux/mongoDB/" itemprop="url" rel="index">
+                    <span itemprop="name">mongoDB</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ops/linux/mongoDB/%E9%9B%86%E7%BE%A4/" itemprop="url" rel="index">
+                    <span itemprop="name">集群</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="mongodb-install-ubuntu-14-04"><a href="#mongodb-install-ubuntu-14-04" class="headerlink" title="mongodb install(ubuntu 14.04)"></a>mongodb install(ubuntu 14.04)</h1><p>在ubuntu中安装mongodb</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927</span><br><span class="line">echo &quot;deb http://repo.mongodb.com/apt/ubuntu trusty/mongodb-enterprise/3.2 multiverse&quot; | sudo tee /etc/apt/sources.list.d/mongodb-enterprise.list</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install -y mongodb-enterprise</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h1 id="mongodb-Auth"><a href="#mongodb-Auth" class="headerlink" title="mongodb Auth"></a>mongodb Auth</h1><h2 id="查看MongoDB配置文件"><a href="#查看MongoDB配置文件" class="headerlink" title="查看MongoDB配置文件"></a>查看MongoDB配置文件</h2><p>  <code>vi /etc/mongod.conf </code></p>
+<h2 id="systemLog"><a href="#systemLog" class="headerlink" title="systemLog"></a>systemLog</h2><h3 id="systemLog-verbosity"><a href="#systemLog-verbosity" class="headerlink" title="systemLog.verbosity"></a>systemLog.verbosity</h3><ul>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages.</li>
+</ul>
+<h3 id="systemLog-component-accessControl-verbosity"><a href="#systemLog-component-accessControl-verbosity" class="headerlink" title="systemLog.component.accessControl.verbosity"></a>systemLog.component.accessControl.verbosity</h3><pre><code>The log message verbosity level for components related to access control.
+</code></pre>
+<ul>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages.</li>
+</ul>
+<h3 id="systemLog-component-command-verbosity"><a href="#systemLog-component-command-verbosity" class="headerlink" title="systemLog.component.command.verbosity"></a>systemLog.component.command.verbosity</h3><pre><code>The log message verbosity level for components related to commands.
+</code></pre>
+<ul>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages.</li>
+</ul>
+<h3 id="systemLog-component-control-verbosity"><a href="#systemLog-component-control-verbosity" class="headerlink" title="systemLog.component.control.verbosity"></a>systemLog.component.control.verbosity</h3><pre><code>The log message verbosity level for components related to control operations.
+</code></pre>
+<ul>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages.</li>
+</ul>
+<h3 id="systemLog-component-ftdc-verbosity"><a href="#systemLog-component-ftdc-verbosity" class="headerlink" title="systemLog.component.ftdc.verbosity"></a>systemLog.component.ftdc.verbosity</h3><pre><code>The log message verbosity level for components related to diagnostic data collection operations.
+</code></pre>
+<ul>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages.</li>
+</ul>
+<h3 id="systemLog-component-geo-verbosity"><a href="#systemLog-component-geo-verbosity" class="headerlink" title="systemLog.component.geo.verbosity"></a>systemLog.component.geo.verbosity</h3><pre><code>The log message verbosity level for components related to geospatial parsing operations.
+</code></pre>
+<ul>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages.</li>
+</ul>
+<h3 id="systemLog-component-index-verbosity"><a href="#systemLog-component-index-verbosity" class="headerlink" title="systemLog.component.index.verbosity"></a>systemLog.component.index.verbosity</h3><pre><code>The log message verbosity level for components related to indexing operations.
+</code></pre>
+<ul>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages.</li>
+</ul>
+<h3 id="systemLog-component-network-verbosity"><a href="#systemLog-component-network-verbosity" class="headerlink" title="systemLog.component.network.verbosity"></a>systemLog.component.network.verbosity</h3><pre><code>The log message verbosity level for components related to networking operations
+</code></pre>
+<ul>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages</li>
+</ul>
+<h3 id="systemLog-component-query-verbosity"><a href="#systemLog-component-query-verbosity" class="headerlink" title="systemLog.component.query.verbosity"></a>systemLog.component.query.verbosity</h3><pre><code>The log message verbosity level for components related to query operations.
+</code></pre>
+<ul>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages<h3 id="systemLog-component-replication-verbosity"><a href="#systemLog-component-replication-verbosity" class="headerlink" title="systemLog.component.replication.verbosity"></a>systemLog.component.replication.verbosity</h3>  The log message verbosity level for components related to replication.</li>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages</li>
+</ul>
+<h3 id="systemLog-component-sharding-verbosity"><a href="#systemLog-component-sharding-verbosity" class="headerlink" title="systemLog.component.sharding.verbosity"></a>systemLog.component.sharding.verbosity</h3><pre><code>The log message verbosity level for components related to sharding.
+</code></pre>
+<ul>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages</li>
+</ul>
+<h3 id="systemLog-component-storage-verbosity"><a href="#systemLog-component-storage-verbosity" class="headerlink" title="systemLog.component.storage.verbosity"></a>systemLog.component.storage.verbosity</h3><pre><code>The log message verbosity level for components related to storage.
+</code></pre>
+<ul>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages</li>
+</ul>
+<h3 id="systemLog-component-storage-journal-verbosity"><a href="#systemLog-component-storage-journal-verbosity" class="headerlink" title="systemLog.component.storage.journal.verbosity"></a>systemLog.component.storage.journal.verbosity</h3><pre><code>The log message verbosity level for components related to journaling.
+</code></pre>
+<ul>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages</li>
+</ul>
+<h3 id="systemLog-component-write-verbosity"><a href="#systemLog-component-write-verbosity" class="headerlink" title="systemLog.component.write.verbosity"></a>systemLog.component.write.verbosity</h3><pre><code>The log message verbosity level for components related to write operations.
+</code></pre>
+<ul>
+<li>0 is the MongoDB’s default log verbosity level, to include Informational messages.</li>
+<li>1 to 5 increases the verbosity level to include Debug messages</li>
+</ul>
+<h2 id="net-Options"><a href="#net-Options" class="headerlink" title="net Options"></a>net Options</h2><h3 id="net-port"><a href="#net-port" class="headerlink" title="net.port"></a>net.port</h3><p><code>Default: 27017</code></p>
+<h4 id="net-bindIp"><a href="#net-bindIp" class="headerlink" title="net.bindIp"></a>net.bindIp</h4><p><code>bindIp: 127.0.0.1 to bindIp: 127.0.0.1,10.116.79.104</code></p>
+<p>To bind to multiple IP addresses, enter a list of comma separated values.</p>
+<h3 id="net-maxIncomingConnections"><a href="#net-maxIncomingConnections" class="headerlink" title="net.maxIncomingConnections"></a>net.maxIncomingConnections</h3><p><code>Default: 65536</code><br>The maximum number of simultaneous connections that mongos or mongod will accept.</p>
+<h3 id="net-wireObjectCheck"><a href="#net-wireObjectCheck" class="headerlink" title="net.wireObjectCheck"></a>net.wireObjectCheck</h3><p><code>Default: True</code><br>When true, the mongod or mongos instance validates all requests from clients upon receipt to prevent clients from inserting malformed or invalid BSON into a MongoDB database.</p>
+<h3 id="net-ipv6"><a href="#net-ipv6" class="headerlink" title="net.ipv6"></a>net.ipv6</h3><p><code>Default: False</code><br>Removed in version 3.0.</p>
+<h3 id="net-unixDomainSocket"><a href="#net-unixDomainSocket" class="headerlink" title="net.unixDomainSocket"></a>net.unixDomainSocket</h3><p><code>Default: True</code><br>Enable or disable listening on the UNIX domain socket. <code>net.unixDomainSocket.enabled</code> applies only to Unix-based systems.<br>The mongos or mongod process always listens on the UNIX socket unless one of the following is true:</p>
+<ul>
+<li>net.unixDomainSocket.enabled is false</li>
+<li>–nounixsocket is set. The command line option takes precedence over the configuration file setting.</li>
+<li>net.bindIp is not set</li>
+<li>net.bindIp does not specify 127.0.0.1</li>
+</ul>
+<h3 id="net-unixDomainSocket-pathPrefix"><a href="#net-unixDomainSocket-pathPrefix" class="headerlink" title="net.unixDomainSocket.pathPrefix"></a>net.unixDomainSocket.pathPrefix</h3><p><code>Default: /tmp</code><br>The path for the UNIX socket. net.unixDomainSocket.pathPrefix applies only to Unix-based systems.</p>
+<h3 id="net-unixDomainSocket-filePermissions"><a href="#net-unixDomainSocket-filePermissions" class="headerlink" title="net.unixDomainSocket.filePermissions"></a>net.unixDomainSocket.filePermissions</h3><p><code>Default: 0700</code><br>Sets the permission for the UNIX domain socket file.</p>
+<h2 id="net-http"><a href="#net-http" class="headerlink" title="net.http"></a>net.http</h2><pre><code>Deprecated since version 3.2: HTTP interface for MongoDB
+</code></pre>
+<h2 id="net-ssl-Options"><a href="#net-ssl-Options" class="headerlink" title="net.ssl Options"></a>net.ssl Options</h2><pre><code>Changed in version 3.0: Most MongoDB distributions now include support for TLS/SSL. 
+</code></pre>
+<p>See:  </p>
+<ol>
+<li> <a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/tutorial/configure-ssl/">Configure mongod and mongos for TLS/SSL</a></li>
+<li> <a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/tutorial/configure-ssl-clients/">TLS/SSL Configuration for Clients</a>   </li>
+</ol>
+<p>For more information about TLS/SSL and MongoDB.</p>
+<h3 id="net-ssl-mode"><a href="#net-ssl-mode" class="headerlink" title="net.ssl.mode"></a>net.ssl.mode</h3><pre><code>  Enable or disable TLS/SSL or mixed TLS/SSL used for all network connections. The argument to the net.ssl.mode setting can be one of the following:
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th align="center">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>disabled</td>
+<td align="center">The server does not use TLS/SSL.</td>
+</tr>
+<tr>
+<td>allowSSL</td>
+<td align="center">Connections between servers do not use TLS/SSL. For incoming connections, the server accepts both TLS/SSL and non-TLS/non-SSL.</td>
+</tr>
+<tr>
+<td>preferSSL</td>
+<td align="center">Connections between servers use TLS/SSL. For incoming connections, the server accepts both TLS/SSL and non-TLS/non-SSL.</td>
+</tr>
+<tr>
+<td>requireSSL</td>
+<td align="center">The server uses and accepts only TLS/SSL encrypted connections.</td>
+</tr>
+</tbody></table>
+<p>  Changed in version 3.0: Most MongoDB distributions now include support for TLS/SSL.<br>See:</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/tutorial/configure-ssl/">Configure mongod and mongos for TLS/SSL</a> </li>
+<li><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/tutorial/configure-ssl-clients/">TLS/SSL Configuration for Clients</a> </li>
+</ol>
+<p>for more information about TLS/SSL and MongoDB.</p>
+<h3 id="net-ssl-PEMKeyFile"><a href="#net-ssl-PEMKeyFile" class="headerlink" title="net.ssl.PEMKeyFile"></a>net.ssl.PEMKeyFile</h3><pre><code> The .pem file that contains both the TLS/SSL certificate and key. Specify the file name of the .pem file using relative or absolute paths.
+ You must specify net.ssl.PEMKeyFile when TLS/SSL is enabled.
+ Changed in version 3.0: Most MongoDB distributions now include support for TLS/SSL.
+</code></pre>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/tutorial/configure-ssl/">Configure mongod and mongos for TLS/SSL</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/tutorial/configure-ssl-clients/">TLS/SSL Configuration for Clients</a></li>
+</ol>
+<h3 id="net-ssl-PEMKeyPassword"><a href="#net-ssl-PEMKeyPassword" class="headerlink" title="net.ssl.PEMKeyPassword"></a>net.ssl.PEMKeyPassword</h3><pre><code>  The password to de-crypt the certificate-key file (i.e. PEMKeyFile).
+  Use the net.ssl.PEMKeyPassword option only if the certificate-key file is encrypted.
+  In all cases, the mongos or mongod will redact the password from all logging and reporting output.
+</code></pre>
+<h3 id="net-ssl-clusterFile"><a href="#net-ssl-clusterFile" class="headerlink" title="net.ssl.clusterFile"></a>net.ssl.clusterFile</h3><pre><code>  The .pem file that contains the x.509 certificate-key file for membership authentication for the cluster or replica set.
+</code></pre>
+<h3 id="net-ssl-clusterPassword"><a href="#net-ssl-clusterPassword" class="headerlink" title="net.ssl.clusterPassword"></a>net.ssl.clusterPassword</h3><pre><code>  The password to de-crypt the x.509 certificate-key file specified with --sslClusterFile. Use the net.ssl.clusterPassword option only if the certificate-key file is encrypted. In all cases, the mongos or mongod will redact the password from all logging and reporting output.
+</code></pre>
+<h3 id="net-ssl-CAFile"><a href="#net-ssl-CAFile" class="headerlink" title="net.ssl.CAFile"></a>net.ssl.CAFile</h3><pre><code>  The .pem file that contains the root certificate chain from the Certificate Authority. Specify the file name of the .pem file using relative or absolute paths.
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">WARNING</span><br><span class="line">If the --sslCAFile option and its target file are not specified,</span><br><span class="line">x.509 client and member authentication will not function. mongod,</span><br><span class="line">and mongos in sharded systems, will not be able to verify the certificates of processes connecting to it against the trusted certificate authority (CA) that issued them,</span><br><span class="line">breaking the certificate chain.</span><br><span class="line">As of version 2.6.4, mongod will not start with x.509 authentication enabled if the CA file is not specified.</span><br></pre></td></tr></table></figure>
+
+<h3 id="net-ssl-CRLFile"><a href="#net-ssl-CRLFile" class="headerlink" title="net.ssl.CRLFile"></a>net.ssl.CRLFile</h3><pre><code>  The the .pem file that contains the Certificate Revocation List. Specify the file name of the .pem file using relative or absolute paths.
+</code></pre>
+<h3 id="net-ssl-allowConnectionsWithoutCertificates"><a href="#net-ssl-allowConnectionsWithoutCertificates" class="headerlink" title="net.ssl.allowConnectionsWithoutCertificates"></a>net.ssl.allowConnectionsWithoutCertificates</h3><pre><code>  Changed in version 3.0.0: net.ssl.weakCertificateValidation became net.ssl.allowConnectionsWithoutCertificates. For compatibility, MongoDB processes continue to accept net.ssl.weakCertificateValidation, but all users should update their configuration files.
+</code></pre>
+<h3 id="net-ssl-allowInvalidCertificates"><a href="#net-ssl-allowInvalidCertificates" class="headerlink" title="net.ssl.allowInvalidCertificates"></a>net.ssl.allowInvalidCertificates</h3><pre><code>  Enable or disable the validation checks for TLS/SSL certificates on other servers in the cluster and allows the use of invalid certificates.
+</code></pre>
+<h3 id="net-ssl-allowInvalidHostnames"><a href="#net-ssl-allowInvalidHostnames" class="headerlink" title="net.ssl.allowInvalidHostnames"></a>net.ssl.allowInvalidHostnames</h3><p><code>Default: False</code>  </p>
+<pre><code>  When net.ssl.allowInvalidHostnames is true, MongoDB disables the validation of the hostnames in TLS/SSL certificates, allowing mongod to connect to MongoDB instances if the hostname their certificates do not match the specified hostname.
+</code></pre>
+<h3 id="net-ssl-disabledProtocols"><a href="#net-ssl-disabledProtocols" class="headerlink" title="net.ssl.disabledProtocols"></a>net.ssl.disabledProtocols</h3><pre><code>  Prevents a MongoDB server running with SSL from accepting incoming connections that use a specific protocol or protocols. net.ssl.disabledProtocols recognizes the following protocols: TLS1_0, TLS1_1, and TLS1_2. Specifying an unrecognized protocol will prevent the server from starting.
+</code></pre>
+<h3 id="net-ssl-FIPSMode"><a href="#net-ssl-FIPSMode" class="headerlink" title="net.ssl.FIPSMode"></a>net.ssl.FIPSMode</h3><pre><code>  Enable or disable the use of the FIPS mode of the installed OpenSSL library for the mongos or mongod. Your system must have a FIPS compliant OpenSSL library to use the net.ssl.FIPSMode option.
+</code></pre>
+<h2 id="security-Options"><a href="#security-Options" class="headerlink" title="security Options"></a>security Options</h2><h3 id="security-keyFile"><a href="#security-keyFile" class="headerlink" title="security.keyFile"></a>security.keyFile</h3><pre><code>  The path to a key file that stores the shared secret that MongoDB instances use to authenticate to each other in a sharded cluster or replica set. keyFile implies security.authorization. See Internal Authentication for more information.
+</code></pre>
+<h3 id="security-clusterAuthMode"><a href="#security-clusterAuthMode" class="headerlink" title="security.clusterAuthMode"></a>security.clusterAuthMode</h3><p><code>Default: keyFile</code>  </p>
+<pre><code>  The authentication mode used for cluster authentication. If you use internal x.509 authentication, specify so here. This option can have one of the following values:
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th align="center">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>keyFile</td>
+<td align="center">Use a keyfile for authentication. Accept only keyfiles.</td>
+</tr>
+<tr>
+<td>sendKeyFile</td>
+<td align="center">For rolling upgrade purposes. Send a keyfile for authentication but can accept both keyfiles and x.509 certificates.</td>
+</tr>
+<tr>
+<td>sendX509</td>
+<td align="center">For rolling upgrade purposes. Send the x.509 certificate for authentication but can accept both keyfiles and x.509 certificates.</td>
+</tr>
+<tr>
+<td>x509</td>
+<td align="center">Recommended. Send the x.509 certificate for authentication and accept only x.509 certificates.</td>
+</tr>
+</tbody></table>
+<h3 id="security-authorization"><a href="#security-authorization" class="headerlink" title="security.authorization"></a>security.authorization</h3><p><code>Default: disabled</code>  </p>
+<pre><code>  Enable or disable Role-Based Access Control (RBAC) to govern each user’s access to database resources and operations.
+</code></pre>
+<p>Set this option to one of the following:<br>| Value       | Description                                                                                            |<br>| ——– |:——————————————————————————————————:|<br>| enabled  | A user can access only the database resources and actions for which they have been granted privileges. |<br>| disabled | A user can access any database and perform any action.                                                 |</p>
+<h3 id="security-javascriptEnabled"><a href="#security-javascriptEnabled" class="headerlink" title="security.javascriptEnabled"></a>security.javascriptEnabled</h3><p><code>Default: True</code>  </p>
+<pre><code>  Enables or disables the server-side JavaScript execution. When disabled, you cannot use operations that perform server-side execution of JavaScript code, such as the $where query operator, mapReduce command and the db.collection.mapReduce() method, group command and the db.collection.group() method.
+</code></pre>
+<h2 id="Key-Management-Configuration-Options"><a href="#Key-Management-Configuration-Options" class="headerlink" title="Key Management Configuration Options"></a>Key Management Configuration Options</h2><h3 id="security-enableEncryption"><a href="#security-enableEncryption" class="headerlink" title="security.enableEncryption"></a>security.enableEncryption</h3><pre><code>   3.2: Enables encryption for the WiredTiger storage engine. You must set to true to pass in encryption keys and configurations.
+</code></pre>
+<h3 id="security-encryptionCipherMode¶"><a href="#security-encryptionCipherMode¶" class="headerlink" title="security.encryptionCipherMode¶"></a>security.encryptionCipherMode¶</h3><p><code>Default: AES256-CBC</code>  </p>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th align="center">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AES256-CBC</td>
+<td align="center">256-bit Advanced Encryption Standard in Cipher Block Chaining Mode</td>
+</tr>
+<tr>
+<td>AES256-GCM</td>
+<td align="center">256-bit Advanced Encryption Standard in Galois/Counter Mode</td>
+</tr>
+</tbody></table>
+<h3 id="security-encryptionKeyFile"><a href="#security-encryptionKeyFile" class="headerlink" title="security.encryptionKeyFile"></a>security.encryptionKeyFile</h3><pre><code>  The path to the local keyfile when managing keys via process other than KMIP. Only set when managing keys via process other than KMIP. If data is already encrypted using KMIP, MongoDB will throw an error.
+</code></pre>
+<h3 id="security-kmip-keyIdentifier"><a href="#security-kmip-keyIdentifier" class="headerlink" title="security.kmip.keyIdentifier"></a>security.kmip.keyIdentifier</h3><pre><code>  Unique KMIP identifier for an existing key within the KMIP server. Include to use the key associated with the identifier as the system key. You can only use the setting the first time you enable encryption for the mongod instance. Requires security.enableEncryption to be true.
+</code></pre>
+<h3 id="security-kmip-rotateMasterKey"><a href="#security-kmip-rotateMasterKey" class="headerlink" title="security.kmip.rotateMasterKey"></a>security.kmip.rotateMasterKey</h3><pre><code>  If true, rotate the master key and re-encrypt the internal keystore.
+</code></pre>
+<h3 id="security-kmip-serverName"><a href="#security-kmip-serverName" class="headerlink" title="security.kmip.serverName"></a>security.kmip.serverName</h3><pre><code>  Hostname or IP address of key management solution running a KMIP server. Requires security.enableEncryption to be true.
+</code></pre>
+<h3 id="security-kmip-port"><a href="#security-kmip-port" class="headerlink" title="security.kmip.port"></a>security.kmip.port</h3><pre><code>  Port number the KMIP server is listening on. Requires that a security.kmip.serverName be provided. Requires security.enableEncryption to be true.
+</code></pre>
+<h3 id="security-kmip-clientCertificateFile"><a href="#security-kmip-clientCertificateFile" class="headerlink" title="security.kmip.clientCertificateFile"></a>security.kmip.clientCertificateFile</h3><pre><code>  String containing the path to the client certificate used for authenticating MongoDB to the KMIP server. Requires that a security.kmip.serverName be provided.
+</code></pre>
+<h3 id="security-kmip-clientCertificatePassword"><a href="#security-kmip-clientCertificatePassword" class="headerlink" title="security.kmip.clientCertificatePassword"></a>security.kmip.clientCertificatePassword</h3><pre><code>  The password to decrypt the client certificate (i.e. security.kmip.clientCertificateFile), used to authenticate MongoDB to the KMIP server. Use the option only if the certificate is encrypted.
+</code></pre>
+<h3 id="security-kmip-serverCAFile"><a href="#security-kmip-serverCAFile" class="headerlink" title="security.kmip.serverCAFile"></a>security.kmip.serverCAFile</h3><pre><code>  Path to CA File. Used for validating secure client connection to KMIP server.
+</code></pre>
+<h2 id="security-sasl-Options"><a href="#security-sasl-Options" class="headerlink" title="security.sasl Options"></a>security.sasl Options</h2><h3 id="security-sasl-hostName"><a href="#security-sasl-hostName" class="headerlink" title="security.sasl.hostName"></a>security.sasl.hostName</h3><pre><code>  A fully qualified server domain name for the purpose of configuring SASL and Kerberos authentication. The SASL hostname overrides the hostname only for the configuration of SASL and Kerberos.
+  For mongo shell and other MongoDB tools to connect to the new hostName, see the gssapiHostName option in the mongo shell and other tools.
+</code></pre>
+<h3 id="security-sasl-serviceName"><a href="#security-sasl-serviceName" class="headerlink" title="security.sasl.serviceName"></a>security.sasl.serviceName</h3><pre><code>  Registered name of the service using SASL. This option allows you to override the default Kerberos service name component of the Kerberos principal name, on a per-instance basis. If unspecified, the default value is mongodb.
+</code></pre>
+<h3 id="security-sasl-saslauthdSocketPath"><a href="#security-sasl-saslauthdSocketPath" class="headerlink" title="security.sasl.saslauthdSocketPath"></a>security.sasl.saslauthdSocketPath</h3><pre><code>  The path to the UNIX domain socket file for saslauthd.
+</code></pre>
+<h2 id="create-database"><a href="#create-database" class="headerlink" title="create database"></a>create database</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">use admin</span><br></pre></td></tr></table></figure>
+
+<h3 id="create-user"><a href="#create-user" class="headerlink" title="create user"></a>create user</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">db.createUser(</span><br><span class="line">  &#123;</span><br><span class="line">    user: &quot;yourUsername&quot;,</span><br><span class="line">    pwd: &quot;yourPassword&quot;,</span><br><span class="line">    roles: [ &#123; role: &quot;userAdminAnyDatabase&quot;, db: &quot;admin&quot; &#125; ]</span><br><span class="line">  &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h2 id="restart-service-and-testing"><a href="#restart-service-and-testing" class="headerlink" title="restart service and testing"></a>restart service and testing</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">service mongod restart</span><br><span class="line">mongo</span><br><span class="line">use admin</span><br><span class="line">db.auth(&quot;yourUsername&quot;,&quot;yourPassword&quot;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="create-DB"><a href="#create-DB" class="headerlink" title="create DB"></a>create DB</h3><p><code> use dbName</code></p>
+<h3 id="create-db-access"><a href="#create-db-access" class="headerlink" title="create db access"></a>create db access</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">db.createUser(</span><br><span class="line">&#123;</span><br><span class="line">    user: &quot;dbconnecter&quot;,</span><br><span class="line">    pwd: &quot;yourPassword&quot;,</span><br><span class="line">    roles: [ &#123; role: &quot;dbOwner&quot;, db: &quot;estate3&quot; &#125; ]</span><br><span class="line">  &#125;</span><br><span class="line">)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="mongodb-Auditing"><a href="#mongodb-Auditing" class="headerlink" title="mongodb Auditing"></a>mongodb Auditing</h2><p><code>db.grantRolesToUser(&quot;yourUsername&quot;,[&quot;root&quot;])</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">db.adminCommand( &#123; getParameter: 1, auditAuthorizationSuccess: true &#125; )</span><br><span class="line">&#123; &quot;auditAuthorizationSuccess&quot; : true, &quot;ok&quot; : 1 &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="mongodb-Replica-set-集群"><a href="#mongodb-Replica-set-集群" class="headerlink" title="mongodb Replica-set 集群"></a>mongodb Replica-set 集群</h2><p>Replica-set 集群至少由三个节点组成的，它为网络故障或是其他的系统故障提供冗余。有足够的分布式读操作的能力。<br>集群应该保持奇数个节点，这保证选举可以正常的进行。必须确保各个节点之间可以正常通讯。</p>
+<p>在配置集群配置完成前，security字段必须注释掉，否则会提示你输入密码认证，由于之前并没有设置密码，<br>所以无法登录数据库执行相关命令.</p>
+<h3 id="定义副本集群名称"><a href="#定义副本集群名称" class="headerlink" title="定义副本集群名称"></a>定义副本集群名称</h3><p>为集群定义一个唯一的名称，如: saasRS</p>
+<p>在配置文件中指定：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">replication:</span></span><br><span class="line">  <span class="attr">oplogSizeMB:</span> <span class="number">2000</span>          <span class="comment">#oplog的大小M</span></span><br><span class="line">  <span class="attr">replSetName:</span> <span class="string">saasRS</span>        <span class="comment">#副本集的名称</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="复制配置到其它两台"><a href="#复制配置到其它两台" class="headerlink" title="复制配置到其它两台."></a>复制配置到其它两台.</h3><p><strong>注意</strong>: </p>
+<ol>
+<li>如果有单独的投票节点，那么可以设置<code>storage.journal.enabled: false</code>，减少空间<br>占用，因为投票节点不参与数据存储.</li>
+<li>千万<strong>不要</strong>在拥有数据集的节点上设置 <code>journal.enabled 为 false</code> 。</li>
+</ol>
+<p>在三台mongodb全部启动后：<code>mongod -f etc/mongod.conf</code>， 然后进入<br>一台的<code>mongo shell</code>,配置副本集，必须使用admin数据库：</p>
+<h3 id="配置集群信息"><a href="#配置集群信息" class="headerlink" title="配置集群信息"></a>配置集群信息</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">config = &#123; <span class="attr">_id</span>:<span class="string">&quot;saasRS&quot;</span>, <span class="attr">members</span>:[</span><br><span class="line">  &#123;<span class="attr">_id</span>:<span class="number">0</span>,<span class="attr">host</span>:<span class="string">&quot;yourIp:27017&quot;</span>,<span class="attr">priority</span>:<span class="number">2</span>&#125;,</span><br><span class="line">  &#123;<span class="attr">_id</span>:<span class="number">1</span>,<span class="attr">host</span>:<span class="string">&quot;yourIp:27017&quot;</span>,<span class="attr">priority</span>:<span class="number">1</span>&#125;,</span><br><span class="line">  &#123;<span class="attr">_id</span>:<span class="number">2</span>,<span class="attr">host</span>:<span class="string">&quot;yourIp:27017&quot;</span>,<span class="attr">priority</span>:<span class="number">1</span>&#125;,</span><br><span class="line">  <span class="comment">//&#123;_id:2,host:&quot;10.30.0.90:27017&quot;,arbiterOnly:true&#125; //投票节点</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line">rs.initiate(config) <span class="comment">//初始化副本集</span></span><br><span class="line"></span><br><span class="line">rs.conf() <span class="comment">//校验副本集配置</span></span><br><span class="line">rs.status() <span class="comment">//检测状态</span></span><br><span class="line"></span><br><span class="line">rs.add(&#123;<span class="attr">_id</span>:<span class="number">6</span>,<span class="attr">host</span>:<span class="string">&quot;10.81.250.83&quot;</span>,<span class="attr">priority</span>:<span class="number">1</span>&#125;) <span class="comment">//加入副本集</span></span><br><span class="line"><span class="comment">//在创建超级管理员</span></span><br><span class="line">use admin</span><br><span class="line">db.createUser(</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">user</span>: <span class="string">&quot;admin&quot;</span>,</span><br><span class="line">    <span class="attr">pwd</span>: <span class="string">&quot;admin&quot;</span>,</span><br><span class="line">    <span class="attr">roles</span>: [ &#123; <span class="attr">role</span>: <span class="string">&quot;userAdminAnyDatabase&quot;</span>, <span class="attr">db</span>: <span class="string">&quot;admin&quot;</span> &#125; ]</span><br><span class="line">  &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="生成keyfile"><a href="#生成keyfile" class="headerlink" title="生成keyfile"></a>生成keyfile</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">openssl rand -base64 1024 &gt; /usr/<span class="built_in">local</span>/mongodb/keyfile</span><br><span class="line">chmod 600 /usr/<span class="built_in">local</span>/mongodb/keyfile</span><br></pre></td></tr></table></figure>
+
+<h3 id="启用内部安全机制"><a href="#启用内部安全机制" class="headerlink" title="启用内部安全机制"></a>启用内部安全机制</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">security:</span></span><br><span class="line">  <span class="attr">authorization:</span> <span class="string">enabled</span>                <span class="comment">#开启认证</span></span><br><span class="line">  <span class="attr">keyFile:</span> <span class="string">/data/mongo/mongodb-keyfile</span>  <span class="comment">#副本集使用keyFile进行相互认证</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ops/" rel="tag"># ops</a>
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/mongoDB/" rel="tag"># mongoDB</a>
+          
+            <a href="/tags/%E9%9B%86%E7%BE%A4/" rel="tag"># 集群</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/21/nodejs/Nodejs_performance/" rel="next" title="Nodejs优化相关的文章以及参数">
+                <i class="fa fa-chevron-left"></i> Nodejs优化相关的文章以及参数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/11/nodejs/stream/" rel="prev" title="Nodejs Stream">
+                Nodejs Stream <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          </div>
+          
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg"
+                alt="Sanborn" />
+            
+              <p class="site-author-name" itemprop="name">Sanborn</p>
+              <p class="site-description motion-element" itemprop="description">恍惚而过，不落昏沉</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Sanbornzhang" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#mongodb-install-ubuntu-14-04"><span class="nav-number">1.</span> <span class="nav-text">mongodb install(ubuntu 14.04)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mongodb-Auth"><span class="nav-number">2.</span> <span class="nav-text">mongodb Auth</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8BMongoDB%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">2.1.</span> <span class="nav-text">查看MongoDB配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#systemLog"><span class="nav-number">2.2.</span> <span class="nav-text">systemLog</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#systemLog-verbosity"><span class="nav-number">2.2.1.</span> <span class="nav-text">systemLog.verbosity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#systemLog-component-accessControl-verbosity"><span class="nav-number">2.2.2.</span> <span class="nav-text">systemLog.component.accessControl.verbosity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#systemLog-component-command-verbosity"><span class="nav-number">2.2.3.</span> <span class="nav-text">systemLog.component.command.verbosity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#systemLog-component-control-verbosity"><span class="nav-number">2.2.4.</span> <span class="nav-text">systemLog.component.control.verbosity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#systemLog-component-ftdc-verbosity"><span class="nav-number">2.2.5.</span> <span class="nav-text">systemLog.component.ftdc.verbosity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#systemLog-component-geo-verbosity"><span class="nav-number">2.2.6.</span> <span class="nav-text">systemLog.component.geo.verbosity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#systemLog-component-index-verbosity"><span class="nav-number">2.2.7.</span> <span class="nav-text">systemLog.component.index.verbosity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#systemLog-component-network-verbosity"><span class="nav-number">2.2.8.</span> <span class="nav-text">systemLog.component.network.verbosity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#systemLog-component-query-verbosity"><span class="nav-number">2.2.9.</span> <span class="nav-text">systemLog.component.query.verbosity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#systemLog-component-replication-verbosity"><span class="nav-number">2.2.10.</span> <span class="nav-text">systemLog.component.replication.verbosity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#systemLog-component-sharding-verbosity"><span class="nav-number">2.2.11.</span> <span class="nav-text">systemLog.component.sharding.verbosity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#systemLog-component-storage-verbosity"><span class="nav-number">2.2.12.</span> <span class="nav-text">systemLog.component.storage.verbosity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#systemLog-component-storage-journal-verbosity"><span class="nav-number">2.2.13.</span> <span class="nav-text">systemLog.component.storage.journal.verbosity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#systemLog-component-write-verbosity"><span class="nav-number">2.2.14.</span> <span class="nav-text">systemLog.component.write.verbosity</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#net-Options"><span class="nav-number">2.3.</span> <span class="nav-text">net Options</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#net-port"><span class="nav-number">2.3.1.</span> <span class="nav-text">net.port</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#net-bindIp"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">net.bindIp</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#net-maxIncomingConnections"><span class="nav-number">2.3.2.</span> <span class="nav-text">net.maxIncomingConnections</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#net-wireObjectCheck"><span class="nav-number">2.3.3.</span> <span class="nav-text">net.wireObjectCheck</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#net-ipv6"><span class="nav-number">2.3.4.</span> <span class="nav-text">net.ipv6</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#net-unixDomainSocket"><span class="nav-number">2.3.5.</span> <span class="nav-text">net.unixDomainSocket</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#net-unixDomainSocket-pathPrefix"><span class="nav-number">2.3.6.</span> <span class="nav-text">net.unixDomainSocket.pathPrefix</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#net-unixDomainSocket-filePermissions"><span class="nav-number">2.3.7.</span> <span class="nav-text">net.unixDomainSocket.filePermissions</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#net-http"><span class="nav-number">2.4.</span> <span class="nav-text">net.http</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#net-ssl-Options"><span class="nav-number">2.5.</span> <span class="nav-text">net.ssl Options</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#net-ssl-mode"><span class="nav-number">2.5.1.</span> <span class="nav-text">net.ssl.mode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#net-ssl-PEMKeyFile"><span class="nav-number">2.5.2.</span> <span class="nav-text">net.ssl.PEMKeyFile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#net-ssl-PEMKeyPassword"><span class="nav-number">2.5.3.</span> <span class="nav-text">net.ssl.PEMKeyPassword</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#net-ssl-clusterFile"><span class="nav-number">2.5.4.</span> <span class="nav-text">net.ssl.clusterFile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#net-ssl-clusterPassword"><span class="nav-number">2.5.5.</span> <span class="nav-text">net.ssl.clusterPassword</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#net-ssl-CAFile"><span class="nav-number">2.5.6.</span> <span class="nav-text">net.ssl.CAFile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#net-ssl-CRLFile"><span class="nav-number">2.5.7.</span> <span class="nav-text">net.ssl.CRLFile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#net-ssl-allowConnectionsWithoutCertificates"><span class="nav-number">2.5.8.</span> <span class="nav-text">net.ssl.allowConnectionsWithoutCertificates</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#net-ssl-allowInvalidCertificates"><span class="nav-number">2.5.9.</span> <span class="nav-text">net.ssl.allowInvalidCertificates</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#net-ssl-allowInvalidHostnames"><span class="nav-number">2.5.10.</span> <span class="nav-text">net.ssl.allowInvalidHostnames</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#net-ssl-disabledProtocols"><span class="nav-number">2.5.11.</span> <span class="nav-text">net.ssl.disabledProtocols</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#net-ssl-FIPSMode"><span class="nav-number">2.5.12.</span> <span class="nav-text">net.ssl.FIPSMode</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#security-Options"><span class="nav-number">2.6.</span> <span class="nav-text">security Options</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#security-keyFile"><span class="nav-number">2.6.1.</span> <span class="nav-text">security.keyFile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#security-clusterAuthMode"><span class="nav-number">2.6.2.</span> <span class="nav-text">security.clusterAuthMode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#security-authorization"><span class="nav-number">2.6.3.</span> <span class="nav-text">security.authorization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#security-javascriptEnabled"><span class="nav-number">2.6.4.</span> <span class="nav-text">security.javascriptEnabled</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Key-Management-Configuration-Options"><span class="nav-number">2.7.</span> <span class="nav-text">Key Management Configuration Options</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#security-enableEncryption"><span class="nav-number">2.7.1.</span> <span class="nav-text">security.enableEncryption</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#security-encryptionCipherMode%C2%B6"><span class="nav-number">2.7.2.</span> <span class="nav-text">security.encryptionCipherMode¶</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#security-encryptionKeyFile"><span class="nav-number">2.7.3.</span> <span class="nav-text">security.encryptionKeyFile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#security-kmip-keyIdentifier"><span class="nav-number">2.7.4.</span> <span class="nav-text">security.kmip.keyIdentifier</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#security-kmip-rotateMasterKey"><span class="nav-number">2.7.5.</span> <span class="nav-text">security.kmip.rotateMasterKey</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#security-kmip-serverName"><span class="nav-number">2.7.6.</span> <span class="nav-text">security.kmip.serverName</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#security-kmip-port"><span class="nav-number">2.7.7.</span> <span class="nav-text">security.kmip.port</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#security-kmip-clientCertificateFile"><span class="nav-number">2.7.8.</span> <span class="nav-text">security.kmip.clientCertificateFile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#security-kmip-clientCertificatePassword"><span class="nav-number">2.7.9.</span> <span class="nav-text">security.kmip.clientCertificatePassword</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#security-kmip-serverCAFile"><span class="nav-number">2.7.10.</span> <span class="nav-text">security.kmip.serverCAFile</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#security-sasl-Options"><span class="nav-number">2.8.</span> <span class="nav-text">security.sasl Options</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#security-sasl-hostName"><span class="nav-number">2.8.1.</span> <span class="nav-text">security.sasl.hostName</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#security-sasl-serviceName"><span class="nav-number">2.8.2.</span> <span class="nav-text">security.sasl.serviceName</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#security-sasl-saslauthdSocketPath"><span class="nav-number">2.8.3.</span> <span class="nav-text">security.sasl.saslauthdSocketPath</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#create-database"><span class="nav-number">2.9.</span> <span class="nav-text">create database</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#create-user"><span class="nav-number">2.9.1.</span> <span class="nav-text">create user</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#restart-service-and-testing"><span class="nav-number">2.10.</span> <span class="nav-text">restart service and testing</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#create-DB"><span class="nav-number">2.10.1.</span> <span class="nav-text">create DB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#create-db-access"><span class="nav-number">2.10.2.</span> <span class="nav-text">create db access</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mongodb-Auditing"><span class="nav-number">2.11.</span> <span class="nav-text">mongodb Auditing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mongodb-Replica-set-%E9%9B%86%E7%BE%A4"><span class="nav-number">2.12.</span> <span class="nav-text">mongodb Replica-set 集群</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E5%89%AF%E6%9C%AC%E9%9B%86%E7%BE%A4%E5%90%8D%E7%A7%B0"><span class="nav-number">2.12.1.</span> <span class="nav-text">定义副本集群名称</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6%E9%85%8D%E7%BD%AE%E5%88%B0%E5%85%B6%E5%AE%83%E4%B8%A4%E5%8F%B0"><span class="nav-number">2.12.2.</span> <span class="nav-text">复制配置到其它两台.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E9%9B%86%E7%BE%A4%E4%BF%A1%E6%81%AF"><span class="nav-number">2.12.3.</span> <span class="nav-text">配置集群信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E6%88%90keyfile"><span class="nav-number">2.12.4.</span> <span class="nav-text">生成keyfile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E7%94%A8%E5%86%85%E9%83%A8%E5%AE%89%E5%85%A8%E6%9C%BA%E5%88%B6"><span class="nav-number">2.12.5.</span> <span class="nav-text">启用内部安全机制</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sanborn</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

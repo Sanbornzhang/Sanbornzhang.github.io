@@ -1,37 +1,804 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Node.js,Promise,手写Promise," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="PromisePromisePromise 对象是 JavaScript 的异步操作解决方案，为异步操作提供统一接口。它起到代理作用（proxy），充当异步操作与回调函数之间的中介，使得异步操作具备同步操作的接口。Promise 可以让异步操作写起来，就像在写同步操作的流程，而不必一层层地嵌套回调函数。 Callback Hell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Promise">
+<meta property="og:url" content="https://sanbornzhang.github.io/2018/06/08/nodejs/promise/index.html">
+<meta property="og:site_name" content="Sanborn">
+<meta property="og:description" content="PromisePromisePromise 对象是 JavaScript 的异步操作解决方案，为异步操作提供统一接口。它起到代理作用（proxy），充当异步操作与回调函数之间的中介，使得异步操作具备同步操作的接口。Promise 可以让异步操作写起来，就像在写同步操作的流程，而不必一层层地嵌套回调函数。 Callback Hell">
+<meta property="og:locale">
+<meta property="og:image" content="https://sanbornzhang.github.io/2018/06/08/nodejs/promise/images/callback-hell.jpg">
+<meta property="article:published_time" content="2018-06-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-05T08:06:12.000Z">
+<meta property="article:author" content="Sanborn">
+<meta property="article:tag" content="Node.js">
+<meta property="article:tag" content="Promise">
+<meta property="article:tag" content="手写Promise">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sanbornzhang.github.io/2018/06/08/nodejs/promise/images/callback-hell.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://Sanbornzhang.github.io/2018/06/08/nodejs/promise/"/>
+
+
+
+
+
+  <title>Promise | Sanborn</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sanborn</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">爱吃酸菜的鱼</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Sanbornzhang.github.io/2018/06/08/nodejs/promise/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sanborn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sanborn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Promise</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-08T00:00:00+08:00">
+                2018-06-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Node-js/" itemprop="url" rel="index">
+                    <span itemprop="name">Node.js</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Node-js/Promise/" itemprop="url" rel="index">
+                    <span itemprop="name">Promise</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h1><h2 id="Promise-1"><a href="#Promise-1" class="headerlink" title="Promise"></a>Promise</h2><p>Promise 对象是 JavaScript 的异步操作解决方案，为异步操作提供统一接口。它起到代理作用（proxy），充当异步操作与回调函数之间的中介，使得异步操作具备同步操作的接口。Promise 可以让异步操作写起来，就像在写同步操作的流程，而不必一层层地嵌套回调函数。</p>
+<h3 id="Callback-Hell"><a href="#Callback-Hell" class="headerlink" title="Callback Hell"></a>Callback Hell</h3><p><img src="images/callback-hell.jpg" alt="Callback Hell"></p>
+<span id="more"></span> 
+<blockquote>
+<p>在使用callback的同时会遇到一些痛点</p>
+</blockquote>
+<ul>
+<li>代码不利于维护以及阅读.</li>
+<li>回调函数基本上都是匿名函数不利于DEBUG.<h3 id="Promise-2"><a href="#Promise-2" class="headerlink" title="Promise"></a>Promise</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">step1</span><br><span class="line">.then(step2)</span><br><span class="line">.then(step3)</span><br><span class="line">.then(step4)</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+  可以看出使用了<code>Promise</code>之后流程变得非常清晰，代码也变得通熟易懂。<h3 id="Promise-A-规范"><a href="#Promise-A-规范" class="headerlink" title="Promise A+ 规范"></a><code>Promise A+</code> 规范</h3><h4 id="Promise-三种状态"><a href="#Promise-三种状态" class="headerlink" title="Promise 三种状态"></a>Promise 三种状态</h4></li>
+<li>Fulfilled<br>处于执行态时，promise 需满足以下条件：<ul>
+<li>不能迁移至其他任何状态</li>
+<li>必须拥有一个不可以改变的值</li>
+</ul>
+</li>
+<li>Rejected<br>处于拒绝态时，promise 需满足以下条件：<ul>
+<li>不能迁移至其他任何状态</li>
+<li>必须有一个原因，以及不可以改变。</li>
+</ul>
+</li>
+<li>pending<br>处于等待态时，promise 需满足以下条件：<ol>
+<li>可以迁移至执行态或拒绝态<h4 id="Then-方法"><a href="#Then-方法" class="headerlink" title="Then 方法"></a><code>Then</code> 方法</h4>一个<code>Promise</code> 必须提供一个<code>then</code>方法，可以访问当前值或中值和拒绝原因<br>Promise 的 then 方法接受2个参数  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Promise.then(onFulfilled, onRejected)</span><br></pre></td></tr></table></figure></li>
+</ol>
+<ul>
+<li>onFulfilled 以及 onRejected 都是可选参数 但是都必须为函数</li>
+<li>function: onFulfilled<ul>
+<li>必须在Promise完成以后调用也就是状态为 <code>Fulfilled</code>, 值为第一个参数。</li>
+<li>必须在完成以后才能调用。也就是说<code>.then(value=&gt;&#123;&#125;)</code> 值必须是这个<code>Promise</code>完成以后才会拥有</li>
+<li>只能够被调用一次</li>
+</ul>
+</li>
+<li>function: onRejected<ul>
+<li>只能在被拒绝之后调用，并且值为原因。一般是Error。</li>
+<li>在Rejected之后才会调用</li>
+<li>也只能被调用一次 </li>
+</ul>
+</li>
+<li><code>onFulfilled</code>或者<code>onRejected</code>在执行上下文堆栈仅包含平台代码之前不得调用</li>
+<li><code>onFulfilled</code>并且<code>onRejected</code>必须作为函数调用（即没有this值)</li>
+<li><code>then</code>方法可以在同一个<code>Promise</code>中被调用多次</li>
+<li><code>then</code> 方法必须返回的是一个<code>Promise</code>  </li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">promise2 = promise1.then(onFulfilled, onRejected);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果 onFulfilled 或者 onRejected 返回一个值 x ，则运行下面的 Promise 解决过程：[[Resolve]](promise2, x)</li>
+<li>如果 onFulfilled 或者 onRejected 抛出一个异常 e ，则 promise2 必须拒绝执行，并返回拒因 e</li>
+<li>如果 onFulfilled 不是函数且 promise1 成功执行， promise2 必须成功执行并返回相同的值</li>
+<li>如果 onRejected 不是函数且 promise1 拒绝执行， promise2 必须拒绝执行并返回相同的据因<br>以上也是Promise可以使用调用链的原因<h3 id="手动实现Promise"><a href="#手动实现Promise" class="headerlink" title="手动实现Promise"></a>手动实现<code>Promise</code></h3>  没有实现Promise的链式调用以及需要改为setImmediate 或者是 process.nextTick<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line">function myPromise(exec) &#123;</span><br><span class="line">  const self = this</span><br><span class="line">  self.statusMap = &#123;</span><br><span class="line">    PENDING: &#x27;pending&#x27;,</span><br><span class="line">    FULFILLED: &#x27;fulfilled&#x27;,</span><br><span class="line">    REJECTED: &#x27;rejected&#x27;,</span><br><span class="line">  &#125;</span><br><span class="line">  self.status = self.statusMap.PENDING</span><br><span class="line">  self.data = undefined</span><br><span class="line">  function resolve(data) &#123;</span><br><span class="line">    if (self.status === self.statusMap.PENDING) &#123; // 状态必须为 pending 才能赋值</span><br><span class="line">      self.status = self.statusMap.FULFILLED</span><br><span class="line">      self.data = data</span><br><span class="line">    &#125;</span><br><span class="line">   &#125;</span><br><span class="line">  function reject(err) &#123;</span><br><span class="line">    if (self.status === self.statusMap.PENDING) &#123; // 状态必须为 pending 才能赋值</span><br><span class="line">      self.status = self.statusMap.REJECTED</span><br><span class="line">      self.error = err</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  try &#123;</span><br><span class="line">    exec(resolve, reject)</span><br><span class="line">  &#125; catch (error) &#123;</span><br><span class="line">    reject(error)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">myPromise.resolve = (data)=&gt;new myPromise((resolve, reject)=&gt;resolve(data))</span><br><span class="line">myPromise.reject= (reason)=&gt;new myPromise((resolve, reject)=&gt;reject(reason))</span><br><span class="line">// 实例.then方法</span><br><span class="line">/** </span><br><span class="line"> * then function</span><br><span class="line"> * @param &#123;Function&#125; onFulfilled</span><br><span class="line"> * @param &#123;Function&#125; onRejected</span><br><span class="line"> */</span><br><span class="line">myPromise.prototype.then = function (onFulfilled, onRejected) &#123;</span><br><span class="line">  if(this.status === this.statusMap.FULFILLED) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">      onFulfilled = typeof onFulfilled === &#x27;function&#x27; ? onFulfilled : function() &#123;&#125;</span><br><span class="line">      const result = onFulfilled(this.data)</span><br><span class="line">      if( result instanceof myPromise) result.then(myPromise.resolve, myPromise.reject)</span><br><span class="line">      myPromise.resolve(this.data)</span><br><span class="line">    &#125; catch (error) &#123;</span><br><span class="line">      myPromise.reject(error)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  if(this.status === this.statusMap.REJECTED) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">      onRejected = typeof onFulfilled === &#x27;function&#x27; ? onFulfilled : function() &#123;&#125;</span><br><span class="line">      const result = onRejected(this.data)</span><br><span class="line">      if( result instanceof myPromise) result.then(myPromise.resolve, myPromise.reject)</span><br><span class="line">      myPromise.resolve(this.data)</span><br><span class="line">    &#125; catch (error) &#123;</span><br><span class="line">      myPromise.reject(error)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  if(this.status === this.statusMap.PENDING) &#123;</span><br><span class="line">    if (onFulfilled) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">      const result = onFulfilled(this.data)</span><br><span class="line">      if( result instanceof myPromise) result.then(myPromise.resolve, myPromise.reject)</span><br><span class="line">      myPromise.resolve(this.data)</span><br><span class="line">      &#125; catch (error) &#123;</span><br><span class="line">        myPromise.reject(error)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    else if (onRejected) &#123;</span><br><span class="line">      try &#123;</span><br><span class="line">        const result = onRejected(this.data)</span><br><span class="line">        if( result instanceof myPromise) result.then(myPromise.resolve, myPromise.reject)</span><br><span class="line">        myPromise.resolve(this.data)</span><br><span class="line">      &#125; catch (error) &#123;</span><br><span class="line">        myPromise.reject(error)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  else &#123;</span><br><span class="line">    onFulfilled = typeof onFulfilled === &#x27;function&#x27; ? onFulfilled : function() &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">myPromise.prototype.catch = function(onRejected)&#123;</span><br><span class="line">  return this.then(null, onRejected)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Promise-执行顺序"><a href="#Promise-执行顺序" class="headerlink" title="Promise 执行顺序"></a>Promise 执行顺序</h3>在很多时候我们需要执行一些有状态的异步调用,有相互依赖关系.<br>这时候我们可以选择 <code>bluebird</code>的<a target="_blank" rel="noopener" href="http://bluebirdjs.com/docs/api/promise.reduce.html">reduce</a>函数，或则是使用<code>async/await </code>,<br>当然也可以用<code>array.reduce</code>构建自己的函数.<br>其实Promise函数在创建的时候就已经开始运行了，<br>那么确保创建的时候是顺序的那么自然确保了执行的结果是顺序的。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">const sleep = (time)=&gt;&#123;</span><br><span class="line">  return new Promise(resolve=&gt;&#123;</span><br><span class="line">     setTimeout(_=&gt;&#123;</span><br><span class="line">       return resolve(time)&#125;,time)</span><br><span class="line">   &#125;)</span><br><span class="line"> &#125;</span><br><span class="line"> // .then 构建 复杂且阅读 大量的重复代码</span><br><span class="line"> sleep(30)</span><br><span class="line"> .then(_=&gt;&#123;</span><br><span class="line">   return sleep(10)</span><br><span class="line"> &#125;)</span><br><span class="line"> .then(_=&gt;&#123;</span><br><span class="line">   return sleep(20)</span><br><span class="line"> &#125;)</span><br><span class="line"> .then(_=&gt;&#123;</span><br><span class="line">   return sleep(25)</span><br><span class="line"> &#125;)</span><br><span class="line"> </span><br><span class="line">//  构建queue函数</span><br><span class="line"> const queue = (params = [], promiseFunc)=&gt;&#123;</span><br><span class="line">   const result = []</span><br><span class="line">   return params.reduce((promiseList, value)=&gt;&#123;</span><br><span class="line">     return promiseList.then(_=&gt;&#123;</span><br><span class="line">      return promiseFunc(value)</span><br><span class="line">    &#125;).then(_=&gt;&#123;</span><br><span class="line">      if (_ !== undefined)&#123;</span><br><span class="line">        result.push(_)</span><br><span class="line">      &#125;</span><br><span class="line">      return result</span><br><span class="line">    &#125;)</span><br><span class="line">   &#125;,</span><br><span class="line">   Promise.resolve() //起始值</span><br><span class="line">   )</span><br><span class="line"> </span><br><span class="line"> &#125;</span><br><span class="line"> queue([40,10,5,30,20],sleep)</span><br><span class="line"> .then(_=&gt;&#123;</span><br><span class="line">   console.log(&#x27;quqe&#x27;,_)</span><br><span class="line"> &#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="其它常用的一些API"><a href="#其它常用的一些API" class="headerlink" title="其它常用的一些API"></a>其它常用的一些API</h3></li>
+<li>Promise.all</li>
+<li>Promise.reject()</li>
+<li>Promise.resolve()<h3 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h3><a target="_blank" rel="noopener" href="https://promisesaplus.com/">Promise A+</a><br><a target="_blank" rel="noopener" href="http://www.ituring.com.cn/article/66566">Promise A+[中文版]</a><br><a target="_blank" rel="noopener" href="http://javascript.ruanyifeng.com/advanced/promise.html">阮一峰 Promise</a><br><a target="_blank" rel="noopener" href="https://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html">We have a problem with promises</a><br><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/v8/v8/+/3.29.45/src/promise.js?autodive=0/">google git Promise</a><br><a target="_blank" rel="noopener" href="https://github.com/kriskowal/q/tree/v1/design">q design</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Node-js/" rel="tag"># Node.js</a>
+          
+            <a href="/tags/Promise/" rel="tag"># Promise</a>
+          
+            <a href="/tags/%E6%89%8B%E5%86%99Promise/" rel="tag"># 手写Promise</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/05/nodejs/Google_IO/What_is_new_in_JavaScript/" rel="next" title="What’s new in JavaScript (Google I/O ’19)">
+                <i class="fa fa-chevron-left"></i> What’s new in JavaScript (Google I/O ’19)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/08/nodejs/even-loop/" rel="prev" title="从 *even loop*中说 `setImmediate()`、`setTimeout()`、`process.nextTick()`的区别">
+                从 *even loop*中说 `setImmediate()`、`setTimeout()`、`process.nextTick()`的区别 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          </div>
+          
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg"
+                alt="Sanborn" />
+            
+              <p class="site-author-name" itemprop="name">Sanborn</p>
+              <p class="site-description motion-element" itemprop="description">恍惚而过，不落昏沉</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Sanbornzhang" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Promise"><span class="nav-number">1.</span> <span class="nav-text">Promise</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Promise-1"><span class="nav-number">1.1.</span> <span class="nav-text">Promise</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Callback-Hell"><span class="nav-number">1.1.1.</span> <span class="nav-text">Callback Hell</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Promise-2"><span class="nav-number">1.1.2.</span> <span class="nav-text">Promise</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Promise-A-%E8%A7%84%E8%8C%83"><span class="nav-number">1.1.3.</span> <span class="nav-text">Promise A+ 规范</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Promise-%E4%B8%89%E7%A7%8D%E7%8A%B6%E6%80%81"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">Promise 三种状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Then-%E6%96%B9%E6%B3%95"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">Then 方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E5%AE%9E%E7%8E%B0Promise"><span class="nav-number">1.1.4.</span> <span class="nav-text">手动实现Promise</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Promise-%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F"><span class="nav-number">1.1.5.</span> <span class="nav-text">Promise 执行顺序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E5%AE%83%E5%B8%B8%E7%94%A8%E7%9A%84%E4%B8%80%E4%BA%9BAPI"><span class="nav-number">1.1.6.</span> <span class="nav-text">其它常用的一些API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ref"><span class="nav-number">1.1.7.</span> <span class="nav-text">Ref</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sanborn</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

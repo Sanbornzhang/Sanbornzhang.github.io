@@ -1,37 +1,825 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Node.js,even loop,setImmediate setTimeout() process.nextTick()," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="从even loop中说 setImmediate()、setTimeout()、process.nextTick()的区别even loop什么是事件循环Event loop是一种程序结构，是实现异步的一种机制。Event loop可以简单理解为：  所有任务都在主线程上执行，形成一个执行栈（execution context stack）。  主线程之外，还存在一个”任务队列”（task qu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从 *even loop*中说 &#96;setImmediate()&#96;、&#96;setTimeout()&#96;、&#96;process.nextTick()&#96;的区别">
+<meta property="og:url" content="https://sanbornzhang.github.io/2018/06/08/nodejs/even-loop/index.html">
+<meta property="og:site_name" content="Sanborn">
+<meta property="og:description" content="从even loop中说 setImmediate()、setTimeout()、process.nextTick()的区别even loop什么是事件循环Event loop是一种程序结构，是实现异步的一种机制。Event loop可以简单理解为：  所有任务都在主线程上执行，形成一个执行栈（execution context stack）。  主线程之外，还存在一个”任务队列”（task qu">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-06-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-05T08:06:12.000Z">
+<meta property="article:author" content="Sanborn">
+<meta property="article:tag" content="Node.js">
+<meta property="article:tag" content="even loop">
+<meta property="article:tag" content="setImmediate setTimeout() process.nextTick()">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://Sanbornzhang.github.io/2018/06/08/nodejs/even-loop/"/>
+
+
+
+
+
+  <title>从 *even loop*中说 `setImmediate()`、`setTimeout()`、`process.nextTick()`的区别 | Sanborn</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sanborn</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">爱吃酸菜的鱼</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Sanbornzhang.github.io/2018/06/08/nodejs/even-loop/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sanborn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sanborn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">从 *even loop*中说 `setImmediate()`、`setTimeout()`、`process.nextTick()`的区别</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-08T00:00:00+08:00">
+                2018-06-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Node-js/" itemprop="url" rel="index">
+                    <span itemprop="name">Node.js</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Node-js/even-loop/" itemprop="url" rel="index">
+                    <span itemprop="name">even loop</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="从even-loop中说-setImmediate-、setTimeout-、process-nextTick-的区别"><a href="#从even-loop中说-setImmediate-、setTimeout-、process-nextTick-的区别" class="headerlink" title="从even loop中说 setImmediate()、setTimeout()、process.nextTick()的区别"></a>从<em>even loop</em>中说 <code>setImmediate()</code>、<code>setTimeout()</code>、<code>process.nextTick()</code>的区别</h1><h2 id="even-loop"><a href="#even-loop" class="headerlink" title="even loop"></a>even loop</h2><h2 id="什么是事件循环"><a href="#什么是事件循环" class="headerlink" title="什么是事件循环"></a>什么是事件循环</h2><p>Event loop是一种程序结构，是实现异步的一种机制。Event loop可以简单理解为：</p>
+<ol>
+<li><p>所有任务都在主线程上执行，形成一个执行栈（execution context stack）。</p>
+</li>
+<li><p>主线程之外，还存在一个”任务队列”（task queue）。系统把异步任务放到”任务队列”之中，然后主线程继续执行后续的任务。</p>
+</li>
+<li><p>一旦”执行栈”中的所有任务执行完毕，系统就会读取”任务队列”。如果这个时候，异步任务已经结束了等待状态，就会从”任务队列”进入执行栈，恢复执行。</p>
+</li>
+</ol>
+<p>主线程不断重复上面的第三步。</p>
+<span id="more"></span> 
+<blockquote>
+<p>REF: <a target="_blank" rel="noopener" href="https://2014.jsconf.eu/speakers/philip-roberts-what-the-heck-is-the-event-loop-anyway.html">What the heck is the event loop anyway?</a></p>
+</blockquote>
+<h2 id="事件轮询机制解析"><a href="#事件轮询机制解析" class="headerlink" title="事件轮询机制解析"></a>事件轮询机制解析</h2><p>官方的事件循环机制解析图</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">   ┌───────────────────────────┐</span><br><span class="line">┌─&gt;│           timers          │</span><br><span class="line">│  └─────────────┬─────────────┘</span><br><span class="line">│  ┌─────────────┴─────────────┐</span><br><span class="line">│  │     pending callbacks     │</span><br><span class="line">│  └─────────────┬─────────────┘</span><br><span class="line">│  ┌─────────────┴─────────────┐</span><br><span class="line">│  │       idle, prepare       │</span><br><span class="line">│  └─────────────┬─────────────┘      ┌───────────────┐</span><br><span class="line">│  ┌─────────────┴─────────────┐      │   incoming:   │</span><br><span class="line">│  │           poll            │&lt;─────┤  connections, │</span><br><span class="line">│  └─────────────┬─────────────┘      │   data, etc.  │</span><br><span class="line">│  ┌─────────────┴─────────────┐      └───────────────┘</span><br><span class="line">│  │           check           │</span><br><span class="line">│  └─────────────┬─────────────┘</span><br><span class="line">│  ┌─────────────┴─────────────┐</span><br><span class="line">└──┤      close callbacks      │</span><br><span class="line">   └───────────────────────────┘</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>图中每个“方框”都是event loop执行的一个阶段（phase）  </p>
+</blockquote>
+<pre><code> 每个阶段都有一个 FIFO 队列来执行回调。虽然每个阶段都是特殊的，但通常情况下，当事件循环进入给定的阶段时，它将执行特定于该阶段的任何操作，然后在该阶段的队列中执行回调，直到队列用尽或最大回调数已执行。当该队列已用尽或达到回调限制，事件循环将移动到下一阶段，等等。
+</code></pre>
+<h3 id="阶段概述"><a href="#阶段概述" class="headerlink" title="阶段概述"></a>阶段概述</h3><ul>
+<li><strong>timers</strong>: 本阶段执行已经安排的 <code>setTimeout()</code> 和 <code>setInterval()</code> 的回调函数。</li>
+<li><strong>pending callbacks</strong>: 执行延迟到下一个循环迭代的 I/O 回调。</li>
+<li><strong>idle, prepare</strong>: 仅系统内部使用</li>
+<li><strong>poll</strong> 检索新的 I/O 事件;执行与 I/O 相关的回调（几乎所有情况下，除了关闭的回调函数，它们由计时器和 setImmediate() 排定的之外），其余情况 node 将在此处阻塞。</li>
+<li><strong>check</strong>:  setImmediate()  回调函数在这里执行</li>
+<li><strong>close callbacks</strong>: 一些准备关闭的回调函数, e.g. socket.on(‘close’, …).<h4 id="timers"><a href="#timers" class="headerlink" title="timers"></a><strong>timers</strong></h4>计时器指定<code>threshold</code> 在<code>threshold</code>之后执行回调，而不是指定的时间执行。<br>会受到其回调的执行时间影响<br>[ Nodejs是<strong>单线程处理</strong>的，在<strong>轮询队列中</strong>执行，所以会受到其他回调的影响。有些时候前一个死掉以后后面就会出现无法执行的情况。]<blockquote>
+<p>REF: <a target="_blank" rel="noopener" href="https://nodejs.org/uk/docs/guides/timers-in-node/">Timers in Node.js and beyond</a><br>REF: <a target="_blank" rel="noopener" href="http://nodejs.cn/api/timers.html">Node.js 文档timer</a></p>
+</blockquote>
+<h4 id="pending-callbacks"><a href="#pending-callbacks" class="headerlink" title="pending callbacks"></a><strong>pending callbacks</strong></h4>此阶段对某些系统操作（如 TCP 错误类型）执行回调。例如，如果 TCP 套接字在尝试连接时接收到 ECONNREFUSED，则某些 *nix 的系统希望等待报告错误。这将被排队以在 挂起的回调 阶段执行。<h4 id="poll"><a href="#poll" class="headerlink" title="poll"></a><strong>poll</strong></h4></li>
+</ul>
+<p><strong>轮询</strong> 阶段有两个重要的功能:</p>
+<ol>
+<li>计算应该阻塞和轮询<code>I/O</code>的时间</li>
+<li>处理<code>轮询</code>队列的事件<br>当事件循环进入<strong>轮询</strong>阶段并且没有<code>timer</code>的计划,将发生以下两种情况之一：<ol>
+<li>如果轮询队列<strong>不是空</strong>的，事件循环将遍历<code>callback</code>队列，且同步执行，直到队列执行完毕或者达到系统上限。</li>
+<li>如果轮询队列中<strong>是空的</strong>，会发生以下两件事情之一.<ul>
+<li>如果脚本中包含<code>setImmediate()</code>计划，则事件循环会结束轮询阶段并且在检查阶段去执行这些调度脚本。</li>
+<li>如果脚本中不包含<code>setImmediate()</code>计划，事件循环将等待callback并且添加到队列中，并且立即执行  </li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<p>  一旦轮询队列清空，事件循环会检查<code>timer</code>已经到预期执行时间的。如果一个或者多个定时器准备就绪，<code>even loop </code>会回到<code>Timer</code>阶段去执行这些回调</p>
+<h4 id="check"><a href="#check" class="headerlink" title="check"></a><strong>check</strong></h4><p>这个阶段允许人们在<code>poll</code>阶段执行完成以后立即执行回调。<br>如果<code>poll</code>阶段空闲，并且有被setImmediate()设定的回调，event loop会转到 check 阶段而不是继续等待。  </p>
+<p>setImmediate()实际上是一个特殊的timer，跑在event loop中一个独立的阶段。它使用libuv的API来设定在 poll 阶段结束后<strong>立即执行</strong>回调。<br>通常上来讲，随着代码执行，event loop终将进入 poll 阶段，在这个阶段等待 <code>incoming</code> <code>connection</code>, <code>request</code> 等等。但是，只要有被<code>setImmediate()</code>设定了回调，一旦 <code>poll</code> 阶段空闲，那么程序将结束 <code>poll</code> 阶段并进入 <code>check</code> 阶段，而不是继续等待 <code>poll</code> 事件。</p>
+<h4 id="close-callbacks"><a href="#close-callbacks" class="headerlink" title="close callbacks"></a><strong>close callbacks</strong></h4><p>如果一个 socket 或 handle 被突然关掉（比如 socket.destroy()），close事件将在这个阶段被触发，否则将通过process.nextTick()触发。</p>
+<h2 id="setImmediate-和-setTimeout"><a href="#setImmediate-和-setTimeout" class="headerlink" title="setImmediate() 和 setTimeout()"></a><code>setImmediate()</code> 和 <code>setTimeout()</code></h2><p>setImmediate() 和 setTimeout() 很类似，但是根据<code>even loop</code>的描述来说： 完全是不同的调度行为。</p>
+<ul>
+<li><code>setImmediate()</code> 设计为在当前 轮询 阶段完成后执行脚本。</li>
+<li><code>setTimeout()</code> 计划在毫秒的最小阈值经过后运行的脚本。  <pre><code>执行计时器的顺序将根据调用它们的上下文而异。如果二者都从主模块内调用，则计时将受进程性能的约束（这可能会受到计算机上运行的其它应用程序的影响）。
+</code></pre>
+这样的话是没有办法保证执行的先后顺序的:<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(function() &#123;</span><br><span class="line">    console.log(&#x27;setTimeout&#x27;)</span><br><span class="line">&#125;, 0);</span><br><span class="line">setImmediate(function() &#123;</span><br><span class="line">    console.log(&#x27;setImmediate&#x27;)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+但是，如果你把这两个函数放入一个 I/O 循环内调用，<code>setImmediate</code> 总是被优先调用：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">const fs = require(&#x27;fs&#x27;);</span><br><span class="line"></span><br><span class="line">fs.readFile(__filename, () =&gt; &#123;</span><br><span class="line">  setTimeout(() =&gt; &#123;</span><br><span class="line">    console.log(&#x27;timeout&#x27;);</span><br><span class="line">  &#125;, 0);</span><br><span class="line">  setImmediate(() =&gt; &#123;</span><br><span class="line">    console.log(&#x27;immediate&#x27;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>因为<code>setImmediate</code>在<code>check</code>阶段执行而<code>setTimeout</code>会在下一个<code>timer</code>阶段去执行</p>
+<h2 id="process-nextTick"><a href="#process-nextTick" class="headerlink" title="process.nextTick()"></a><code>process.nextTick()</code></h2><p>在<code>even loop</code>中并没有显示<code>process.nextTick()</code>,即使他是异步API的一部分，因为从技术上来说，它并不是<code>event loop</code>的一部分。相反的，<code>process.nextTick()</code>会把回调塞入<code>nextTickQueue</code>，<code>nextTickQueue</code>将在当前操作完成后处理，不管目前处于event loop的哪个阶段。<br>也就是说如果不恰当的使用<code>process.nextTick()</code>会使其他<code>I/O</code>调用无法执行</p>
+<h3 id="为什么允许-process-nextTick"><a href="#为什么允许-process-nextTick" class="headerlink" title="为什么允许 process.nextTick()"></a>为什么允许 <code>process.nextTick()</code></h3><ol>
+<li><p>允许用户处理错误，清理任何不需要的资源，或者在事件循环继续之前重试请求。</p>
+</li>
+<li><p>有时在调用堆栈已解除但在事件循环继续之前，必须允许回调运行。</p>
+<blockquote>
+<p>简单的一个实例</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const server = net.createServer();</span><br><span class="line">server.on(&#x27;connection&#x27;, (conn) =&gt; &#123; &#125;);</span><br><span class="line"></span><br><span class="line">server.listen(8080);</span><br><span class="line">server.on(&#x27;listening&#x27;, () =&gt; &#123; &#125;);</span><br></pre></td></tr></table></figure>
+<p>假设 <code>listen()</code> 在事件循环开始时运行，但侦听回调被放置在 <code>setImmediate()</code> 中。除非通过主机名，否则将立即绑定到端口。为使事件循环继续进行，它必须命中 <code>轮询</code> 阶段，这意味着可能会收到连接，从而允许在侦听事件之前激发连接事件。</p>
+<h2 id="process-nextTick-vs-setImmediate"><a href="#process-nextTick-vs-setImmediate" class="headerlink" title="process.nextTick() vs setImmediate()"></a>process.nextTick() vs setImmediate()</h2></li>
+<li><p><code>process.nextTick()</code> 立即在本阶段执行回调；</p>
+</li>
+<li><p><code>setImmediate()</code>只能在 <code>check</code> 阶段执行回调。</p>
+<h3 id="一个例子"><a href="#一个例子" class="headerlink" title="一个例子"></a>一个例子</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">__filename=&#x27;eventloop.js&#x27;</span><br><span class="line">fs.readFile(__filename, () =&gt; &#123;</span><br><span class="line">    Promise.resolve().then(() =&gt; console.log(&#x27;promise1 resolved&#x27;));</span><br><span class="line">    Promise.resolve().then(() =&gt; console.log(&#x27;promise2 resolved&#x27;));</span><br><span class="line">    process.nextTick(() =&gt; console.log(&#x27;next tick4&#x27;));</span><br><span class="line">    Promise.resolve().then(() =&gt; &#123;</span><br><span class="line">        console.log(&#x27;promise3 resolved&#x27;);</span><br><span class="line">        process.nextTick(() =&gt; console.log(&#x27;next tick inside promise resolve handler&#x27;));</span><br><span class="line">    &#125;);</span><br><span class="line">    process.nextTick(() =&gt; console.log(&#x27;next tick1&#x27;));</span><br><span class="line">    Promise.resolve().then(() =&gt; console.log(&#x27;promise4 resolved&#x27;));</span><br><span class="line">    Promise.resolve().then(() =&gt; console.log(&#x27;promise5 resolved&#x27;));</span><br><span class="line">    setImmediate(() =&gt; console.log(&#x27;set immediate1&#x27;));</span><br><span class="line">    setImmediate(() =&gt; console.log(&#x27;set immediate2&#x27;));</span><br><span class="line"></span><br><span class="line">    process.nextTick(() =&gt; console.log(&#x27;next tick2&#x27;));</span><br><span class="line"></span><br><span class="line">    setTimeout(() =&gt; console.log(&#x27;set timeout&#x27;), 0);</span><br><span class="line">    setImmediate(() =&gt; console.log(&#x27;set immediate3&#x27;));</span><br><span class="line">    setImmediate(() =&gt; console.log(&#x27;set immediate4&#x27;));</span><br><span class="line">    process.nextTick(() =&gt; console.log(&#x27;next tick3&#x27;));</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>输出的顺序为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">next tick4</span><br><span class="line">next tick1</span><br><span class="line">next tick2</span><br><span class="line">next tick3</span><br><span class="line">promise1 resolved</span><br><span class="line">promise2 resolved</span><br><span class="line">promise3 resolved</span><br><span class="line">promise4 resolved</span><br><span class="line">promise5 resolved</span><br><span class="line">next tick inside promise resolve handler</span><br><span class="line">set immediate1</span><br><span class="line">set immediate2</span><br><span class="line">set immediate3</span><br><span class="line">set immediate4</span><br><span class="line">set timeout</span><br></pre></td></tr></table></figure>
+<h2 id="REF"><a href="#REF" class="headerlink" title="REF"></a>REF</h2><p><a target="_blank" rel="noopener" href="https://nodejs.org/de/docs/guides/event-loop-timers-and-nexttick/">The Node.js Event Loop, Timers, and process.nextTick()</a></p>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Node-js/" rel="tag"># Node.js</a>
+          
+            <a href="/tags/even-loop/" rel="tag"># even loop</a>
+          
+            <a href="/tags/setImmediate-setTimeout-process-nextTick/" rel="tag"># setImmediate setTimeout() process.nextTick()</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/08/nodejs/promise/" rel="next" title="Promise">
+                <i class="fa fa-chevron-left"></i> Promise
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/16/ops/linux/ulimit/" rel="prev" title="linux ulimit 调参与优化">
+                linux ulimit 调参与优化 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          </div>
+          
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg"
+                alt="Sanborn" />
+            
+              <p class="site-author-name" itemprop="name">Sanborn</p>
+              <p class="site-description motion-element" itemprop="description">恍惚而过，不落昏沉</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Sanbornzhang" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8Eeven-loop%E4%B8%AD%E8%AF%B4-setImmediate-%E3%80%81setTimeout-%E3%80%81process-nextTick-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.</span> <span class="nav-text">从even loop中说 setImmediate()、setTimeout()、process.nextTick()的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#even-loop"><span class="nav-number">1.1.</span> <span class="nav-text">even loop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF"><span class="nav-number">1.2.</span> <span class="nav-text">什么是事件循环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E8%BD%AE%E8%AF%A2%E6%9C%BA%E5%88%B6%E8%A7%A3%E6%9E%90"><span class="nav-number">1.3.</span> <span class="nav-text">事件轮询机制解析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5%E6%A6%82%E8%BF%B0"><span class="nav-number">1.3.1.</span> <span class="nav-text">阶段概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#timers"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">timers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pending-callbacks"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">pending callbacks</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#poll"><span class="nav-number">1.3.1.3.</span> <span class="nav-text">poll</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#check"><span class="nav-number">1.3.1.4.</span> <span class="nav-text">check</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#close-callbacks"><span class="nav-number">1.3.1.5.</span> <span class="nav-text">close callbacks</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#setImmediate-%E5%92%8C-setTimeout"><span class="nav-number">1.4.</span> <span class="nav-text">setImmediate() 和 setTimeout()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-nextTick"><span class="nav-number">1.5.</span> <span class="nav-text">process.nextTick()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%85%81%E8%AE%B8-process-nextTick"><span class="nav-number">1.5.1.</span> <span class="nav-text">为什么允许 process.nextTick()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-nextTick-vs-setImmediate"><span class="nav-number">1.6.</span> <span class="nav-text">process.nextTick() vs setImmediate()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E4%BE%8B%E5%AD%90"><span class="nav-number">1.6.1.</span> <span class="nav-text">一个例子</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#REF"><span class="nav-number">1.7.</span> <span class="nav-text">REF</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sanborn</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

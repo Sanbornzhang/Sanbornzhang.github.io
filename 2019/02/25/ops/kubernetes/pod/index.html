@@ -1,37 +1,851 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ops,linux,docker,Kubernetes,pod," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="PODPod，是 Kubernetes 项目中最小的 API 对象，一个 Pod 中包含多个 container。Pod 里面的所有容器共享的是同一个 Network Namespace，并且可以声明共享同一个 Volume  对于Pod里面的容器来说:  他们可以直接使用 Localhost 来进行通信; 他们看到的网络设备完全相同 一个Pod只有一个IP地址 Pod的生命周期和 Infra一致">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kubernetes Pod 介绍">
+<meta property="og:url" content="https://sanbornzhang.github.io/2019/02/25/ops/kubernetes/pod/index.html">
+<meta property="og:site_name" content="Sanborn">
+<meta property="og:description" content="PODPod，是 Kubernetes 项目中最小的 API 对象，一个 Pod 中包含多个 container。Pod 里面的所有容器共享的是同一个 Network Namespace，并且可以声明共享同一个 Volume  对于Pod里面的容器来说:  他们可以直接使用 Localhost 来进行通信; 他们看到的网络设备完全相同 一个Pod只有一个IP地址 Pod的生命周期和 Infra一致">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-02-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-05T08:06:12.016Z">
+<meta property="article:author" content="Sanborn">
+<meta property="article:tag" content="ops">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="Kubernetes">
+<meta property="article:tag" content="pod">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://Sanbornzhang.github.io/2019/02/25/ops/kubernetes/pod/"/>
+
+
+
+
+
+  <title>Kubernetes Pod 介绍 | Sanborn</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sanborn</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">爱吃酸菜的鱼</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Sanbornzhang.github.io/2019/02/25/ops/kubernetes/pod/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sanborn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sanborn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Kubernetes Pod 介绍</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-25T00:00:00+08:00">
+                2019-02-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/docker/" itemprop="url" rel="index">
+                    <span itemprop="name">docker</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/docker/Kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">Kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/docker/Kubernetes/pod/" itemprop="url" rel="index">
+                    <span itemprop="name">pod</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="POD"><a href="#POD" class="headerlink" title="POD"></a>POD</h1><pre><code>Pod，是 Kubernetes 项目中最小的 API 对象，一个 Pod 中包含多个 container。Pod 里面的所有容器共享的是同一个 Network Namespace，并且可以声明共享同一个 Volume
+</code></pre>
+<p>对于<code>Pod</code>里面的容器来说:</p>
+<ol>
+<li>他们可以直接使用 <code>Localhost</code> 来进行通信;</li>
+<li>他们看到的网络设备完全相同</li>
+<li>一个<code>Pod</code>只有一个IP地址</li>
+<li>Pod的生命周期和 <code>Infra</code>一致, <code>Infra</code>是<code>Pod</code>实现的一个中间容器。</li>
+</ol>
+<h2 id="POD的一些-API"><a href="#POD的一些-API" class="headerlink" title="POD的一些 API"></a><code>POD</code>的一些 API</h2><h3 id="NodeSelector"><a href="#NodeSelector" class="headerlink" title="NodeSelector"></a>NodeSelector</h3><p>将 Pod 与 Node 绑定的字段</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nodeSelector:</span><br><span class="line">    disktype: ssd</span><br></pre></td></tr></table></figure>
+<p>REF: <a target="_blank" rel="noopener" href="https://k8smeetup.github.io/docs/concepts/configuration/assign-pod-node/">分配 Pod 到 Node 上</a></p>
+<h3 id="NodeName"><a href="#NodeName" class="headerlink" title="NodeName"></a>NodeName</h3><p>一旦 Pod 的这个字段被赋值，Kubernetes 就会认为这个<code>Pod</code>以及经过了调度。</p>
+<h3 id="HostAliases：定义了-Pod-的-hosts-文件的内容"><a href="#HostAliases：定义了-Pod-的-hosts-文件的内容" class="headerlink" title="HostAliases：定义了 Pod 的 hosts 文件的内容"></a>HostAliases：定义了 Pod 的 hosts 文件的内容</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">spec:</span><br><span class="line">  hostAliases:</span><br><span class="line">  - ip: &quot;10.1.2.3&quot;</span><br><span class="line">    hostnames:</span><br><span class="line">    - &quot;foo.remote&quot;</span><br><span class="line">    - &quot;bar.remote&quot;</span><br></pre></td></tr></table></figure>
+<p>进入容器内:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/hosts</span><br><span class="line"># Kubernetes-managed hosts file.</span><br><span class="line">127.0.0.1 localhost</span><br><span class="line">...</span><br><span class="line">10.244.135.10 hostaliases-pod</span><br><span class="line">10.1.2.3 foo.remote</span><br><span class="line">10.1.2.3 bar.remote</span><br></pre></td></tr></table></figure>
+
+<h3 id="ImagePullPolicy"><a href="#ImagePullPolicy" class="headerlink" title="ImagePullPolicy"></a>ImagePullPolicy</h3><p>容器镜像的拉取策略</p>
+<ul>
+<li>IfNotPresent：如果本地存在镜像就优先使用本地镜像。</li>
+<li>Never：直接不再去拉取镜像了，使用本地的；如果本地不存在就报异常了。</li>
+<li>Always： 总是拉取</li>
+</ul>
+<h3 id="Lifecycle"><a href="#Lifecycle" class="headerlink" title="Lifecycle"></a>Lifecycle</h3><p>当容器发生变化时候的Hook,在怎么优雅的停止容器会使用到。[线上升级]<br><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/NwJbBLhomaHBhCkIDR1KWA">优雅的停止pod</a></p>
+<h3 id="volumes"><a href="#volumes" class="headerlink" title="volumes"></a>volumes</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: test-pd</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - image: gcr.io/google_containers/test-webserver</span><br><span class="line">    name: test-container</span><br><span class="line">    volumeMounts:</span><br><span class="line">    - mountPath: /cache</span><br><span class="line">      name: cache-volume</span><br><span class="line">  volumes:</span><br><span class="line">  - name: cache-volume</span><br><span class="line">    emptyDir: &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>更多:  <a target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/storage/volumes/">kubernetes volumes</a></p>
+<h2 id="容器探针-容器健康检查"><a href="#容器探针-容器健康检查" class="headerlink" title="容器探针[容器健康检查]"></a>容器探针[容器健康检查]</h2><h3 id="什么时候使用"><a href="#什么时候使用" class="headerlink" title="什么时候使用"></a>什么时候使用</h3><ul>
+<li><p>如果容器中的进程能够在遇到问题或不健康的情况下自行崩溃，则不一定需要存活探针; kubelet 将根据 <code>Pod</code> 的<code>restartPolicy</code> 自动执行正确的操作。</p>
+</li>
+<li><p>如果您希望容器在探测失败时被杀死并重新启动，那么请指定一个存活探针，并指定<code>restartPolicy</code> 为 <code>Always</code> 或 <code>OnFailure</code>。</p>
+</li>
+<li><p>如果要仅在探测成功时才开始向 Pod 发送流量，请指定就绪探针。在这种情况下，就绪探针可能与存活探针相同，但是 spec 中的就绪探针的存在意味着 Pod 将在没有接收到任何流量的情况下启动，并且只有在探针探测成功后才开始接收流量。</p>
+</li>
+<li><p>如果您希望容器能够自行维护，您可以指定一个就绪探针，该探针检查与存活探针不同的端点。</p>
+</li>
+<li><p>如果您只想在 Pod 被删除时能够排除请求，则不一定需要使用就绪探针；在删除 Pod 时，Pod 会自动将自身置于未完成状态，无论就绪探针是否存在。当等待 Pod 中的容器停止时，Pod 仍处于未完成状态。</p>
+</li>
+</ul>
+<h3 id="探针"><a href="#探针" class="headerlink" title="探针"></a>探针</h3><pre><code>探针 是由 kubelet 对容器执行的定期诊断。要执行诊断，kubelet 调用由容器实现的 Handler。有三种类型的处理程序：
+</code></pre>
+<ul>
+<li>ExecAction：在容器内执行指定命令。如果命令退出时返回码为 0 则认为诊断成功。</li>
+<li>TCPSocketAction：对指定端口上的容器的 IP 地址进行 TCP 检查。如果端口打开，则诊断被认为是成功的。</li>
+<li>HTTPGetAction：对指定的端口和路径上的容器的 IP 地址执行 HTTP Get 请求。如果响应的状态码大于等于200 且小于 400，则诊断被认为是成功的。</li>
+</ul>
+<p>每次探测都将获得以下三种结果之一：</p>
+<ul>
+<li>成功：容器通过了诊断。</li>
+<li>失败：容器未通过诊断。</li>
+<li>未知：诊断失败，因此不会采取任何行动。</li>
+</ul>
+<h3 id="restartPolicy"><a href="#restartPolicy" class="headerlink" title="restartPolicy"></a>restartPolicy</h3><p><code>restartPolicy</code>的值为:</p>
+<ol>
+<li>Always： 只要退出就重启 [默认]</li>
+<li>OnFailure：失败退出（exit code不等于0）时重启</li>
+<li>OnFailure： 只要退出就不再重启<h3 id="readinessProbe"><a href="#readinessProbe" class="headerlink" title="readinessProbe"></a>readinessProbe</h3> 指示容器是否准备好服务请求。如果就绪探测失败，端点控制器将从与 Pod 匹配的所有 Service 的端点中删除该 Pod 的 IP 地址。初始延迟之前的就绪状态默认为 Failure。如果容器不提供就绪探针，则默认状态为 Succes<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tcpSocket: # 类型</span><br><span class="line">  port: 80 # 监听端口</span><br><span class="line">initialDelaySeconds: 180 # 容器启动 180S 后会发送第一个 readiness probe</span><br><span class="line">periodSeconds: 10 #将每隔10秒钟执行一次该检查</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="livenessProbe"><a href="#livenessProbe" class="headerlink" title="livenessProbe"></a>livenessProbe</h3><pre><code>指示容器是否正在运行。如果存活探测失败，则 kubelet 会杀死容器，并且容器将受到其 重启策略 的影响。如果容器不提供存活探针，则默认状态为 Success。
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tcpSocket:</span><br><span class="line">  port: 80</span><br><span class="line">initialDelaySeconds: 60  #容器启动成功 60S 后会发送第一个 readiness probe</span><br><span class="line">periodSeconds: 60 #将每隔60秒钟执行一次该检查</span><br></pre></td></tr></table></figure>
+<h3 id="Configure-Probes"><a href="#Configure-Probes" class="headerlink" title="Configure Probes"></a>Configure Probes</h3><h4 id="Probe"><a href="#Probe" class="headerlink" title="Probe"></a>Probe</h4><p>通过<code>Probe</code>可以配置 <code>liveness</code> 和 <code>readiness</code> 检查：</p>
+<ul>
+<li>initialDelaySeconds：容器启动后第一次执行探测是需要等待多少秒。</li>
+<li>periodSeconds：执行探测的频率。默认是10秒，最小1秒。</li>
+<li>timeoutSeconds：探测超时时间。默认1秒，最小1秒。</li>
+<li>successThreshold：探测失败后，最少连续探测成功多少次才被认定为成功。默认是 1。对于 liveness 必须是 1。最小值是 1。</li>
+<li>failureThreshold：探测成功后，最少连续探测失败多少次才被认定为失败。默认是 3。最小值是 1。</li>
+</ul>
+<h4 id="HTTP-probe"><a href="#HTTP-probe" class="headerlink" title="HTTP probe"></a>HTTP probe</h4><p><code>HTTP probe </code>中可以给 httpGet设置其他配置项：</p>
+<ul>
+<li>host：连接的主机名，默认连接到 pod 的 IP。</li>
+<li>scheme：连接使用的 schema，默认HTTP。</li>
+<li>path: 访问的HTTP server 的 path。</li>
+<li>httpHeaders：自定义请求的 header。HTTP运行重复的 header。</li>
+<li>port：访问的容器的端口名字或者端口号。端口号必须介于 1 和 65525 之间。  </li>
+</ul>
+<p>对指定的端口和路径上的容器的 IP 地址执行 HTTP Get 请求。如果响应的状态码大于等于200 且小于 400，则诊断被认为是成功的</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ops/" rel="tag"># ops</a>
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/docker/" rel="tag"># docker</a>
+          
+            <a href="/tags/Kubernetes/" rel="tag"># Kubernetes</a>
+          
+            <a href="/tags/pod/" rel="tag"># pod</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/25/ops/linux/tcpdump/" rel="next" title="TCPDump简单使用">
+                <i class="fa fa-chevron-left"></i> TCPDump简单使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/25/ops/kubernetes/install/" rel="prev" title="Kubernetes 安装">
+                Kubernetes 安装 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          </div>
+          
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg"
+                alt="Sanborn" />
+            
+              <p class="site-author-name" itemprop="name">Sanborn</p>
+              <p class="site-description motion-element" itemprop="description">恍惚而过，不落昏沉</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Sanbornzhang" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#POD"><span class="nav-number">1.</span> <span class="nav-text">POD</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#POD%E7%9A%84%E4%B8%80%E4%BA%9B-API"><span class="nav-number">1.1.</span> <span class="nav-text">POD的一些 API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NodeSelector"><span class="nav-number">1.1.1.</span> <span class="nav-text">NodeSelector</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NodeName"><span class="nav-number">1.1.2.</span> <span class="nav-text">NodeName</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HostAliases%EF%BC%9A%E5%AE%9A%E4%B9%89%E4%BA%86-Pod-%E7%9A%84-hosts-%E6%96%87%E4%BB%B6%E7%9A%84%E5%86%85%E5%AE%B9"><span class="nav-number">1.1.3.</span> <span class="nav-text">HostAliases：定义了 Pod 的 hosts 文件的内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ImagePullPolicy"><span class="nav-number">1.1.4.</span> <span class="nav-text">ImagePullPolicy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lifecycle"><span class="nav-number">1.1.5.</span> <span class="nav-text">Lifecycle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#volumes"><span class="nav-number">1.1.6.</span> <span class="nav-text">volumes</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%B9%E5%99%A8%E6%8E%A2%E9%92%88-%E5%AE%B9%E5%99%A8%E5%81%A5%E5%BA%B7%E6%A3%80%E6%9F%A5"><span class="nav-number">1.2.</span> <span class="nav-text">容器探针[容器健康检查]</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E4%BD%BF%E7%94%A8"><span class="nav-number">1.2.1.</span> <span class="nav-text">什么时候使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A2%E9%92%88"><span class="nav-number">1.2.2.</span> <span class="nav-text">探针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#restartPolicy"><span class="nav-number">1.2.3.</span> <span class="nav-text">restartPolicy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#readinessProbe"><span class="nav-number">1.2.4.</span> <span class="nav-text">readinessProbe</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#livenessProbe"><span class="nav-number">1.2.5.</span> <span class="nav-text">livenessProbe</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Configure-Probes"><span class="nav-number">1.2.6.</span> <span class="nav-text">Configure Probes</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Probe"><span class="nav-number">1.2.6.1.</span> <span class="nav-text">Probe</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-probe"><span class="nav-number">1.2.6.2.</span> <span class="nav-text">HTTP probe</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sanborn</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

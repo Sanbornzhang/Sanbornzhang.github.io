@@ -1,37 +1,877 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="前端,CSS3,布局,盒子模型," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="CSS 入门的一些知识em rem px 区别 px: 固定的像素，一旦设置了就无法因为适应页面大小而改变。 em: 只是针对与父级元素的大小 rem: 针对根元素的大小 em和rem相对于px具有灵活性，他们是相对长度单位，更适用于响应式布局。     盒子模型  width 和height 设置了内容框的宽&#x2F;高 padding 家族属性设置内边距的宽度(别忘了普通属性比如 padding-bo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSS 入门的一些知识">
+<meta property="og:url" content="https://sanbornzhang.github.io/2019/05/11/%E5%89%8D%E7%AB%AF/CSS/index/index.html">
+<meta property="og:site_name" content="Sanborn">
+<meta property="og:description" content="CSS 入门的一些知识em rem px 区别 px: 固定的像素，一旦设置了就无法因为适应页面大小而改变。 em: 只是针对与父级元素的大小 rem: 针对根元素的大小 em和rem相对于px具有灵活性，他们是相对长度单位，更适用于响应式布局。     盒子模型  width 和height 设置了内容框的宽&#x2F;高 padding 家族属性设置内边距的宽度(别忘了普通属性比如 padding-bo">
+<meta property="og:locale">
+<meta property="og:image" content="https://sanbornzhang.github.io/2019/05/11/%E5%89%8D%E7%AB%AF/CSS/index/images/box-model-standard-small.png">
+<meta property="article:published_time" content="2019-05-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-05T08:06:12.024Z">
+<meta property="article:author" content="Sanborn">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="CSS3">
+<meta property="article:tag" content="布局">
+<meta property="article:tag" content="盒子模型">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sanbornzhang.github.io/2019/05/11/%E5%89%8D%E7%AB%AF/CSS/index/images/box-model-standard-small.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://Sanbornzhang.github.io/2019/05/11/前端/CSS/index/"/>
+
+
+
+
+
+  <title>CSS 入门的一些知识 | Sanborn</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sanborn</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">爱吃酸菜的鱼</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Sanbornzhang.github.io/2019/05/11/%E5%89%8D%E7%AB%AF/CSS/index/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sanborn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sanborn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CSS 入门的一些知识</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-11T00:00:00+08:00">
+                2019-05-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%89%8D%E7%AB%AF/CSS3/" itemprop="url" rel="index">
+                    <span itemprop="name">CSS3</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%89%8D%E7%AB%AF/CSS3/%E5%B8%83%E5%B1%80/" itemprop="url" rel="index">
+                    <span itemprop="name">布局</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="CSS-入门的一些知识"><a href="#CSS-入门的一些知识" class="headerlink" title="CSS 入门的一些知识"></a>CSS 入门的一些知识</h1><h2 id="em-rem-px-区别"><a href="#em-rem-px-区别" class="headerlink" title="em rem px 区别"></a><code>em</code> <code>rem</code> <code>px</code> 区别</h2><ul>
+<li><code>px</code>: 固定的像素，一旦设置了就无法因为适应页面大小而改变。</li>
+<li><code>em</code>: 只是针对与父级元素的大小</li>
+<li><code>rem</code>: 针对根元素的大小<blockquote>
+<pre><code>em和rem相对于px具有灵活性，他们是相对长度单位，更适用于响应式布局。
+</code></pre>
+</blockquote>
+</li>
+</ul>
+<h2 id="盒子模型"><a href="#盒子模型" class="headerlink" title="盒子模型"></a>盒子模型</h2><p><img src="images/box-model-standard-small.png" alt="box-model"></p>
+<ul>
+<li><code>width</code> <code>和height</code> 设置了内容框的宽/高</li>
+<li><code>padding</code> 家族属性设置内边距的宽度(别忘了普通属性比如 <code>padding-bottom</code> ，一次设置一个边).</li>
+<li><code>border</code> 家族属性设置边界的宽度、样式和颜色(许多可用的普通边界属性还有很多)。</li>
+<li><code>margin</code> 家族属性设置包围CSS盒子外部区域的宽度，这个属性推开布局中其他的CSS盒子（也有许多可用的普通属性比如 <code>margin-bottom </code>）。<span id="more"></span>
+<h2 id="常用的属性"><a href="#常用的属性" class="headerlink" title="常用的属性"></a>常用的属性</h2><h3 id="border"><a href="#border" class="headerlink" title="border"></a>border</h3></li>
+</ul>
+<ol>
+<li><p><code>border</code>: [<code>border-width</code> ||<code>border-style</code> ||<code>border-color</code> |<code>inherit</code>] </p>
+<ul>
+<li><p><code>border-width</code>: 除了可以设置指定宽度值之外还有3个参数:</p>
+<ol>
+<li><code>thin</code>:   细边线</li>
+<li><code>medium</code>: 中等边线</li>
+<li><code>thick</code>:  宽边线</li>
+</ol>
+</li>
+<li><p><code>border-style</code>:  描述边框样式</p>
+<ol>
+<li><code>none</code>:  和关键字 hidden 类似，不显示边框。在这种情况下，如果没有设定背景图片，border-width 计算后的值将是 0，即使先前已经指定过它的值。在单元格边框重叠情况下，none 值优先级最低，意味着如果存在其他的重叠边框，则会显示为那个边框。</li>
+<li><code>hidden</code>: 和关键字 none 类似，不显示边框。在这种情况下，如果没有设定背景图片，border-width 计算后的值将是 0，即使先前已经指定过它的值。在单元格边框重叠情况下，hidden 值优先级最高，意味着如果存在其他的重叠边框，边框不会显示。</li>
+<li><code>dotted</code>: 显示为一系列圆点。标准中没有定义两点之间的间隔大小，视不同实现而定。圆点半径是 border-width 计算值的一半。</li>
+<li><code>dashed</code>: 显示为一系列短的方形虚线。标准中没有定义线段的长度和大小，视不同实现而定。</li>
+<li><code>solid</code>: 显示为一条实线。</li>
+<li><code>double</code>: 显示为一条双实线，宽度是 border-width 。</li>
+<li><code>groove</code>: 显示为有雕刻效果的边框，样式与 ridge 相反。</li>
+<li><code>ridge</code>: 显示为有浮雕效果的边框，样式与 groove 相反。</li>
+<li><code>inset</code>: 显示为有陷入效果的边框，样式与 outset 相反。当它指定到 border-collapse 为 collapsed 的单元格时，会显示为 groove 的样式</li>
+<li><code>outset</code>: 显示为有突出效果的边框，样式与 inset 相反。当它指定到 border-collapse 为 collapsed 的单元格时，会显示为 ridge 的样式。</li>
+</ol>
+</li>
+<li><p><code>border-color</code>: 可以确定border的颜色。如果这个值没有设置，它的默认值是元素的color属性值[也可以分别设置4个边框的颜色]</p>
+</li>
+<li><p><code>border-image</code>: 允许在元素的边框上绘制图像 [ <code>border-image-source</code> || <code>border-image-slice</code>] [ <code>border-image-width</code> | <code>border-image-width</code> ? /<code>border-image-outset</code> ] || <code>border-image-repeat</code></p>
+</li>
+<li><p><code>border-image-source</code>: 元素的边框图片（border-image）的资源 </p>
+<ul>
+<li><code>none</code>:</li>
+<li><code>url</code>:</li>
+<li><code>linear-gradient</code>:</li>
+<li><code>inherit</code>:</li>
+<li><code>initial</code>:</li>
+<li><code>unset</code>:</li>
+</ul>
+</li>
+<li><p><code>border-image-repeat</code>: 定义图片如何填充边框。</p>
+<ul>
+<li><code>stretch</code><br>拉伸图片以填充边框。</li>
+<li><code>repeat</code><br>平铺图片以填充边框。</li>
+<li><code>round</code><br>平铺图像。当不能整数次平铺时，根据情况放大或缩小图像。</li>
+<li><code>space</code><br>平铺图像 。当不能整数次平铺时，会用空白间隙填充在图像周围（不会放大或缩小图像）</li>
+<li><code>inherit</code><br>继承父级元素的计算值。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>border-radius</code>: 设置边框圆角</p>
+<h3 id="background"><a href="#background" class="headerlink" title="background"></a><code>background</code></h3></li>
+<li><p><code>background-attachment</code>: 背景图像的位置是在当前固定，还是随着滚动。</p>
+<ul>
+<li><code>fixed</code><br>此关键字表示背景相对于视口固定。即使一个元素拥有滚动机制，背景也不会随着元素的内容滚动。</li>
+<li><code>local</code><br>此关键字表示背景相对于元素的内容固定。如果一个元素拥有滚动机制，背景将会随着元素的内容滚动， 并且背景的绘制区域和定位区域是相对于可滚动的区域而不是包含他们的边框。</li>
+<li><code>scroll</code><br>此关键字表示背景相对于元素本身固定， 而不是随着它的内容滚动（对元素边框是有效的）。</li>
+</ul>
+</li>
+<li><p><code>background-clip</code>: 设置元素的背景（背景图片或颜色）是否延伸到边框下面。</p>
+<ul>
+<li><code>border-box </code><br>背景延伸至边框外沿（但是在边框下层）。</li>
+<li><code>padding-box</code><br>背景延伸至内边距（padding）外沿。不会绘制到边框处。</li>
+<li><code>content-box  </code><br>背景被裁剪至内容区（content box）外沿。</li>
+<li><code>text</code><br>背景被裁剪成文字的前景色。</li>
+</ul>
+</li>
+</ol>
+<h3 id="linear-gradient-渐变函数"><a href="#linear-gradient-渐变函数" class="headerlink" title="linear-gradient() 渐变函数"></a><code>linear-gradient()</code> 渐变函数</h3><p>ref: </p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/linear-gradient">linear-gradient</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.w3schools.com/css/css3_gradients.asp">CSS Gradients</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.alloyteam.com/2016/03/css-gradient/">css gradient 详解</a><h3 id="webkit-background-clip-设置文字的"><a href="#webkit-background-clip-设置文字的" class="headerlink" title="-webkit-background-clip 设置文字的"></a><code>-webkit-background-clip</code> 设置文字的</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">background-clip: text;</span><br><span class="line">-webkit-background-clip: text;</span><br><span class="line">color: transparent;</span><br></pre></td></tr></table></figure>
+ref:<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-clip">background-clip</a><h3 id="animation-动画"><a href="#animation-动画" class="headerlink" title="animation 动画"></a><code>animation</code> 动画</h3></li>
+</ol>
+<ul>
+<li><code>animation-name</code>:<br>设置一个或多个动画应用到的元素。每个名称都是一个规则，用于设置动画序列的属性值; 自定义动画需要使用<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/@keyframes">keyframes</a></li>
+<li><code>animation-duration</code>:<br>定义动画周期时常</li>
+<li><code>animation-play-state</code>:<br>sets whether an animation is running or paused.</li>
+<li><code>animation-iteration-count</code>:<br>设置循环次数</li>
+<li><code>animation-timing-function</code>:<br>  设置动画的进展如何通过每个周期的持续时间。<ul>
+<li>ease<br>等于cubic-bezier(0.25, 0.1, 0.25, 1.0)，默认值，向动画中间的速度增加，在结束时减慢。</li>
+<li>linear<br>等于cubic-bezier(0.0, 0.0, 1.0, 1.0)，以均匀的速度动画。</li>
+<li>ease-in<br>等于cubic-bezier(0.42, 0, 1.0, 1.0)，慢慢开始，随着动画属性转换的速度增加直到完成。</li>
+<li>ease-out<br>等于cubic-bezier(0, 0, 0.58, 1.0)，快速启动，继续减慢动画速度。•</li>
+<li>ease-in-out<br>等于cubic-bezier(0.42, 0, 0.58, 1.0)，动画属性慢慢过渡，加速，然后再次放慢速度。</li>
+<li>cubic-bezier(p1, p2, p3, p4)<br>作者定义了三次贝塞尔曲线，其中p1和p3值必须在0到1的范围内。</li>
+<li>steps(n, <jumpterm>)<br>沿着过渡沿n个停止显示动画迭代，显示每个停止相等的时间长度。例如，如果n为5，则有5个步骤。动画是暂时保持在0％，20％，40％，60％和80％，在20％，40％，60％，80％和100％，或在0％和100％之间进行5次停止动画，或5次停止，包括0％和100％标记（0％，25％，50％，75％和100％）取决于使用以下哪个跳转术语：</li>
+<li>jump-start<br>表示左连续函数，以便在动画开始时发生第一次跳转;</li>
+<li>jump-end<br>表示右连续函数，以便在动画结束时发生最后一次跳转;</li>
+<li>jump-none<br>两端都没有跳跃。相反，保持0％标记和100％标记，每个标记持续1 / n。</li>
+<li>jump-both<br>包括0％和100％标记的暂停，在动画迭代期间有效地添加一个步骤。</li>
+<li>start<br>与…一样 jump-start.</li>
+<li>end<br>与…一样 jump-end.</li>
+<li>step-start<br>等于 steps(1, jump-start)</li>
+<li>step-end<br>等于 steps(1, jump-end)</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag"># 前端</a>
+          
+            <a href="/tags/CSS3/" rel="tag"># CSS3</a>
+          
+            <a href="/tags/%E5%B8%83%E5%B1%80/" rel="tag"># 布局</a>
+          
+            <a href="/tags/%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B/" rel="tag"># 盒子模型</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/06/ops/hexo/continuousDeployment/" rel="next" title="通过github + jenkins 进行持续部署 hexo">
+                <i class="fa fa-chevron-left"></i> 通过github + jenkins 进行持续部署 hexo
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/22/%E6%9E%B6%E6%9E%84/%E9%87%8D%E6%9E%84/" rel="prev" title="重构（速读 《重构 改善既有代码的设计》）">
+                重构（速读 《重构 改善既有代码的设计》） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          </div>
+          
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg"
+                alt="Sanborn" />
+            
+              <p class="site-author-name" itemprop="name">Sanborn</p>
+              <p class="site-description motion-element" itemprop="description">恍惚而过，不落昏沉</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Sanbornzhang" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CSS-%E5%85%A5%E9%97%A8%E7%9A%84%E4%B8%80%E4%BA%9B%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">CSS 入门的一些知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#em-rem-px-%E5%8C%BA%E5%88%AB"><span class="nav-number">1.1.</span> <span class="nav-text">em rem px 区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">盒子模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="nav-number">1.3.</span> <span class="nav-text">常用的属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#border"><span class="nav-number">1.3.1.</span> <span class="nav-text">border</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#background"><span class="nav-number">1.3.2.</span> <span class="nav-text">background</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linear-gradient-%E6%B8%90%E5%8F%98%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.3.</span> <span class="nav-text">linear-gradient() 渐变函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#webkit-background-clip-%E8%AE%BE%E7%BD%AE%E6%96%87%E5%AD%97%E7%9A%84"><span class="nav-number">1.3.4.</span> <span class="nav-text">-webkit-background-clip 设置文字的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#animation-%E5%8A%A8%E7%94%BB"><span class="nav-number">1.3.5.</span> <span class="nav-text">animation 动画</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sanborn</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,37 +1,800 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ops,linux,jenkins,hexo," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="通过github + jenkins 进行持续部署 hexoinstall jenkins 安装jdk81sudo apt-get install openjdk-8-jdk 安装jenkins1234wget -q -O - https:&#x2F;&#x2F;pkg.jenkins.io&#x2F;debian&#x2F;jenkins-ci.org.key | sudo apt-key add -echo deb https:&#x2F;&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通过github + jenkins 进行持续部署 hexo">
+<meta property="og:url" content="https://sanbornzhang.github.io/2019/05/06/ops/hexo/continuousDeployment/index.html">
+<meta property="og:site_name" content="Sanborn">
+<meta property="og:description" content="通过github + jenkins 进行持续部署 hexoinstall jenkins 安装jdk81sudo apt-get install openjdk-8-jdk 安装jenkins1234wget -q -O - https:&#x2F;&#x2F;pkg.jenkins.io&#x2F;debian&#x2F;jenkins-ci.org.key | sudo apt-key add -echo deb https:&#x2F;&#x2F;">
+<meta property="og:locale">
+<meta property="og:image" content="https://sanbornzhang.github.io/2019/05/06/ops/hexo/continuousDeployment/images/hexo-jenkins-service.png">
+<meta property="og:image" content="https://sanbornzhang.github.io/2019/05/06/ops/hexo/continuousDeployment/images/hexo-jenkins-github-plugin.png">
+<meta property="og:image" content="https://sanbornzhang.github.io/2019/05/06/ops/hexo/continuousDeployment/images/hexo-jenkins-github-token.png">
+<meta property="og:image" content="https://sanbornzhang.github.io/2019/05/06/ops/hexo/continuousDeployment/images/hexo-jenkins-github-webhook1.png">
+<meta property="og:image" content="https://sanbornzhang.github.io/2019/05/06/ops/hexo/continuousDeployment/images/hexo-jenkins-github-webhook2.png">
+<meta property="og:image" content="https://sanbornzhang.github.io/2019/05/06/ops/hexo/continuousDeployment/images/hexo-jenkins-configure.png">
+<meta property="og:image" content="https://sanbornzhang.github.io/2019/05/06/ops/hexo/continuousDeployment/images/hexo-jenkins-project-configure1.png">
+<meta property="og:image" content="https://sanbornzhang.github.io/2019/05/06/ops/hexo/continuousDeployment/images/hexo-jenkins-project-configure2.png">
+<meta property="og:image" content="https://sanbornzhang.github.io/2019/05/06/ops/hexo/continuousDeployment/images/hexo-jenkins-project-configure3.png">
+<meta property="og:image" content="https://sanbornzhang.github.io/2019/05/06/ops/hexo/continuousDeployment/images/hexo-jenkins-githubpolllog.png">
+<meta property="article:published_time" content="2019-05-05T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-05T08:06:12.008Z">
+<meta property="article:author" content="Sanborn">
+<meta property="article:tag" content="ops">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="jenkins">
+<meta property="article:tag" content="hexo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sanbornzhang.github.io/2019/05/06/ops/hexo/continuousDeployment/images/hexo-jenkins-service.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://Sanbornzhang.github.io/2019/05/06/ops/hexo/continuousDeployment/"/>
+
+
+
+
+
+  <title>通过github + jenkins 进行持续部署 hexo | Sanborn</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sanborn</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">爱吃酸菜的鱼</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Sanbornzhang.github.io/2019/05/06/ops/hexo/continuousDeployment/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sanborn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sanborn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">通过github + jenkins 进行持续部署 hexo</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-06T00:00:00+08:00">
+                2019-05-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ops/" itemprop="url" rel="index">
+                    <span itemprop="name">ops</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ops/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ops/linux/jenkins/" itemprop="url" rel="index">
+                    <span itemprop="name">jenkins</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ops/linux/jenkins/hexo/" itemprop="url" rel="index">
+                    <span itemprop="name">hexo</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="通过github-jenkins-进行持续部署-hexo"><a href="#通过github-jenkins-进行持续部署-hexo" class="headerlink" title="通过github + jenkins 进行持续部署 hexo"></a>通过<code>github + jenkins</code> 进行持续部署 <code>hexo</code></h1><h2 id="install-jenkins"><a href="#install-jenkins" class="headerlink" title="install jenkins"></a>install jenkins</h2><ol>
+<li>安装jdk8<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install openjdk-8-jdk</span><br></pre></td></tr></table></figure></li>
+<li>安装<code>jenkins</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add -</span><br><span class="line">echo deb https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install jenkins</span><br></pre></td></tr></table></figure>
+<span id="more"></span> </li>
+<li>查看<code>jenkins</code>运行情况<br><img src="images/hexo-jenkins-service.png" alt="jenkins service"></li>
+<li>使用浏览器打开 <a target="_blank" rel="noopener" href="http://yourip:8080/">http://yourIP:8080</a> </li>
+<li>配置jenkins[建议安装，也可以自己选择。但是之后会使用到<code>Github Plugin</code><br><img src="images/hexo-jenkins-github-plugin.png" alt="jenkins plugin"><h2 id="持续部署配置"><a href="#持续部署配置" class="headerlink" title="持续部署配置"></a>持续部署配置</h2></li>
+<li>在<code>github.settings.developers.Personal access tokens</code>设置 <a target="_blank" rel="noopener" href="https://github.com/settings/developers">Personal access tokens</a><br><img src="images/hexo-jenkins-github-token.png" alt="github token"><br> <strong>保存好</strong>对应的<code>token</code>等会需要在<code>Jenkins</code>中使用</li>
+<li>在<code>Github</code><strong>对应的项目</strong>中添加<code>webhook</code><br><img src="images/hexo-jenkins-github-webhook1.png" alt="web hook"><br><img src="images/hexo-jenkins-github-webhook2.png" alt="web hook"><br>需要注意的是 <code>Url</code> 地址为： <code>http://yourUrl/github-webhook</code>,<br>需要http认证就是: <code>http://username:password@yourUrl/github-webhook</code>.</li>
+<li><code>jenkins</code>配置分为两项全局配置，和项目配置<ul>
+<li>全局配置：<br>需要在凭据中添加之前的<code>token</code><br><img src="images/hexo-jenkins-configure.png" alt="jenkins configure"></li>
+<li>项目配置<br><img src="images/hexo-jenkins-project-configure1.png" alt="jenkins project configure"><br><img src="images/hexo-jenkins-project-configure2.png" alt="jenkins project configure"></li>
+</ul>
+ <strong>注意</strong> 需要确保项目的<code>Source Code Management.Git.Repositories.Repository URL</code>和之前在<code>GitHub</code>中配置<code>webhook</code>的项目一致<br> 执行的<code>shell</code>文件<br> <img src="images/hexo-jenkins-project-configure3.png" alt="jenkins project configure">       <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo g</span><br><span class="line">cd source &amp;&amp; find . -name &quot;*.png&quot; -o -name &quot;*.jpg&quot;|xargs -i cp &#123;&#125; /$&#123;website/blog&#125;/public/images/</span><br></pre></td></tr></table></figure>
+<h3 id="推送代码到master之后，Jenkins会执行相应的构建"><a href="#推送代码到master之后，Jenkins会执行相应的构建" class="headerlink" title="推送代码到master之后，Jenkins会执行相应的构建"></a>推送代码到master之后，Jenkins会执行相应的构建</h3><img src="images/hexo-jenkins-githubpolllog.png" alt="jenkins github"><h3 id="可能会遇到的问题"><a href="#可能会遇到的问题" class="headerlink" title="可能会遇到的问题"></a>可能会遇到的问题</h3></li>
+<li>使用了反向代理会出现 <code>403 error</code> 这个需要把<code>Jenkins</code>安全中的<code>CSRF</code>关闭，或者参考<a target="_blank" rel="noopener" href="https://github.com/spinnaker/spinnaker/issues/2067">Jenkins -&gt; 403 No valid crumb was included in the request</a>。<br>测试：在<code>Github</code>的<code>webhook</code>中，可以重新发送对应的<code>HTTP</code>请求，但是需要注意: 只要<strong>相同的版本</strong>构建了,就不会再次触发构建。</li>
+</ol>
+<h2 id="REF"><a href="#REF" class="headerlink" title="REF:"></a>REF:</h2><p><a target="_blank" rel="noopener" href="https://www.digitalocean.com/community/tutorials/how-to-install-jenkins-on-ubuntu-16-04">How To Install Jenkins on Ubuntu 16.04</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ops/" rel="tag"># ops</a>
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/jenkins/" rel="tag"># jenkins</a>
+          
+            <a href="/tags/hexo/" rel="tag"># hexo</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/06/ops/hexo/index/" rel="next" title="hexo 安装以及美化">
+                <i class="fa fa-chevron-left"></i> hexo 安装以及美化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/11/%E5%89%8D%E7%AB%AF/CSS/index/" rel="prev" title="CSS 入门的一些知识">
+                CSS 入门的一些知识 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          </div>
+          
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg"
+                alt="Sanborn" />
+            
+              <p class="site-author-name" itemprop="name">Sanborn</p>
+              <p class="site-description motion-element" itemprop="description">恍惚而过，不落昏沉</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Sanbornzhang" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%9A%E8%BF%87github-jenkins-%E8%BF%9B%E8%A1%8C%E6%8C%81%E7%BB%AD%E9%83%A8%E7%BD%B2-hexo"><span class="nav-number">1.</span> <span class="nav-text">通过github + jenkins 进行持续部署 hexo</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#install-jenkins"><span class="nav-number">1.1.</span> <span class="nav-text">install jenkins</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%81%E7%BB%AD%E9%83%A8%E7%BD%B2%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.</span> <span class="nav-text">持续部署配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A8%E9%80%81%E4%BB%A3%E7%A0%81%E5%88%B0master%E4%B9%8B%E5%90%8E%EF%BC%8CJenkins%E4%BC%9A%E6%89%A7%E8%A1%8C%E7%9B%B8%E5%BA%94%E7%9A%84%E6%9E%84%E5%BB%BA"><span class="nav-number">1.2.1.</span> <span class="nav-text">推送代码到master之后，Jenkins会执行相应的构建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E8%83%BD%E4%BC%9A%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.2.2.</span> <span class="nav-text">可能会遇到的问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#REF"><span class="nav-number">1.3.</span> <span class="nav-text">REF:</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sanborn</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

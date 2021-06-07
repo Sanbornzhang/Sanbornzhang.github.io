@@ -1,37 +1,811 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="杂项,收藏的文章," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一些有用的文章Linux 浅谈CgroupsKubernetes Kubernetes DNS优化 1.14 Release Note">
+<meta property="og:type" content="article">
+<meta property="og:title" content="收藏的一些文章[时时更新]">
+<meta property="og:url" content="https://sanbornzhang.github.io/2019/02/25/%E6%9D%82%E9%A1%B9/read/index.html">
+<meta property="og:site_name" content="Sanborn">
+<meta property="og:description" content="一些有用的文章Linux 浅谈CgroupsKubernetes Kubernetes DNS优化 1.14 Release Note">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-02-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-05T08:06:12.024Z">
+<meta property="article:author" content="Sanborn">
+<meta property="article:tag" content="杂项">
+<meta property="article:tag" content="收藏的文章">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://Sanbornzhang.github.io/2019/02/25/杂项/read/"/>
+
+
+
+
+
+  <title>收藏的一些文章[时时更新] | Sanborn</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sanborn</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">爱吃酸菜的鱼</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+    
+  
+
+  <article class="post post-type-normal post-sticky" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Sanbornzhang.github.io/2019/02/25/%E6%9D%82%E9%A1%B9/read/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sanborn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sanborn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">收藏的一些文章[时时更新]</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-25T00:00:00+08:00">
+                2019-02-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9D%82%E9%A1%B9/" itemprop="url" rel="index">
+                    <span itemprop="name">杂项</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="一些有用的文章"><a href="#一些有用的文章" class="headerlink" title="一些有用的文章"></a>一些有用的文章</h1><h2 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/xQWig9WCGdg9JG74GdZ4xQ">浅谈Cgroups</a><h2 id="Kubernetes"><a href="#Kubernetes" class="headerlink" title="Kubernetes"></a>Kubernetes</h2></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/IGrUZLMvK8UppZTqt9bbSA">Kubernetes DNS优化</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/N6dC1S1Ezhh_-cFIbFScgQ">1.14 Release Note</a><span id="more"></span> </li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzIwNDIzODExOA==&mid=2650166781&idx=1&sn=dd6f5ce36e916c4938f78694df5f4a6b">Prometheus 监控框架</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/rG1_DqjBjisuhQJNi9U7iA">Prometheus 监控部署</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/W0FpH61r_HM7t8Xw1_Ex6A">Pod 间实现共享内存的解决方案</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/NwJbBLhomaHBhCkIDR1KWA">优雅的停止pod</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/VtJUDWFqjG0q2oCJYfpkzA">利用Kubernetes优雅地处理HTTP请求</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.qikqiak.com/post/troubleshooting-k8s-network/">Kubernetes 网络故障常见排查方法</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/qeYRAcDm2ZNmYgcPndAZjQ">Kubernetes 原生 CI/CD 系统 Prow 简介</a></li>
+<li><a target="_blank" rel="noopener" href="https://k8s.af/">Kubernetes 失败合集</a></li>
+<li><a target="_blank" rel="noopener" href="http://xiaorui.cc/2019/08/24/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB%E4%B9%8Bservice-mesh-k8sistio%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF">技术分享之service-mesh-k8sistio的那些事儿</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/QKVjbGQhfsB1MvVkYgW4ww">Kubernetes 权限</a></li>
+</ol>
+<h2 id="Node-js"><a href="#Node-js" class="headerlink" title="Node.js"></a>Node.js</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/G4pX6OwI8muzRtXBxNak8Q">docker 打包优化</a></li>
+<li><a target="_blank" rel="noopener" href="https://levelup.gitconnected.com/the-definite-guide-to-handling-errors-gracefully-in-javascript-58424d9c60e6">Error handing</a></li>
+<li><a target="_blank" rel="noopener" href="https://jsblog.insiderattack.net/promises-next-ticks-and-immediates-nodejs-event-loop-part-3-9226cbe7a6aa">Promises, Next-Ticks and Immediates— NodeJS Event Loop Part 3</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/63917897">在Javascript中进行面向切面编程</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.fundebug.com/2019/05/05/nodejs-12-features">Node.js 12 值得关注的新特性</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/gb5Y1W4wXMw2gW6rxEn7Sg">浅析控制反转</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/uDwX0iq9RWs1sK1ct0tiCg">浅谈Node.js在携程的应用</a></li>
+<li><a target="_blank" rel="noopener" href="http://taobaofed.org/blog/2017/08/31/nodejs-stream/">深入理解 Node.js Stream 内部机制</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/67437554">[译]编写优雅的JavaScript代码 - 最佳实践</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/Z0jnNJlfOrXHdNDb8CM-ng">【JS进阶】你真的掌握变量和类型了吗</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/entry/5a1654e951882554b8373622">深入了解 JavaScript 中的 for 循环</a></li>
+<li><a target="_blank" rel="noopener" href="https://wiki.jikexueyuan.com/project/es6/iterator.html">iterator</a></li>
+<li><a target="_blank" rel="noopener" href="https://jrsinclair.com/articles/2019/five-ways-to-average-with-js-reduce/">FUNCTIONAL JAVASCRIPT: FIVE WAYS TO CALCULATE AN AVERAGE WITH ARRAY REDUCE</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/41118827">Node.js：浅析高并发与分布式集群</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/pU_mpo5p4FGL4CQzFL91hw">JavaScript九大面试问题集锦，助你顺利通关！</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.fundebug.com/2019/07/16/how-does-v8-work/">JavaScript深入浅出第4课：V8引擎是如何工作的？</a></li>
+</ol>
+<h2 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/64184169">我眼中的 Nginx（六）：深入 Nginx/Openresty 服务里的 DNS 解析</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.upyun.com/tech/article/385/%E6%88%91%E7%9C%BC%E4%B8%AD%E7%9A%84%20Nginx%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%98%AF%E4%BB%80%E4%B9%88%E8%AE%A9%E4%BD%A0%E7%9A%84%20Nginx%20%E6%9C%8D%E5%8A%A1%E9%80%80%E5%87%BA%E8%BF%99%E4%B9%88%E6%85%A2%EF%BC%9F.html">我眼中的 Nginx（四）：是什么让你的 Nginx 服务退出这么慢？</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/JyUnN_OtQ2NtXcH0mtCJUg">Nginx的几个常用配置和技巧</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000011405320">Nginx高并发下的优化</a><h2 id="docker"><a href="#docker" class="headerlink" title="docker"></a>docker</h2><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/D0bBZKWExE8V1uhDKmlSuA">浅谈Docker的安全性支持（上篇）</a><h2 id="博客"><a href="#博客" class="headerlink" title="博客"></a>博客</h2></li>
+<li><a target="_blank" rel="noopener" href="https://blog.fleeto.us/">伪架构师</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.freebuf.com/">freebuf</a></li>
+<li><a target="_blank" rel="noopener" href="https://coolshell.cn/">酷壳</a><h2 id="Mysql"><a href="#Mysql" class="headerlink" title="Mysql"></a>Mysql</h2></li>
+<li>uuid 优化 <a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc4122.html">rfc4122</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhangcolin.github.io/2019/03/30/slow-optimization">慢查询优化</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzUyNDkzNzczNQ==&mid=2247486233&idx=1&sn=2b248891f259c05cf81d1172b288079c">count(*)</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.xiaohansong.com/cap-theorem.html">分布式系统：CAP 理论的前世今生</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://www.exception.site/essay/how-to-set-the-size-of-database-connection-pool">如何正确设置数据库连接池的大小</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/rLdHuwEb7gKjgpbsh1ioSA">一个真实的现网mySql死锁问题处理</a> TODO: 细看<h2 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h2></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/XO_SxQEppUKsrAMQTxXFwA">寻找热点key</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://my.oschina.net/u/4052893/blog/3045560">redis做分布式锁这几个要注意</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Weiwf/redis-mindmap/blob/master/README.md">redis-mindmap</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/5EH4-isDFxkGAXTWEhrZ-w">这可能是最中肯的Redis规范了</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/uJJKcJsdokDR33pzgGsafw">缓存世界中的三大问题及解决方案</a><h2 id="系统性能"><a href="#系统性能" class="headerlink" title="系统性能"></a>系统性能</h2></li>
+<li><a target="_blank" rel="noopener" href="https://bryantchang.github.io/2019/03/17/cpu-profile-two">CPU性能诊断</a>  <h2 id="network"><a href="#network" class="headerlink" title="network"></a>network</h2></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/61423830">一个TCP能够建立多少个HTTP请求</a>  <h2 id="istio"><a href="#istio" class="headerlink" title="istio"></a>istio</h2></li>
+<li><a target="_blank" rel="noopener" href="http://www.servicemesher.com/blog/istio-monitoring-explained/">Istio 监控详解</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/h0NGJ4v6iRicrp6f_5WkwQ">Istio究竟是干嘛的？</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/plvD11ogiVyX2RWw8mh6Tw">在生产环境运行Istio</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/W-F1ETV1H9yBm9sOiCEUSQ">使用Istio打造微服务</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/bry4g11lacH1eyuh5uVcHw">Istio和Linkerd的CPU基准测试报告</a>  </li>
+</ol>
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><ol>
+<li><a target="_blank" rel="noopener" href="https://www.w3cplus.com/css/viewports.html">viewports剖析</a><br>有点没看懂。。。</li>
+<li></li>
+</ol>
+<h2 id="杂"><a href="#杂" class="headerlink" title="杂"></a>杂</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://insights.thoughtworks.cn/a-retrospective-for-enterprise-distributing-application/">溯源微服务：企业分布式应用的一次回顾</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/1ccYgHixRX1-7vOCGun2DA">无我编程的10条诫律</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/qWrSyzJ54YEw8sLCxAEKlA">深度 | API 设计最佳实践的思考</a> TODO: 细看  </li>
+<li><a target="_blank" rel="noopener" href="https://crackstation.net/hashing-security.htm">Salted Password Hashing - Doing it Right</a>  </li>
+<li><a target="_blank" rel="noopener" href="http://ohshitgit.com/">Oh shit, git!</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://insights.thoughtworks.cn/is-quality-worth-cost/">软件的高质量意味着高成本？</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/49412303">API开发中如何使用限速应对大规模访问</a><br>其实Nginx 也可以对对IP进行限速。 个人觉得在入口设置会更好一些，如果是微服务架构，那么可以考虑在服务治理的时候进行设置(istio中设置)</li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/QXYi1KLhKcz1hPcJbIMEaA">如何做一个小型公司的技术总监</a> 很到位了</li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000019821154">VSCode 快捷键</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzIyMDQ0MjkyNQ==&mid=2247484320&idx=1&sn=400745bd97e3bcda9b2726876b28cf90&chksm=97cabbe2a0bd32f499bae3da8f1791a8dfa7d76f748b81773cf14a6e280fe2455b5b6f777ac2">99%的用户故事，写的都是渣</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/NUlFabqDMlxfKKUl8E4wdA">使用摄像头将你的屏幕变为触摸屏</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E6%9D%82%E9%A1%B9/" rel="tag"># 杂项</a>
+          
+            <a href="/tags/%E6%94%B6%E8%97%8F%E7%9A%84%E6%96%87%E7%AB%A0/" rel="tag"># 收藏的文章</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/25/%E6%9D%82%E9%A1%B9/zsh%E6%8F%90%E9%AB%98%E5%B7%A5%E4%BD%9C%E6%95%88%E7%8E%87/" rel="next" title="使用zsh提高工作效率">
+                <i class="fa fa-chevron-left"></i> 使用zsh提高工作效率
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/25/nodejs/child_process/" rel="prev" title="Node.js child_process 源码解析">
+                Node.js child_process 源码解析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          </div>
+          
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg"
+                alt="Sanborn" />
+            
+              <p class="site-author-name" itemprop="name">Sanborn</p>
+              <p class="site-description motion-element" itemprop="description">恍惚而过，不落昏沉</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Sanbornzhang" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E6%9C%89%E7%94%A8%E7%9A%84%E6%96%87%E7%AB%A0"><span class="nav-number">1.</span> <span class="nav-text">一些有用的文章</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux"><span class="nav-number">1.1.</span> <span class="nav-text">Linux</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kubernetes"><span class="nav-number">1.2.</span> <span class="nav-text">Kubernetes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Node-js"><span class="nav-number">1.3.</span> <span class="nav-text">Node.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx"><span class="nav-number">1.4.</span> <span class="nav-text">Nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker"><span class="nav-number">1.5.</span> <span class="nav-text">docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%9A%E5%AE%A2"><span class="nav-number">1.6.</span> <span class="nav-text">博客</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mysql"><span class="nav-number">1.7.</span> <span class="nav-text">Mysql</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis"><span class="nav-number">1.8.</span> <span class="nav-text">Redis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD"><span class="nav-number">1.9.</span> <span class="nav-text">系统性能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#network"><span class="nav-number">1.10.</span> <span class="nav-text">network</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#istio"><span class="nav-number">1.11.</span> <span class="nav-text">istio</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number">1.12.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%82"><span class="nav-number">1.13.</span> <span class="nav-text">杂</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sanborn</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

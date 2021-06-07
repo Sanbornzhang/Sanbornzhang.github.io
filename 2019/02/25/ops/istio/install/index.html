@@ -1,37 +1,895 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ops,linux,docker,k8s,kubernetes,istio," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Istio 连接:   对网格内部的服务之间的调用所产生的流量进行智能管理. 负载均衡 动态路由 灰度发布 故障注入   安全:为网格内服务之间的调用提供认证、加密和鉴权支持,在不侵入代码的情况下，提高固有服务的安全性.(共享集群) 策略:在控制面定制策略. 限流 ACL   观察:   对服务之间的调用进行跟踪和测量，获取服务的状态信息. 调用链 访问日志 监控">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Istio 安装 以及简单的使用">
+<meta property="og:url" content="https://sanbornzhang.github.io/2019/02/25/ops/istio/install/index.html">
+<meta property="og:site_name" content="Sanborn">
+<meta property="og:description" content="Istio 连接:   对网格内部的服务之间的调用所产生的流量进行智能管理. 负载均衡 动态路由 灰度发布 故障注入   安全:为网格内服务之间的调用提供认证、加密和鉴权支持,在不侵入代码的情况下，提高固有服务的安全性.(共享集群) 策略:在控制面定制策略. 限流 ACL   观察:   对服务之间的调用进行跟踪和测量，获取服务的状态信息. 调用链 访问日志 监控">
+<meta property="og:locale">
+<meta property="og:image" content="https://sanbornzhang.github.io/2019/02/25/ops/istio/install/images/istio-install-on-kubernetes.png">
+<meta property="og:image" content="https://sanbornzhang.github.io/2019/02/25/ops/istio/install/images/istio-install-httpbin.png">
+<meta property="og:image" content="https://sanbornzhang.github.io/2019/02/25/ops/istio/install/images/istio-httpbin.png">
+<meta property="og:image" content="https://sanbornzhang.github.io/2019/02/25/ops/istio/install/images/istio-book-info-pod.png">
+<meta property="og:image" content="https://sanbornzhang.github.io/2019/02/25/ops/istio/install/images/istio-book-info-product-page.png">
+<meta property="og:image" content="https://sanbornzhang.github.io/2019/02/25/ops/istio/install/images/istio-kiali-book-info.png">
+<meta property="article:published_time" content="2019-02-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-05T08:06:12.012Z">
+<meta property="article:author" content="Sanborn">
+<meta property="article:tag" content="ops">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="k8s">
+<meta property="article:tag" content="kubernetes">
+<meta property="article:tag" content="istio">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sanbornzhang.github.io/2019/02/25/ops/istio/install/images/istio-install-on-kubernetes.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://Sanbornzhang.github.io/2019/02/25/ops/istio/install/"/>
+
+
+
+
+
+  <title>Istio 安装 以及简单的使用 | Sanborn</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sanborn</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">爱吃酸菜的鱼</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Sanbornzhang.github.io/2019/02/25/ops/istio/install/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sanborn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sanborn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Istio 安装 以及简单的使用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-25T00:00:00+08:00">
+                2019-02-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/ops/" itemprop="url" rel="index">
+                    <span itemprop="name">ops</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/ops/docker/" itemprop="url" rel="index">
+                    <span itemprop="name">docker</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/ops/docker/k8s/" itemprop="url" rel="index">
+                    <span itemprop="name">k8s</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/ops/docker/k8s/kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/ops/docker/k8s/kubernetes/istio/" itemprop="url" rel="index">
+                    <span itemprop="name">istio</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Istio"><a href="#Istio" class="headerlink" title="Istio"></a>Istio</h1><ul>
+<li>连接:  <ul>
+<li>对网格内部的服务之间的调用所产生的流量进行智能管理.</li>
+<li>负载均衡</li>
+<li>动态路由</li>
+<li>灰度发布</li>
+<li>故障注入</li>
+</ul>
+</li>
+<li>安全:<br>为网格内服务之间的调用提供认证、加密和鉴权支持,在不侵入代码的情况下，提高固有服务的安全性.(共享集群)</li>
+<li>策略:<br>在控制面定制策略.<ul>
+<li>限流</li>
+<li>ACL</li>
+</ul>
+</li>
+<li>观察:  <ul>
+<li>对服务之间的调用进行跟踪和测量，获取服务的状态信息.</li>
+<li>调用链</li>
+<li>访问日志</li>
+<li>监控<span id="more"></span>
+<h2 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h2><h3 id="Pilot"><a href="#Pilot" class="headerlink" title="Pilot"></a>Pilot</h3></li>
+</ul>
+</li>
+<li>获取服务信息，完成服务发现.</li>
+<li>读取<code>istio</code>配置,转换以后分发到数据面. <h3 id="Mixer"><a href="#Mixer" class="headerlink" title="Mixer"></a>Mixer</h3></li>
+<li>监听<code>Kubernetes</code>获取配置的变化.</li>
+<li>预检: 服务每次在调用前都向<code>Mixer</code>发起预检请求,查看调用是否被允许执行.</li>
+<li>汇报: 在服务每次调用之后,都发出报告信息,向<code>Mixer</code>汇报调用过程中产生的监控和跟踪数据.<h3 id="CA"><a href="#CA" class="headerlink" title="CA"></a>CA</h3>证书管理<h3 id="Sidecar"><a href="#Sidecar" class="headerlink" title="Sidecar"></a>Sidecar</h3>负责控制层面对网格控制的实际执行.</li>
+</ul>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ol>
+<li><p>Istio releases page下载对应的操作平台: <a target="_blank" rel="noopener" href="https://github.com/istio/istio/releases">istio releases</a></p>
+<blockquote>
+<p>目前最新版本为1.2 在1.2 win版本中包含了<code>kiali</code></p>
+</blockquote>
+</li>
+<li><p>解压进入到目录 </p>
+</li>
+<li><p>安装CRD</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> install/kubernetes/helm/istio-init/files/crd*yaml; <span class="keyword">do</span> kubectl apply -f <span class="variable">$i</span>; <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<p>  如果没有这个文件的话，去找对应的<code>crd.yaml</code>文件</p>
+</li>
+<li><p>安装 Istio</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f install/kubernetes/istio-demo.yaml</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>检查服务<br><img src="images/istio-install-on-kubernetes.png"></p>
+</li>
+</ol>
+<h2 id="修改service使外部能够访问"><a href="#修改service使外部能够访问" class="headerlink" title="修改service使外部能够访问"></a>修改<code>service</code>使外部能够访问</h2><ul>
+<li><p>修改<code>istio-ingressgateway</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">istio-ingressgateway</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">istio-system</span></span><br><span class="line">  <span class="attr">annotations:</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">chart:</span> <span class="string">gateways</span></span><br><span class="line">    <span class="attr">heritage:</span> <span class="string">Tiller</span></span><br><span class="line">    <span class="attr">release:</span> <span class="string">istio</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">istio-ingressgateway</span></span><br><span class="line">    <span class="attr">istio:</span> <span class="string">ingressgateway</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">NodePort</span></span><br></pre></td></tr></table></figure></li>
+<li><p>修改<code>kiali</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">kiali</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">istio-system</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">kiali</span></span><br><span class="line">    <span class="attr">chart:</span> <span class="string">kiali</span></span><br><span class="line">    <span class="attr">heritage:</span> <span class="string">Tiller</span></span><br><span class="line">    <span class="attr">release:</span> <span class="string">istio</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">NodePort</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">http-kiali</span></span><br><span class="line">    <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">    <span class="attr">port:</span> <span class="number">20001</span></span><br><span class="line">    <span class="attr">nodePort:</span> <span class="number">30081</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">kiali</span></span><br></pre></td></tr></table></figure></li>
+<li><p>修改<code>prometheus</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">prometheus</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">istio-system</span></span><br><span class="line">  <span class="attr">annotations:</span></span><br><span class="line">    <span class="attr">prometheus.io/scrape:</span> <span class="string">&#x27;true&#x27;</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">prometheus</span></span><br><span class="line">    <span class="attr">chart:</span> <span class="string">prometheus</span></span><br><span class="line">    <span class="attr">heritage:</span> <span class="string">Tiller</span></span><br><span class="line">    <span class="attr">release:</span> <span class="string">istio</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">prometheus</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">NodePort</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">http-prometheus</span></span><br><span class="line">    <span class="attr">nodePort:</span> <span class="number">30001</span></span><br><span class="line">    <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">    <span class="attr">port:</span> <span class="number">9090</span></span><br></pre></td></tr></table></figure></li>
+<li><p>修改<code>grafana</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">grafana</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">istio-system</span></span><br><span class="line">  <span class="attr">annotations:</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">grafana</span></span><br><span class="line">    <span class="attr">chart:</span> <span class="string">grafana</span></span><br><span class="line">    <span class="attr">heritage:</span> <span class="string">Tiller</span></span><br><span class="line">    <span class="attr">release:</span> <span class="string">istio</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">NodePort</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">port:</span> <span class="number">3000</span></span><br><span class="line">      <span class="attr">targetPort:</span> <span class="number">3000</span></span><br><span class="line">      <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">      <span class="attr">nodePort:</span> <span class="number">30002</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">http</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">grafana</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="使用自动注入"><a href="#使用自动注入" class="headerlink" title="使用自动注入"></a>使用自动注入</h2><ul>
+<li><p>启动自动注入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl label namespace default istio-injection=enabled </span><br></pre></td></tr></table></figure></li>
+<li><p>disable injection</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl label namespace default istio-injection-</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li>list ns<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get namespace -L istio-injection</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="httpbin"><a href="#httpbin" class="headerlink" title="httpbin"></a>httpbin</h2><ol>
+<li>install <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f samples/httpbin/httpbin.yaml</span><br></pre></td></tr></table></figure></li>
+<li>查看是否安装成功<br><img src="images/istio-install-httpbin.png" alt="查看pod"></li>
+<li>创建 <code>Gateway</code> 以及 <code>VirtualService</code><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Gateway</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.istio.io/v1alpha3</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Gateway</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">httpbin-gateway</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">istio:</span> <span class="string">ingressgateway</span> <span class="comment"># use Istio default gateway implementation</span></span><br><span class="line">  <span class="attr">servers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">port:</span></span><br><span class="line">      <span class="attr">number:</span> <span class="number">80</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">http</span></span><br><span class="line">      <span class="attr">protocol:</span> <span class="string">HTTP</span></span><br><span class="line">    <span class="attr">hosts:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;*&quot;</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.istio.io/v1alpha3</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">VirtualService</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">httpbin</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">hosts:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">&quot;*&quot;</span></span><br><span class="line">  <span class="attr">gateways:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">httpbin-gateway</span></span><br><span class="line">  <span class="attr">http:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">match:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">uri:</span></span><br><span class="line">        <span class="attr">prefix:</span> <span class="string">/headers</span></span><br><span class="line">    <span class="attr">route:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">destination:</span></span><br><span class="line">        <span class="attr">port:</span></span><br><span class="line">          <span class="attr">number:</span> <span class="number">8000</span></span><br><span class="line">        <span class="attr">host:</span> <span class="string">httpbin</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li>配置流量规则<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f httpbin.gateway.yaml</span><br></pre></td></tr></table></figure></li>
+<li>查看能否访问 <a target="_blank" rel="noopener" href="http://127.0.0.1:31380/headers">http://127.0.0.1:31380/headers</a><br><img src="images/istio-httpbin.png"></li>
+</ol>
+<h2 id="BookInfo应用"><a href="#BookInfo应用" class="headerlink" title="BookInfo应用"></a>BookInfo应用</h2><ol>
+<li><p>创建<code>bookinfo</code> <code>POD</code>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml</span><br></pre></td></tr></table></figure>
+
+<p>  <img src="images/istio-book-info-pod.png"></p>
+<blockquote>
+<p>这里需要注意的是资源 如果资源不够很可能起不起来服务</p>
+</blockquote>
+</li>
+<li><p>创建路由规则</p>
+<pre><code>kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml     
+</code></pre>
+<p><img src="images/istio-book-info-product-page.png"><br><img src="images/istio-kiali-book-info.png"></p>
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>到此我们就已经搭建了一个<code>istio demo</code>,以及使用了自动注入的功能(<code>namespace=default</code>)。并且 有了一个简单的http页面<code>httpbin</code>，以及一个 <code>book-info</code>应用。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ops/" rel="tag"># ops</a>
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/docker/" rel="tag"># docker</a>
+          
+            <a href="/tags/k8s/" rel="tag"># k8s</a>
+          
+            <a href="/tags/kubernetes/" rel="tag"># kubernetes</a>
+          
+            <a href="/tags/istio/" rel="tag"># istio</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/25/ops/kubernetes/index/" rel="next" title="Kubernetes 的简单介绍">
+                <i class="fa fa-chevron-left"></i> Kubernetes 的简单介绍
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/25/nodejs/MQ/kakfa/" rel="prev" title="使用 kafka 作为消息队列">
+                使用 kafka 作为消息队列 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          </div>
+          
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://lh3.googleusercontent.com/-po30YqlBIEM/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reDu1zlBJlhwEJGqQ_2X6Otn9K16w/s64-c-mo/photo.jpg"
+                alt="Sanborn" />
+            
+              <p class="site-author-name" itemprop="name">Sanborn</p>
+              <p class="site-description motion-element" itemprop="description">恍惚而过，不落昏沉</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Sanbornzhang" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Istio"><span class="nav-number">1.</span> <span class="nav-text">Istio</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%84%E4%BB%B6"><span class="nav-number">1.1.</span> <span class="nav-text">组件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Pilot"><span class="nav-number">1.1.1.</span> <span class="nav-text">Pilot</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mixer"><span class="nav-number">1.1.2.</span> <span class="nav-text">Mixer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CA"><span class="nav-number">1.1.3.</span> <span class="nav-text">CA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sidecar"><span class="nav-number">1.1.4.</span> <span class="nav-text">Sidecar</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9service%E4%BD%BF%E5%A4%96%E9%83%A8%E8%83%BD%E5%A4%9F%E8%AE%BF%E9%97%AE"><span class="nav-number">1.3.</span> <span class="nav-text">修改service使外部能够访问</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%87%AA%E5%8A%A8%E6%B3%A8%E5%85%A5"><span class="nav-number">1.4.</span> <span class="nav-text">使用自动注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#httpbin"><span class="nav-number">1.5.</span> <span class="nav-text">httpbin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BookInfo%E5%BA%94%E7%94%A8"><span class="nav-number">1.6.</span> <span class="nav-text">BookInfo应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.7.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sanborn</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
